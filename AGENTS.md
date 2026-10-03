@@ -8,6 +8,10 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+Dependencies are installed with Bun (`bun install --frozen-lockfile`). `bun` is on `PATH`.
+
+Cloud Agents start the dev server on boot at http://127.0.0.1:4321 (`bun run dev -- --host 0.0.0.0 --port 4321`). If that URL already responds, leave the existing server running.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
