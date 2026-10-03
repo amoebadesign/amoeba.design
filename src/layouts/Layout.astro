@@ -4,8 +4,21 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>Amoeba Design | Studio for growth-stage B2B software companies</title>
+		<link rel="stylesheet" href="https://amoeba-ui.vercel.app/css/amoeba-0.1.0-alpha.css">
 	</head>
 	<body>
-		<slot />
+		<header class="cluster between" style="padding:1rem">
+			<a href="#">Amoeba</a>
+			<nav class="cluster">
+				<a href="#">Home</a>
+				<a href="#">Work</a>
+				<a href="#">Services</a>
+				<a href="#">About</a>
+				<a href="#">Contact</a>
+			</nav>
+		</header>
+		<main style="padding:1rem">
+			<slot />
+		</main>
 	</body>
 </html>
