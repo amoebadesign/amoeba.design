@@ -33,10 +33,14 @@ const {
 		</style>
 	</head>
 	<body>
-		<Header/>
-		<main style="padding: 0 var(--space-4)">
-			<slot />
-		</main>
-		<Footer/>
+		<div class="shell">
+			<div class="shell-brand">
+				<Header/>
+				<Footer/>
+			</div>
+			<main>
+				<slot />
+			</main>
+		</div>
 	</body>
 </html>
