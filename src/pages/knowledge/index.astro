@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const pages = (await getCollection('knowledge')).sort((a, b) =>
+	a.data.title.localeCompare(b.data.title),
+);
+---
+
+<Layout title="Knowledge | Amoeba Design">
+	<div class="stack loosest">
+		<h1 style="font-weight: normal; font-size: 26px; letter-spacing: -0.03em; line-height: 100%">Knowledge</h1>
+		<ul class="stack looser" style="list-style: none; padding: 0; margin: 0;">
+			{pages.map((page) => (
+				<li class="stack tighter">
+					<h2 style="font-weight: normal; font-size: 20px; letter-spacing: -0.03em; line-height: 100%">
+						<a href={`/knowledge/${page.id}`}>{page.data.title}</a>
+					</h2>
+					<p>{page.data.description}</p>
+				</li>
+			))}
+		</ul>
+	</div>
+</Layout>

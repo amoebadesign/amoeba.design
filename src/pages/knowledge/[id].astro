@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+	const pages = await getCollection('knowledge');
+	return pages.map((page) => ({
+		params: { id: page.id },
+		props: { page },
+	}));
+}
+
+interface Props {
+	page: CollectionEntry<'knowledge'>;
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+---
+
+<Layout title={`${page.data.title} | Amoeba Design`}>
+	<article class="stack looser" style="max-width: var(--measure)">
+		<p><a href="/knowledge">Knowledge</a></p>
+		<h1 style="font-weight: normal; font-size: 26px; letter-spacing: -0.03em; line-height: 100%">{page.data.title}</h1>
+		<Content />
+	</article>
+</Layout>
