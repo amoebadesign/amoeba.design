@@ -33,12 +33,18 @@ const {
 		</style>
 	</head>
 	<body>
-		<div class="has-sidebar" style="padding: var(--spacer-2); min-height:100dvh">
+		<div class="has-sidebar" style="padding: var(--spacer-2); min-height:100dvh; flex-wrap:wrap-reverse">
 			<div class="sidebar stack looser">
 				<Header class="fill"/>
 				<Footer/>
 			</div>
-			<main class="content">
+			<main class="content stack loosest">
+				<nav class="cluster">
+					<a href="/">Home</a>
+					<a href="/Work">Work</a>
+					<a href="/info">Info</a>
+					<a href="/knowledge">Knowledge</a>
+				</nav>
 				<slot />
 			</main>
 		</div>
