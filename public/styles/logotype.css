@@ -30,3 +30,12 @@
 .logotype:hover {
 	color: #000;
 }
+
+.title-alt {
+	font-family: "HEX Franklin v0.3 Variable";
+	font-style: normal;
+	font-variation-settings: "wdth" 90, "wght" 800;
+	text-transform: uppercase;
+	line-height: 1;
+	letter-spacing: -0.03em
+}

@@ -9,7 +9,7 @@ const pages = (await getCollection('knowledge')).sort((a, b) =>
 
 <Layout title="Knowledge | Amoeba Design">
 	<div class="stack loosest">
-		<h1 style="font-weight: normal; font-size: 26px; letter-spacing: -0.03em; line-height: 100%">Knowledge</h1>
+		<h1 class="title-alt">Knowledge</h1>
 		<ul class="stack looser" style="list-style: none; padding: 0; margin: 0;">
 			{pages.map((page) => (
 				<li class="stack tighter">
