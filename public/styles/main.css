@@ -11,6 +11,7 @@
   flex-basis: 32rem;
   padding: 0;
   background-color: transparent;
+  height: calc(100dvh - 2rem);
 }
 
 .stack .fill {
