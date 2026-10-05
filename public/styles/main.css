@@ -7,23 +7,8 @@
   --space-8: 2rem;
 }
 
-.shell {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: var(--space-8);
-  align-items: start;
-  min-height: 100dvh;
-  padding: var(--space-4);
-}
-
-.shell-brand {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-@media (max-width: 60rem) {
-  .shell {
-    grid-template-columns: 1fr;
-  }
+.has-sidebar .sidebar {
+  flex-basis: 32rem;
+  padding: 0;
+  background-color: transparent;
 }

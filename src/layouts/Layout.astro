@@ -33,12 +33,12 @@ const {
 		</style>
 	</head>
 	<body>
-		<div class="shell">
-			<div class="shell-brand">
+		<div class="has-sidebar" style="padding: var(--spacer-2)">
+			<div class="sidebar stack looser">
 				<Header/>
 				<Footer/>
 			</div>
-			<main>
+			<main class="content">
 				<slot />
 			</main>
 		</div>
