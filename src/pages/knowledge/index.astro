@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import LayoutA from '../../layouts/LayoutA.astro';
 import { getCollection } from 'astro:content';
 
 const pages = (await getCollection('knowledge')).sort((a, b) =>
@@ -7,7 +7,7 @@ const pages = (await getCollection('knowledge')).sort((a, b) =>
 );
 ---
 
-<Layout title="Knowledge | Amoeba Design">
+<LayoutA title="Knowledge | Amoeba Design">
 	<div class="stack loosest">
 		<ul class="stack looser" style="list-style: none; padding: 0; margin: 0;">
 			{pages.map((page) => (
@@ -20,4 +20,4 @@ const pages = (await getCollection('knowledge')).sort((a, b) =>
 			))}
 		</ul>
 	</div>
-</Layout>
+</LayoutA>

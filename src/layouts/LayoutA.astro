@@ -1,0 +1,128 @@
+---
+import Base from "./Base.astro";
+import Masthead from "../components/Masthead.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+	title?: string;
+}
+
+const { title } = Astro.props;
+---
+<Base title={title}>
+	<div class="split">
+		<header class="split-header">
+			<div class="split-brand">
+				<Masthead />
+			</div>
+			<div class="split-nav">
+				<Nav />
+			</div>
+		</header>
+		<div class="split-body">
+			<main class="split-main stack looser">
+				<slot />
+			</main>
+			<div class="split-rail">
+				<div class="split-sizer" aria-hidden="true">
+					<span class="logotype">Amoeba</span>
+				</div>
+				<Footer />
+			</div>
+		</div>
+	</div>
+</Base>
+
+<style>
+	/*
+	  Split chrome invariants:
+	  - split-header is display:contents so brand + nav wrap as .split flex items
+	    with the same 50% basis as split-body.
+	  - split-sizer is a hidden logotype so the rail’s min-content matches the
+	    masthead glyph and they wrap together.
+	  - split-body is row-reverse so the rail sits left of main in two columns;
+	    DOM order stays main then footer after wrap.
+	  - Brand sticks while .split is two columns; the container query unsticks
+	    it after wrap. Footer unsticks intrinsically when the rail is short.
+	*/
+	.split {
+		--logotype-fit: min(1, calc((100dvw - 2 * var(--chrome-inset)) / var(--logotype-min-width)));
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--split-gap);
+		align-items: start;
+		align-content: space-between;
+		container-type: inline-size;
+	}
+
+	.split-header {
+		display: contents;
+	}
+
+	.split > :global(*),
+	.split-header > * {
+		flex: 1 1 calc(50% - var(--split-gap) / 2);
+		min-width: min-content;
+	}
+
+	.split > .split-body {
+		flex: 1 1 100%;
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row-reverse;
+		gap: var(--split-gap);
+		align-items: stretch;
+		align-content: start;
+	}
+
+	.split-body > * {
+		flex: 1 1 calc(50% - var(--split-gap) / 2);
+		min-width: min(100%, var(--split-min));
+	}
+
+	.split-main {
+		min-height: calc(100dvh - 14rem);
+	}
+
+	.split-rail {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		min-width: min-content;
+	}
+
+	.split-sizer {
+		height: 0;
+		overflow: hidden;
+		visibility: hidden;
+		pointer-events: none;
+	}
+
+	.split-brand {
+		position: sticky;
+		top: var(--chrome-inset);
+		z-index: 1;
+	}
+
+	.split-brand :global(h1) {
+		font-weight: normal;
+		font-size: calc(26px * var(--logotype-fit, 1));
+		letter-spacing: -0.03em;
+		max-width: 451px;
+		line-height: 100%;
+	}
+
+	.split-rail :global(footer) {
+		position: sticky;
+		bottom: var(--chrome-inset);
+		z-index: 1;
+		align-self: start;
+	}
+
+	@container (max-width: calc(2 * 20.5rem + 1.25rem)) {
+		.split-brand {
+			position: static;
+		}
+	}
+</style>

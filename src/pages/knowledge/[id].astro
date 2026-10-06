@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import LayoutA from '../../layouts/LayoutA.astro';
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
@@ -19,9 +19,9 @@ const { page } = Astro.props;
 const { Content } = await render(page);
 ---
 
-<Layout title={`${page.data.title} | Amoeba Design`}>
+<LayoutA title={`${page.data.title} | Amoeba Design`}>
 	<article class="stack looser" style="max-width: var(--measure)">
 		<h1 class="title-alt">{page.data.title}</h1>
 		<Content />
 	</article>
-</Layout>
+</LayoutA>

@@ -1,7 +1,4 @@
 ---
-import Header from "../components/Header.astro"
-import Footer from "../components/Footer.astro"
-
 interface Props {
 	title?: string;
 }
@@ -29,21 +26,9 @@ const {
 				--font-sans: "acumin-variable", sans-serif;
 				--font-family-sans-serif: "acumin-variable", sans-serif;
 			}
-
 		</style>
 	</head>
-	<body class="split" style="min-height:100dvh;padding:1rem;">
-		<Header />
-		<div class="body-row">
-			<main class="content stack looser">
-				<slot />
-			</main>
-			<div class="rail">
-				<div class="page-main-spacer" aria-hidden="true">
-					<span class="logotype">Amoeba</span>
-				</div>
-				<Footer/>
-			</div>
-		</div>
+	<body>
+		<slot />
 	</body>
 </html>
