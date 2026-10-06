@@ -1,7 +1,6 @@
 ---
 import Header from "../components/Header.astro"
 import Footer from "../components/Footer.astro"
-import NavLink from "../components/NavLink.astro"
 
 interface Props {
 	title?: string;
@@ -33,21 +32,16 @@ const {
 
 		</style>
 	</head>
-	<body>
-		<div class="has-sidebar" style="padding: var(--spacer-2);">
-			<div class="sidebar stack looser" style="position:sticky;">
-				<Header class="fill"/>
-				<Footer/>
+	<body style="display:flex;flex-direction:column;min-height:100dvh;padding:1rem;gap:1.25rem;">
+		<Header />
+		<div class="page-main split">
+			<div class="page-main-spacer" aria-hidden="true">
+				<span class="logotype">Amoeba</span>
 			</div>
 			<main class="content stack looser">
-				<nav class="cluster">
-					<NavLink href="/" label="Home" />
-					<NavLink href="/work" label="Work" />
-					<NavLink href="/info" label="Info" />
-					<NavLink href="/knowledge" label="Knowledge" />
-				</nav>
 				<slot />
 			</main>
 		</div>
+		<Footer/>
 	</body>
 </html>

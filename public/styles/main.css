@@ -17,3 +17,27 @@
 .stack .fill {
   flex-grow: 1;
 }
+
+.split {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.split > * {
+  flex: 1 1 calc(50% - 0.625rem);
+  min-width: min-content;
+}
+
+.page-main {
+  flex: 1 0 auto;
+  row-gap: 0;
+}
+
+.page-main-spacer {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}

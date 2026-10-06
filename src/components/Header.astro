@@ -1,16 +1,15 @@
 ---
-const { class: className, ...rest } = Astro.props;
+import NavLink from "./NavLink.astro";
 ---
-<div class={className}>
-  <header class="cluster">
+<header class="split">
+  <div>
     <a class="logotype" href="/">Amoeba</a>
-    <!--nav class="cluster">
-      <a href="#">Home</a>
-      <a href="#">Work</a>
-      <a href="#">Services</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-    </nav-->
-  </header>
-  <h1 style="font-weight: normal; font-size: 26px; letter-spacing: -0.03em; max-width: 451px; line-height: 100%">Amoeba is a design engineering studio for ambitious B2B software companies.</h1>
-</div>
+    <h1 style="font-weight: normal; font-size: 26px; letter-spacing: -0.03em; max-width: 451px; line-height: 100%">Amoeba is a design engineering studio for ambitious B2B software companies.</h1>
+  </div>
+  <nav class="cluster">
+    <NavLink href="/" label="Home" />
+    <NavLink href="/work" label="Work" />
+    <NavLink href="/info" label="Info" />
+    <NavLink href="/knowledge" label="Knowledge" />
+  </nav>
+</header>

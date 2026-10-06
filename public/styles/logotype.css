@@ -19,7 +19,7 @@
 	text-edge: cap;
 	text-box-trim: trim-both;
 	text-box-edge: cap alphabetic;
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	letter-spacing: -0.04em;
 	text-transform: uppercase;
