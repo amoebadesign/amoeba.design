@@ -13,7 +13,7 @@
 	font-weight: 800;
 	font-stretch: 70%;
 	font-variation-settings: "wdth" 70, "wght" 800;
-	font-size: 120px;
+	font-size: calc(120px * var(--header-fit, 1));
 	line-height: 100%;
 	leading-trim: both;
 	text-edge: cap;
@@ -29,6 +29,14 @@
 
 .logotype:hover {
 	color: #000;
+}
+
+header h1 {
+	font-weight: normal;
+	font-size: calc(26px * var(--header-fit, 1));
+	letter-spacing: -0.03em;
+	max-width: 451px;
+	line-height: 100%;
 }
 
 .title-alt {

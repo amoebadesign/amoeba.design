@@ -5,6 +5,7 @@
   --space-4: 1rem;
   --space-6: 1.5rem;
   --space-8: 2rem;
+  --header-fit: min(1, calc((100dvw - 2rem) / 326.2265625px));
 }
 
 .has-sidebar .sidebar {
