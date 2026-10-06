@@ -32,16 +32,18 @@ const {
 
 		</style>
 	</head>
-	<body style="display:flex;flex-direction:column;min-height:100dvh;padding:1rem;gap:1.25rem;">
+	<body class="split" style="min-height:100dvh;padding:1rem;">
 		<Header />
-		<div class="page-main split">
-			<div class="page-main-spacer" aria-hidden="true">
-				<span class="logotype">Amoeba</span>
-			</div>
+		<div class="body-row">
 			<main class="content stack looser">
 				<slot />
 			</main>
+			<div class="rail">
+				<div class="page-main-spacer" aria-hidden="true">
+					<span class="logotype">Amoeba</span>
+				</div>
+				<Footer/>
+			</div>
 		</div>
-		<Footer/>
 	</body>
 </html>
