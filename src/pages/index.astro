@@ -1,106 +1,33 @@
 ---
 import LayoutA from '../layouts/LayoutA.astro';
-
-const offerings = [
-	{
-		title: 'Rent a design engineer',
-		price: '$500 / week',
-		body: 'Is your app rough around the edges? Are you looking to buff out the AI slop from your interface? Populate a backlog of issues and I’ll ship polished UI as PRs for your engineering team to review.',
-	},
-	{
-		title: '(Re)build your design system',
-		price: 'Starting at $5,000',
-		body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-	},
-	{
-		title: 'Prototyping',
-		price: 'Starting at $x,000',
-		body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-	},
-] as const;
-
-const expertise = [
-	'Product Design',
-	'Design Systems',
-	'Front-end Engineering',
-	'User Research',
-	'Usability Testing',
-	'Product Management',
-	'Software Development Lifecycle',
-] as const;
 ---
 
 <LayoutA>
-	<div class="offerings stack loosest">
-		{offerings.map((offering) => (
-			<section class="offering stack looser">
-				<div class="cluster between bottom">
-					<h2>{offering.title}</h2>
-					<p class="price">{offering.price}</p>
-				</div>
-				<p>{offering.body}</p>
-			</section>
-		))}
-		<section class="expertise stack looser">
+	<div class="stack loosest">
+		<div class="stack looser">
+			<div class="cluster between bottom">
+				<h2>Rent a design engineer</h2>
+				<p>$500 / week</p>
+			</div>
+			<p>Is your app rough around the edges? Are you looking to buff out the AI slop from your interface? Populate a backlog of issues and I’ll ship polished UI as PRs for your engineering team to review.</p>
+		</div>
+		<div class="stack looser">
+			<div class="cluster between bottom">
+				<h2>(Re)build your design system</h2>
+				<p>Starting at $5,000</p>
+			</div>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+		</div>
+		<div class="stack looser">
+			<div class="cluster between bottom">
+				<h2>Prototyping</h2>
+				<p>Starting at $x,000</p>
+			</div>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+		</div>
+		<div class="stack looser">
 			<h2>Expertise</h2>
-			<ul>
-				{expertise.map((item) => (
-					<li>{item}</li>
-				))}
-			</ul>
-		</section>
+			<p>Product Design<br>Design Systems<br>Front-end Engineering<br>User Research<br>Usability Testing<br>Product Management<br>Software Development Lifecycle</p>
+		</div>
 	</div>
 </LayoutA>
-
-<style>
-	.offerings {
-		max-width: 452px;
-		color: #000;
-	}
-
-	.offering h2,
-	.price,
-	.offering p,
-	.expertise h2,
-	.expertise ul {
-		text-box-trim: trim-both;
-		text-box-edge: cap alphabetic;
-	}
-
-	.offering h2 {
-		font-size: 20px;
-		font-weight: 700;
-		line-height: 1;
-		letter-spacing: -0.03em;
-	}
-
-	.price,
-	.offering > p,
-	.expertise ul {
-		font-size: 16px;
-		font-weight: 500;
-		line-height: 1.35;
-		letter-spacing: -0.03em;
-	}
-
-	.price {
-		text-align: right;
-		white-space: nowrap;
-	}
-
-	.expertise {
-		margin-top: 1.5rem;
-	}
-
-	.expertise h2 {
-		font-size: 16px;
-		font-weight: 700;
-		line-height: 1.35;
-		letter-spacing: -0.03em;
-	}
-
-	.expertise ul {
-		list-style: none;
-		padding: 0;
-	}
-</style>

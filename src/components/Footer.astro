@@ -1,27 +1,13 @@
 ---
-const links = [
-	{ href: "http://amoebaunlimited.com", label: "Blog" },
-	{ href: "https://twitter.com/amoeba_design", label: "Twitter" },
-	{ href: "https://www.linkedin.com/in/bpking15", label: "Linkedin" },
-	{ href: "https://www.youtube.com/@bpking15", label: "Youtube" },
-] as const;
+const year = new Date().getFullYear();
 ---
 <footer>
-	<nav class="cluster tighter" aria-label="Elsewhere">
-		{links.map((link) => (
-			<a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
-		))}
-	</nav>
+  <div class="cluster middle">
+    <nav class="cluster tighter">
+      <a href="http://amoebaunlimited.com" target="blank">Blog</a>
+      <a href="https://twitter.com/amoeba_design" target="blank">Twitter</a>
+      <a href="https://github.com/amoebadesign" target="blank">GitHub</a>
+    </nav>
+    <div>&copy; {year}</div>
+  </div>
 </footer>
-
-<style>
-	a {
-		font-size: 16px;
-		font-weight: 500;
-		line-height: 1;
-		letter-spacing: -0.03em;
-		text-decoration: none;
-		text-box-trim: trim-both;
-		text-box-edge: cap alphabetic;
-	}
-</style>
