@@ -1,15 +1,64 @@
 ---
+import { Image } from "astro:assets";
 import LayoutA from "../../layouts/LayoutA.astro";
+import work1 from "../../assets/work/work-1.png";
+import work2 from "../../assets/work/work-2.png";
+import work3 from "../../assets/work/work-3.png";
+import work4 from "../../assets/work/work-4.png";
+import campaigns from "../../assets/work/acme-campaigns-list.jpg";
+import segment from "../../assets/work/acme-segment-builder.jpg";
+import campaign from "../../assets/work/acme-campaign-detail.jpg";
+import import01 from "../../assets/work/cdp-import-01.jpg";
+import import02 from "../../assets/work/cdp-import-02.jpg";
+import import03 from "../../assets/work/cdp-import-03.jpg";
+import import04 from "../../assets/work/cdp-import-04.jpg";
+import import05 from "../../assets/work/cdp-import-05.jpg";
+import import06 from "../../assets/work/cdp-import-06.jpg";
+
+const works = [
+  { src: work1, alt: "Product UI screenshot" },
+  { src: work2, alt: "Dashboard UI screenshot" },
+  { src: work3, alt: "Analytics dashboard screenshot" },
+  { src: work4, alt: "Invite user modal screenshot" },
+  { src: campaigns, alt: "Campaigns list dashboard" },
+  { src: segment, alt: "Audience segment builder" },
+  { src: campaign, alt: "Campaign detail with creative preview" },
+  { src: import01, alt: "Contact import upload step" },
+  { src: import02, alt: "Contact import file preview" },
+  { src: import03, alt: "Contact import column mapping" },
+  { src: import04, alt: "Contact import deduplication" },
+  { src: import05, alt: "Contact import validation rules" },
+  { src: import06, alt: "Contact import review" },
+];
 ---
 
-<LayoutA>
-  <div class="stack looser" >
-    <div style="aspect-ratio:4/3;background-color: #eee;"></div>
-    <div style="aspect-ratio:4/3;background-color: #eee;"></div>
-    <div style="aspect-ratio:4/3;background-color: #eee;"></div>
-    <div style="aspect-ratio:4/3;background-color: #eee;"></div>
-    <div style="aspect-ratio:4/3;background-color: #eee;"></div>
-    <div style="aspect-ratio:4/3;background-color: #eee;"></div>
-    <div style="aspect-ratio:4/3;background-color: #eee;"></div>
+<LayoutA title="Work | Amoeba Design">
+  <div class="stack looser">
+    {works.map((work, index) => (
+      <div class="work-frame">
+        <Image
+          src={work.src}
+          alt={work.alt}
+          widths={[480, 768, 1200, 1600]}
+          sizes="(min-width: 42rem) 50vw, 100vw"
+          loading={index === 0 ? "eager" : "lazy"}
+          decoding="async"
+        />
+      </div>
+    ))}
   </div>
 </LayoutA>
+
+<style>
+  .work-frame {
+    background-color: #eee;
+    padding: 2rem;
+  }
+
+  .work-frame :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0.375rem;
+  }
+</style>
