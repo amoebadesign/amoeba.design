@@ -98,7 +98,7 @@ export const alignMap: Record<Align, string> = {
 /** Builds an inline style from layout custom properties, keeping any style the caller passed. */
 export function layoutStyle(
 	vars: Record<string, string | undefined>,
-	style?: string | Record<string, unknown>,
+	style?: string | object | null,
 ): string | undefined {
 	const declarations = Object.entries(vars)
 		.filter(([, value]) => value !== undefined)
