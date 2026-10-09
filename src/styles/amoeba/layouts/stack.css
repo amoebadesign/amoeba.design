@@ -1,0 +1,20 @@
+@layer amoeba.layouts {
+  .layout-stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: var(--align, stretch);
+    gap: var(--space, calc(var(--spacing) * 4));
+  }
+
+  .layout-stack[data-split="1"] > :nth-child(1),
+  .layout-stack[data-split="2"] > :nth-child(2),
+  .layout-stack[data-split="3"] > :nth-child(3),
+  .layout-stack[data-split="4"] > :nth-child(4),
+  .layout-stack[data-split="5"] > :nth-child(5),
+  .layout-stack[data-split="6"] > :nth-child(6),
+  .layout-stack[data-split="7"] > :nth-child(7),
+  .layout-stack[data-split="8"] > :nth-child(8) {
+    margin-block-end: auto;
+  }
+}

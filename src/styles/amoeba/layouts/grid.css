@@ -1,0 +1,7 @@
+@layer amoeba.layouts {
+  .layout-grid {
+    display: grid;
+    gap: var(--space, calc(var(--spacing) * 4));
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--min, 16rem), 100%), 1fr));
+  }
+}

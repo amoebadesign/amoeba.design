@@ -1,0 +1,24 @@
+---
+import type { HTMLTag, Polymorphic } from "astro/types";
+import { type Length, type Measure, layoutStyle, toLength, toMeasure } from "./layout";
+
+type Props<Tag extends HTMLTag = "div"> = Polymorphic<{ as: Tag }> & {
+	measure?: Measure;
+	gutters?: Length;
+	intrinsic?: boolean;
+};
+
+const { as: Tag = "div", measure, gutters, intrinsic, class: className, style, ...rest } = Astro.props;
+---
+<Tag
+	class:list={["layout-center", className]}
+	style={layoutStyle(
+		{
+			"--center-measure": measure && toMeasure(measure),
+			"--gutters": gutters && toLength(gutters),
+		},
+		style,
+	)}
+	data-intrinsic={intrinsic || undefined}
+	{...rest}
+><slot /></Tag>
