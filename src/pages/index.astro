@@ -4,14 +4,12 @@ import LayoutA from '../layouts/LayoutA.astro';
 
 <LayoutA>
 	<div class="stack looser">
-		<div class="stack tighter">
-			<div class="cluster between bottom">
-				<h2>Rent a design engineer</h2>
-				<p>$500 / week</p>
-			</div>
+		<div class="stack tighter" style="max-width: 50ch">
+			<h2>Rent a design engineer</h2>
 			<p>Is your app rough around the edges? Are you looking to buff out the AI slop from your interface? Populate a backlog of issues and I’ll ship polished UI as PRs for your engineering team to review.</p>
+			<p class="display" style="letter-spacing: -0.03em">$500 / week</p>
 		</div>
-		<div class="stack tighter">
+		<!--div class="stack tighter">
 			<div class="cluster between bottom">
 				<h2>(Re)build your design system</h2>
 				<p>Starting at $5,000</p>
@@ -24,10 +22,18 @@ import LayoutA from '../layouts/LayoutA.astro';
 				<p>Starting at $x,000</p>
 			</div>
 			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-		</div>
+		</div-->
 		<div class="stack tighter">
 			<h3>Expertise</h3>
-			<p>Product Design<br>Design Systems<br>Front-end Engineering<br>User Research<br>Usability Testing<br>Product Management<br>Software Development Lifecycle</p>
+			<ul style="list-style-type: none; padding: 0; margin: 0;" class="stack flush">
+				<li>Product Design</li>
+				<li>Design Systems</li>
+				<li>Front-end Engineering</li>
+				<li>User Research</li>
+				<li>Usability Testing</li>
+				<li>Product Management</li>
+				<li>Software Development Lifecycle</li>
+			</ul>
 		</div>
 	</div>
 </LayoutA>
