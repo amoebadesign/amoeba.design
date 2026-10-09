@@ -1,0 +1,54 @@
+/*
+  No data-theme follows the system setting through light-dark(). Any element
+  can set data-theme to re-theme its subtree.
+*/
+@layer amoeba.tokens {
+  :root,
+  [data-theme="light"],
+  [data-theme="dark"] {
+    --color-bg: light-dark(var(--color-white), var(--color-neutral-950));
+    --color-fg: light-dark(var(--color-black), var(--color-neutral-50));
+    --color-fg-muted: light-dark(var(--color-neutral-500), var(--color-neutral-400));
+    --color-surface: light-dark(var(--color-neutral-100), var(--color-neutral-900));
+    --color-border: light-dark(var(--color-neutral-300), var(--color-neutral-700));
+    --color-border-strong: var(--color-fg);
+    --color-accent: var(--color-fg);
+    --color-accent-fg: var(--color-bg);
+    --color-link: var(--color-fg);
+    --color-link-hover: var(--color-fg-muted);
+    --color-link-visited: var(--color-fg);
+    --color-link-visited-hover: var(--color-fg-muted);
+    --color-heading-link: var(--color-fg);
+    --color-ring: var(--color-fg);
+  }
+
+  :root {
+    color-scheme: light dark;
+  }
+
+  [data-theme="light"] {
+    color-scheme: light;
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  [data-theme="green"] {
+    color-scheme: dark;
+    --color-bg: var(--color-green-1000);
+    --color-fg: var(--color-green-50);
+    --color-fg-muted: var(--color-green-200);
+    --color-surface: var(--color-green-950);
+    --color-border: rgb(255 255 255 / 0.25);
+    --color-border-strong: var(--color-green-50);
+    --color-accent: var(--color-pink-400);
+    --color-accent-fg: var(--color-green-1000);
+    --color-link: var(--color-yellow-300);
+    --color-link-hover: var(--color-yellow-500);
+    --color-link-visited: var(--color-pink-300);
+    --color-link-visited-hover: var(--color-pink-500);
+    --color-heading-link: var(--color-blue-300);
+    --color-ring: var(--color-pink-400);
+  }
+}

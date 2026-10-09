@@ -15,6 +15,21 @@ const {
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>{title}</title>
+		<script is:inline>
+			(() => {
+				const apply = () => {
+					let theme = null;
+					try {
+						theme = localStorage.getItem("amoeba-theme");
+					} catch {}
+					if (theme) document.documentElement.dataset.theme = theme;
+					else delete document.documentElement.dataset.theme;
+				};
+				apply();
+				// ClientRouter replaces <html> attributes on every navigation.
+				document.addEventListener("astro:after-swap", apply);
+			})();
+		</script>
 		<ClientRouter />
 		<link rel="preload" href="/fonts/hex-franklin-variable.woff2" as="font" type="font/woff2" crossorigin>
 		<link rel="preload" href="https://use.typekit.net/dit6fmi.css" as="style">

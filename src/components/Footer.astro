@@ -8,6 +8,53 @@ const year = new Date().getFullYear();
       <a href="https://twitter.com/amoeba_design" target="blank">Twitter</a>
       <a href="https://github.com/amoebadesign" target="blank">GitHub</a>
     </nav>
-    <div>&copy; {year}</div>
+    <button type="button" class="theme-cycle" data-theme-cycle data-year={year}>&copy; {year}</button>
   </div>
 </footer>
+
+<script>
+  const KEY = "amoeba-theme";
+  const THEMES = ["system", "light", "dark", "green"] as const;
+  type Theme = (typeof THEMES)[number];
+
+  function current(): Theme {
+    const theme = document.documentElement.dataset.theme;
+    return THEMES.includes(theme as Theme) ? (theme as Theme) : "system";
+  }
+
+  function label(theme: Theme) {
+    for (const button of document.querySelectorAll<HTMLButtonElement>("[data-theme-cycle]")) {
+      button.setAttribute(
+        "aria-label",
+        `© ${button.dataset.year}. Theme: ${theme}. Change theme.`,
+      );
+    }
+  }
+
+  function set(theme: Theme) {
+    try {
+      if (theme === "system") localStorage.removeItem(KEY);
+      else localStorage.setItem(KEY, theme);
+    } catch {}
+    if (theme === "system") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = theme;
+    label(theme);
+  }
+
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element) || !event.target.closest("[data-theme-cycle]")) return;
+    set(THEMES[(THEMES.indexOf(current()) + 1) % THEMES.length]);
+  });
+
+  document.addEventListener("astro:page-load", () => label(current()));
+</script>
+
+<style>
+  .theme-cycle {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
+</style>
