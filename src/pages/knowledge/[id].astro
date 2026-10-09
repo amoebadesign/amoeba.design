@@ -1,5 +1,6 @@
 ---
 import LayoutA from '../../layouts/LayoutA.astro';
+import { Stack } from '../../components/ui';
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
@@ -20,8 +21,14 @@ const { Content } = await render(page);
 ---
 
 <LayoutA title={`${page.data.title} | Amoeba Design`}>
-	<article class="stack looser" style="max-width: var(--measure)">
-		<h1 class="title-alt">{page.data.title}</h1>
+	<Stack as="article" space="4" class="article">
+		<h1 class="type-title-alt">{page.data.title}</h1>
 		<Content />
-	</article>
+	</Stack>
 </LayoutA>
+
+<style>
+	.article {
+		max-inline-size: var(--measure);
+	}
+</style>

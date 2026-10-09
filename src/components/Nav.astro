@@ -1,5 +1,6 @@
 ---
 import NavLink from "./NavLink.astro";
+import { Cluster } from "./ui";
 
 const items = [
 	{ href: "/", label: "Home" },
@@ -8,8 +9,8 @@ const items = [
 	{ href: "/knowledge", label: "Knowledge" },
 ] as const;
 ---
-<nav class="cluster">
+<Cluster as="nav" space="4" align="baseline">
 	{items.map((item) => (
 		<NavLink href={item.href} label={item.label} />
 	))}
-</nav>
+</Cluster>

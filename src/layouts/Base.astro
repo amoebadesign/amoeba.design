@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import "../styles/amoeba/index.css";
 
 interface Props {
 	title?: string;
@@ -36,15 +37,6 @@ const {
 		<link rel="preconnect" href="https://use.typekit.net">
 		<link rel="preconnect" href="https://p.typekit.net" crossorigin>
 		<link rel="stylesheet" href="https://use.typekit.net/dit6fmi.css">
-		<link rel="stylesheet" href="https://amoeba-ui.vercel.app/css/amoeba-0.1.0-alpha.css">
-		<link rel="stylesheet" href="/styles/logotype.css">
-		<link rel="stylesheet" href="/styles/main.css">
-		<style is:global>
-			:root {
-				--font-sans: "acumin-variable", sans-serif;
-				--font-family-sans-serif: "acumin-variable", sans-serif;
-			}
-		</style>
 	</head>
 	<body>
 		<slot />

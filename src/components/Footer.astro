@@ -1,15 +1,17 @@
 ---
+import { Cluster } from "./ui";
+
 const year = new Date().getFullYear();
 ---
 <footer>
-  <div class="cluster middle">
-    <nav class="cluster tighter">
+  <Cluster space="4" align="center">
+    <Cluster as="nav" space="2" align="baseline">
       <a href="http://amoebaunlimited.com" target="blank">Blog</a>
       <a href="https://twitter.com/amoeba_design" target="blank">Twitter</a>
       <a href="https://github.com/amoebadesign" target="blank">GitHub</a>
-    </nav>
+    </Cluster>
     <button type="button" class="theme-cycle" data-theme-cycle data-year={year}>&copy; {year}</button>
-  </div>
+  </Cluster>
 </footer>
 
 <script>
