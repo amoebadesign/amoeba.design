@@ -2,6 +2,14 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Launch domain and legacy Search Console
+
+- Scope: `.seo/` notes only. No page, layout, or Astro config edits.
+- Bryan: this Astro build will replace the current site at https://amoeba.design. Launch canonical is that origin. https://amoeba-design.vercel.app stays the pre-launch deploy URL.
+- Code check: `astro.config.mjs` does not set `site`. `src/layouts/Base.astro` emits no canonical. No `vercel.json`. https://amoeba-design.vercel.app/ returned HTTP 200 on 2026-10-10 with no redirect to https://amoeba.design.
+- Search Console property `sc-domain:amoeba.design`, via the bot connector, measures the legacy site only. Recorded the supplied 90-day export (2026-07-10 to 2026-10-08) as the pre-migration baseline. This build has no Search Console data of its own. No sitemap is submitted. No other metrics added.
+- Backlog: domain migration is now the top item. Details in `baseline.md`.
+
 ## 2026-10-10 — Setup and baseline
 
 - Scope: create `.seo/` only. No page, layout, content, or config edits.

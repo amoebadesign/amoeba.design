@@ -76,6 +76,6 @@ Seven entries exist. Each has a title and a description in frontmatter. The rend
 - Whether the homepage's commented-out blocks are real offers. `src/pages/index.astro` contains an HTML comment with "(Re)build your design system", "Starting at $5,000", "Prototyping", "Starting at $x,000", and lorem ipsum. That block is not rendered. It is not a published claim. Ask Bryan before anyone treats it as an offer.
 - Named clients, case-study results, or permission to name the companies in the work screenshots. UNKNOWN.
 - A public email, calendar link, or contact form. UNKNOWN. The published contact paths are the X profile on `/info` and the footer Twitter/GitHub links.
-- Which origin is canonical: this Astro app, or https://amoeba.design. UNKNOWN. See `.seo/baseline.md`. The Next.js site on the brand domain is a different codebase and its copy is not recorded here.
+- Launch domain, answered by Bryan on 2026-10-10: this Astro build will replace the current site at https://amoeba.design. That origin is the canonical to implement. It is not set in this repo yet (`astro.config.mjs` has no `site`; `src/layouts/Base.astro` has no canonical). The current pre-launch deploy is https://amoeba-design.vercel.app. Legacy copy on the Next.js site is still not recorded here. The list of legacy amoeba.design URLs beyond the homepage is UNKNOWN.
 - Competitors. UNKNOWN. Left empty in `.seo/config.json`.
 - Audience segments. The owner stated them for the program (see config). The site itself does not list an audience.

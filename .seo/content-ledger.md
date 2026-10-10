@@ -1,12 +1,14 @@
 # Content ledger
 
-Indexable URLs in this repo. There is no `noindex`, no `robots.txt`, and no canonical, so all 11 built pages are treatable as indexable. Production on 2026-10-10 returned 200 for each URL below, with and without a trailing slash.
+Indexable URLs in this repo as deployed today. There is no `noindex`, no `robots.txt`, and no canonical, so all 11 built pages are treatable as indexable on the pre-launch host. Production on 2026-10-10 returned 200 for each URL below, with and without a trailing slash.
+
+These URLs use https://amoeba-design.vercel.app because that is where this repo deploys now. Bryan has decided the launch canonical will be https://amoeba.design, replacing the legacy site there. Search Console data for `sc-domain:amoeba.design` does not measure these Vercel URLs. The only legacy URL with impressions is https://amoeba.design/.
 
 Word count is whitespace-delimited words in the rendered `<main>` of the 2026-10-10 static build. It includes in-main headings. It excludes the masthead, nav, and footer. Image alt text is excluded; `/work` notes that separately.
 
 "Meta description" means a `<meta name="description">` tag. Knowledge entries have a frontmatter `description`, and `/knowledge` prints those strings in the page body. That is not a meta description.
 
-Target keyword/topic is inferred from the title and on-page text. There is no Search Console or keyword data. Every topic cell is marked inferred.
+Target keyword/topic is inferred from the title and on-page text. Every topic cell is marked inferred. Search Console for `sc-domain:amoeba.design` measures the legacy site, not these Vercel URLs, so those queries are not used as this ledger's target keywords.
 
 Last modified is the last git commit date of the page's source file (`git log -1 --format=%cs`). Article rows use the markdown file. The shared route `src/pages/knowledge/[id].astro` was last committed 2026-10-09.
 
