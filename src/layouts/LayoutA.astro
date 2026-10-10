@@ -9,16 +9,25 @@ import { Stack } from "../components/ui";
 
 interface Props {
 	title?: string;
+	description?: string;
 	noindex?: boolean;
+	ogType?: "website" | "article";
+	/** The masthead sentence is the H1 on the homepage only. */
+	mastheadIsH1?: boolean;
+	/**
+	 * Visually hidden page H1 for routes whose design has no title.
+	 * Omit when the slot already contains the only H1.
+	 */
+	heading?: string;
 }
 
-const { title, noindex = false } = Astro.props;
+const { title, description, noindex = false, ogType = "website", mastheadIsH1 = false, heading } = Astro.props;
 ---
-<Base title={title} noindex={noindex}>
+<Base title={title} description={description} noindex={noindex} ogType={ogType}>
 	<div class="split">
 		<header class="split-header">
-			<div class="split-brand" transition:persist="masthead">
-				<Masthead />
+			<div class="split-brand">
+				<Masthead as={mastheadIsH1 ? "h1" : "p"} />
 			</div>
 			<div class="split-nav" transition:name="nav">
 				<Nav />
@@ -26,6 +35,7 @@ const { title, noindex = false } = Astro.props;
 		</header>
 		<div class="split-body">
 			<Stack as="main" space="4" class="split-main" transition:name="content" transition:animate={fade({ duration: "220ms" })}>
+				{heading && <h1 class="page-heading">{heading}</h1>}
 				<slot />
 			</Stack>
 			<div class="split-rail" transition:persist="rail">
@@ -101,7 +111,21 @@ const { title, noindex = false } = Astro.props;
 	}
 
 	.split-main {
+		position: relative;
 		min-height: calc(100dvh - 14rem);
+	}
+
+	/* Out of flow so Work and Knowledge keep their current layout. Still the page H1. */
+	.page-heading {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+		border: 0;
 	}
 
 	.split-rail {
@@ -124,7 +148,7 @@ const { title, noindex = false } = Astro.props;
 		z-index: 1;
 	}
 
-	.split-brand :global(h1) {
+	.split-brand :global(.masthead-lede) {
 		font-weight: normal;
 		font-size: calc(26px * var(--logotype-fit, 1));
 		letter-spacing: var(--tracking-tight);

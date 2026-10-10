@@ -25,7 +25,7 @@ Date: 2026-10-10. Scope is this Astro repo and the URLs it publishes. No page or
 | Package manager | bun (`bun.lock`). README dev command is `bun dev`. Node engine `>=22.12.0`. |
 | Head | `src/layouts/Base.astro` only. No SEO component. |
 
-`Base.astro` emits charset, viewport, a title, a canonical URL on `https://amoeba.design`, an inline theme script, Astro `ClientRouter`, a font preload, and the Adobe Typekit stylesheet. It emits `noindex, follow` only when a page asks for it. It does not emit a description, Open Graph, Twitter cards, or JSON-LD.
+`Base.astro` emits charset, viewport, a title, a meta description, a canonical URL on `https://amoeba.design`, Open Graph tags (`og:title`, `og:description`, `og:url`, `og:type`, `og:site_name` = Amoeba), and Twitter card tags (`twitter:card` = summary, `twitter:title`, `twitter:description`, `twitter:url`). It emits `noindex, follow` only when a page asks for it. It does not emit `og:image` or `twitter:image` (`TODO(og-image)` in `Base.astro`: `public/` has no share image). It does not emit JSON-LD.
 
 ## Launch domain
 
@@ -74,37 +74,35 @@ Queries, all to that homepage. A click count is listed only where the export inc
 
 Zero non-branded service queries. No other pages, queries, or periods were in the export.
 
-**Branding / disambiguation.** "amoeba ide" is the largest query: 60 impressions and 1 click at position 6.6. The exact phrase "amoeba design" has 5 impressions at position 7.4. The same homepage also appears for the misspellings "ameoba ide" and "ameba design", and for other names that share the word Amoeba (architects, creative sdn bhd, studios, project, ai). People are reaching the legacy homepage through ambiguous brand-adjacent queries, not through queries about design engineering. The export does not say what "amoeba ide" refers to, and this note does not guess. The new homepage title is "Design engineering for ambitious B2B software • Amoeba" so the URL that inherits this query mix names the practice. The H1 is still the masthead sentence.
+**Branding / disambiguation.** "amoeba ide" is the largest query: 60 impressions and 1 click at position 6.6. The exact phrase "amoeba design" has 5 impressions at position 7.4. The same homepage also appears for the misspellings "ameoba ide" and "ameba design", and for other names that share the word Amoeba (architects, creative sdn bhd, studios, project, ai). People are reaching the legacy homepage through ambiguous brand-adjacent queries, not through queries about design engineering. The export does not say what "amoeba ide" refers to, and this note does not guess. The homepage title is "Design engineering for ambitious B2B software • Amoeba" so the URL that inherits this query mix names the practice. The homepage H1 is the masthead sentence. Other pages have their own H1.
 
 ## Titles
 
-Preferred pattern from Bryan: `{Page Title} • Amoeba`. The homepage uses it. Other pages still use `{Page title} | Amoeba Design`, and `/info` still falls through to the default in `src/layouts/Base.astro`.
+Preferred pattern from Bryan: `{Page Title} • Amoeba`. Implemented on every page. The fallback in `src/layouts/Base.astro` is the homepage title (54 characters), not the old 81-character growth-stage default. `/info` passes its own title.
 
-Character counts are the decoded title string.
+Character counts are the decoded title string. Two article document titles are shortened so the string stays at or under 60 characters. Their visible H1s keep the full frontmatter title.
 
 | URL | Chars | Title | Notes |
 |---|---|---|---|
-| `/` | 54 | Design engineering for ambitious B2B software • Amoeba | Set in `src/pages/index.astro`. No price. Disambiguates the legacy "amoeba ide" queries. |
-| `/info` | 81 | Amoeba Design \| Design engineering studio for growth-stage B2B software companies | Still the default in `src/layouts/Base.astro`. Next titles pass. |
-| `/work` | 20 | Work \| Amoeba Design | Short and generic. `src/pages/work/index.astro`. |
-| `/knowledge` | 25 | Knowledge \| Amoeba Design | Short and generic. `src/pages/knowledge/index.astro`. |
-| `/knowledge/shake-what-the-browser-gives-ya` | 46 | Shake what the browser gave ya \| Amoeba Design | |
-| `/knowledge/storybook-for-agents` | 55 | Storybook documentation for your agents \| Amoeba Design | |
-| `/knowledge/clean-up-messy-tailwind` | 45 | Cleaning up the Tailwind mess \| Amoeba Design | |
-| `/knowledge/shadcn-lint` | 68 | How to use shadcn/lint to enforce your design system \| Amoeba Design | Long. |
-| `/knowledge/more-than-microinteractions` | 73 | There's more to design engineering than microinteractions \| Amoeba Design | Long. |
-| `/knowledge/css-is-nothing-to-fear` | 38 | Don't be afraid of CSS \| Amoeba Design | |
-| `/knowledge/figma-to-code` | 50 | One-shotting Figma designs in code \| Amoeba Design | |
+| `/` | 54 | Design engineering for ambitious B2B software • Amoeba | Set in `src/pages/index.astro`. No price. |
+| `/info` | 38 | Bryan King, Newport, Kentucky • Amoeba | Was the 81-character default. |
+| `/work` | 31 | Product interface work • Amoeba | |
+| `/knowledge` | 37 | Design engineering knowledge • Amoeba | |
+| `/knowledge/shake-what-the-browser-gives-ya` | 39 | Shake what the browser gave ya • Amoeba | |
+| `/knowledge/storybook-for-agents` | 48 | Storybook documentation for your agents • Amoeba | |
+| `/knowledge/clean-up-messy-tailwind` | 38 | Cleaning up the Tailwind mess • Amoeba | |
+| `/knowledge/shadcn-lint` | 54 | Use shadcn/lint to enforce your design system • Amoeba | Full H1 is "How to use shadcn/lint to enforce your design system" (that plus the suffix is 61). |
+| `/knowledge/more-than-microinteractions` | 52 | Design engineering beyond microinteractions • Amoeba | Full H1 kept. The full title plus the suffix is 66. |
+| `/knowledge/css-is-nothing-to-fear` | 31 | Don't be afraid of CSS • Amoeba | |
+| `/knowledge/figma-to-code` | 43 | One-shotting Figma designs in code • Amoeba | |
 
-Every built page has exactly one `<title>`. The homepage title above is what `bun run build` emitted. The other titles are unchanged.
+Every built page has exactly one `<title>`. No price in any title.
 
-This Astro build has no impressions of its own. The legacy URL it will replace, https://amoeba.design/, is the only URL with Search Console impressions (298 in the last 90 days, 5 clicks). `/work`, `/info`, and `/knowledge` still need their own titles and descriptions.
+This Astro build has no impressions of its own. The legacy URL it will replace, https://amoeba.design/, is the only URL with Search Console impressions (298 in the last 90 days, 5 clicks).
 
 ## Meta descriptions
 
-No page has `<meta name="description">`. Confirmed in source, in `dist/*.html`, and on production.
-
-Knowledge frontmatter `description` is required by `src/content.config.ts` and is printed on `/knowledge` only. Article templates do not put it in `<head>` or in the article body.
+Every page emits one `<meta name="description">` from `src/layouts/Base.astro`. Indexable pages are about 150–160 characters, with no prices. Article pages use the knowledge frontmatter `description` unchanged (41–67 characters). Those strings are also printed on `/knowledge`. The article bodies are still "Coming soon", so the descriptions were not expanded. The exact strings are in `content-ledger.md`.
 
 ## Canonical tags and trailing slashes
 
@@ -112,7 +110,9 @@ Every built page has one canonical on `https://amoeba.design`. Policy is `traili
 
 ## Open Graph and Twitter
 
-Zero `og:` and zero `twitter:` tags in the Astro build and on the Vercel host. No share image is defined. No favicon file is in `public/` (`/favicon.ico` returned the Vercel 404).
+`src/layouts/Base.astro` emits `og:title`, `og:description`, `og:url` (the canonical), `og:type` (`website`, or `article` on knowledge entries), and `og:site_name` (`Amoeba`). Twitter tags are `twitter:card` (`summary`), `twitter:title`, `twitter:description`, and `twitter:url` (the canonical). Title and description match the document title and meta description.
+
+No `og:image` or `twitter:image`. `public/` contains `robots.txt` and a font file. The work screenshots are not a share image. `TODO(og-image)` in `Base.astro` names `public/og.png` for when Bryan supplies a 1200×630 asset. No favicon file is in `public/`.
 
 ## robots.txt
 
@@ -130,16 +130,15 @@ Published facts that could support them later, once Bryan confirms they are stil
 
 ## H1
 
-`src/components/Masthead.astro` renders this H1 on every `LayoutA` page:
+The masthead sentence is an `<h1>` on `/` only. On every other `LayoutA` page it is a `<p class="masthead-lede">` with the same rules that used to target the masthead `h1` (`src/layouts/LayoutA.astro`). The logotype link is what persists across `ClientRouter` navigations, so the sentence's element can change with the page.
 
-> Amoeba is a design engineering studio for ambitious B2B software companies.
-
-| URL | H1 count | What they say |
+| URL | H1 count | What it says |
 |---|---|---|
-| `/`, `/work`, `/info`, `/knowledge` | 1 | Masthead sentence only. The homepage offer "Rent a design engineer" is an H2. `/work` has no heading of its own. `/info` uses an H3 for "Colophon". `/knowledge` uses H2 for each entry. |
-| Each `/knowledge/{id}` | 2 | Masthead sentence, then the article title in `src/pages/knowledge/[id].astro` (`<h1 class="type-title-alt">`). |
-
-Home, work, info, and the knowledge index have no unique H1. Article URLs have two H1s.
+| `/` | 1 | Masthead sentence: "Amoeba is a design engineering studio for ambitious B2B software companies." "Rent a design engineer" stays an H2. |
+| `/work` | 1 | "Work". Visually hidden (`clip-path`) inside `<main>`, because the page design has no title. |
+| `/info` | 1 | "Amoeba is run by Bryan King from Newport, Kentucky." The old paragraph, now an H1 styled with `type-body` so the size, weight, and link color stay the same. "Colophon" stays an H3. |
+| `/knowledge` | 1 | "Knowledge". Visually hidden, same treatment as `/work`. Entry titles stay H2. |
+| Each `/knowledge/{id}` | 1 | The article title (`<h1 class="type-title-alt">`). The masthead is not a second H1. |
 
 ## Thin pages
 
@@ -189,23 +188,27 @@ Adding `llms.txt` now would point models at "Coming soon" articles and a 59-word
 
 Order follows the program priority: accuracy and broken technical issues (including the domain migration, which is what protects the only URL with impressions), then titles and meta on that URL, then comparison pages, then buyer-question articles, then free tools, then other technical work, then AEO. Impact and effort are 1–5 judgments.
 
-Done in this change:
+Done before this metadata run:
 
 1. **Domain migration readiness.** `site`, canonicals, trailing-slash policy, `robots.txt`, and the sitemap are in the repo. Legacy amoeba.design has only the homepage, so there is no extra 301 map. Still manual at cutover: point the Vercel project domain at this deployment and redirect `amoeba-design.vercel.app` to `https://amoeba.design`, then submit `https://amoeba.design/sitemap-index.xml` in Search Console. After launch, compare the homepage with the legacy table, including "amoeba ide".
 2. **Stubs stay out of the index.** Each knowledge file has `noindex: true`. The article template emits `<meta name="robots" content="noindex, follow">`, and the sitemap filter drops those URLs. Set the flag to `false` when a body is real.
-3. **Homepage title only.** `Design engineering for ambitious B2B software • Amoeba` (54 characters, no price). Passed from `src/pages/index.astro`. `/info` still uses the old 81-character default.
+3. **Homepage title.** `Design engineering for ambitious B2B software • Amoeba` (54 characters, no price).
+
+Done in the on-page metadata run:
+
+4. **Unique titles, meta descriptions, and share tags on every page.** `{Page title} • Amoeba`, including the `Base.astro` fallback. One description per page. No prices. Open Graph and Twitter tags as described above. No share image (`TODO(og-image)`).
+5. **One H1 per URL.** Masthead sentence is the H1 on `/` only. Article pages keep the article title as their only H1.
 
 Trailing slash is done with the migration: canonicals use `trailingSlash: 'never'`, and `vercel.json` 308s a slashed path to the slashless path. The homepage stays `https://amoeba.design/`.
 
 Still to do, in program order:
 
-1. **Titles and meta descriptions on the remaining pages.** Impact 4, effort 2. `/info` still uses the old 81-character default in `src/layouts/Base.astro`. `/work` and `/knowledge` are still `Work | Amoeba Design` and `Knowledge | Amoeba Design`. No page has a meta description. Keep the `• Amoeba` suffix and keep prices out, including the $500/week test price. This is the next run.
-2. **Use one unique H1 per URL.** Impact 3, effort 1. The masthead H1 in `src/components/Masthead.astro` is the only H1 on `/`, `/work`, `/info`, and `/knowledge`. Article pages add a second H1 in `src/pages/knowledge/[id].astro`.
-3. **Add high-intent comparison, alternatives, or use-case pages.** Impact 4, effort 4. None exist. The legacy property has zero non-branded service queries. `config.json` has a peer set, not a competitor list. Do not publish those URLs as competitors. When a page is written, put it in `src/pages/compare/{slug}.astro`.
-4. **Replace the knowledge stubs with in-depth buyer-question articles.** Impact 4, effort 5. The seven titles already name the topics. Bodies are "Coming soon". They are `noindex` until `noindex` is set to `false`.
-5. **Ship one free tool.** Impact 3, effort 4. No tool exists. Blocked on Bryan choosing the tool. Convention, not yet a directory: `src/pages/tools/{slug}.astro`.
-6. **Add JSON-LD and a real HTML 404.** Impact 2, effort 2. No Organization, WebSite, Person, Service, Article, or BreadcrumbList. No `src/pages/404.astro`. Do not put the test price in schema. Use the claims in `truth.md`.
-7. **Add `llms.txt` and an explicit AI-crawler policy.** Impact 2, effort 1. Do this after the articles have real bodies. `public/robots.txt` currently allows all crawlers.
+1. **Add high-intent comparison, alternatives, or use-case pages.** Impact 4, effort 4. None exist. The legacy property has zero non-branded service queries. `config.json` has a peer set, not a competitor list. Do not publish those URLs as competitors. When a page is written, put it in `src/pages/compare/{slug}.astro`. Blocked until Bryan names competitors. Peers are not that list.
+2. **Replace the knowledge stubs with in-depth buyer-question articles.** Impact 4, effort 5. The seven titles already name the topics. Bodies are "Coming soon". They are `noindex` until `noindex` is set to `false`. This is the next unblocked content action. Start with "There's more to design engineering than microinteractions".
+3. **Ship one free tool.** Impact 3, effort 4. No tool exists. Blocked on Bryan choosing the tool. Convention, not yet a directory: `src/pages/tools/{slug}.astro`.
+4. **Add JSON-LD and a real HTML 404.** Impact 2, effort 2. No Organization, WebSite, Person, Service, Article, or BreadcrumbList. No `src/pages/404.astro`. Do not put the test price in schema. Use the claims in `truth.md`.
+5. **Add `llms.txt` and an explicit AI-crawler policy.** Impact 2, effort 1. Do this after the articles have real bodies. `public/robots.txt` currently allows all crawlers.
+6. **Add `public/og.png` and emit `og:image` / `twitter:image`.** Impact 2, effort 1. Blocked on artwork from Bryan. The hook is `TODO(og-image)` in `src/layouts/Base.astro`.
 
 Also later, not a separate ranked item: more specific work-image alts once clients can be named (`src/pages/work/index.astro`), and `target="_blank"` on the external anchors. No lab speed data was collected. The build does emit responsive WebP for the work images. Typekit is a render-blocking stylesheet in `src/layouts/Base.astro`. No Core Web Vitals number is claimed here.
 

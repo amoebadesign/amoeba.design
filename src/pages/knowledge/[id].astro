@@ -18,9 +18,21 @@ interface Props {
 
 const { page } = Astro.props;
 const { Content } = await render(page);
+
+// `{Title} • Amoeba` stays at or under 60 characters. The visible H1 keeps the full frontmatter title.
+const documentTitles: Record<string, string> = {
+	"How to use shadcn/lint to enforce your design system": "Use shadcn/lint to enforce your design system",
+	"There's more to design engineering than microinteractions": "Design engineering beyond microinteractions",
+};
+const documentTitle = documentTitles[page.data.title] ?? page.data.title;
 ---
 
-<LayoutA title={`${page.data.title} | Amoeba Design`} noindex={page.data.noindex}>
+<LayoutA
+	title={`${documentTitle} • Amoeba`}
+	description={page.data.description}
+	noindex={page.data.noindex}
+	ogType="article"
+>
 	<Stack as="article" space="4" class="article">
 		<h1 class="type-title-alt">{page.data.title}</h1>
 		<Content />

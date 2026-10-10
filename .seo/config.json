@@ -32,10 +32,9 @@
     "nameAlsoUsedOnSite": "Amoeba Design",
     "preferredTitleSuffix": "• Amoeba",
     "preferredTitlePattern": "{Page Title} • Amoeba",
-    "preferredTitleSource": "owner brief, 2026-10-10. Not implemented in code.",
+    "preferredTitleSource": "owner brief, 2026-10-10. Implemented. Each page passes `{Page title} • Amoeba`. The fallback in src/layouts/Base.astro is the homepage title, Design engineering for ambitious B2B software • Amoeba.",
     "implementedTitlePatterns": [
-      "Default, used by / and /info: Amoeba Design | Design engineering studio for growth-stage B2B software companies",
-      "Other pages: {Page title} | Amoeba Design"
+      "{Page title} • Amoeba"
     ]
   },
   "positioning": {
@@ -105,7 +104,7 @@
       "src/layouts/Base.astro — document shell and <head> (title only)",
       "src/layouts/LayoutA.astro — masthead, nav, main, footer"
     ],
-    "seoHead": "There is no SEO component. The document head lives inline in src/layouts/Base.astro.",
+    "seoHead": "There is no SEO component. The document head lives inline in src/layouts/Base.astro: title, description, canonical, Open Graph, and Twitter card tags. og:image is TODO(og-image) in that file until a share image exists at public/og.png.",
     "navigation": "src/components/nav-items.ts",
     "whereNewContentShouldLive": {
       "blogPosts": {

@@ -2,6 +2,18 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — On-page titles, descriptions, H1s, and share tags
+
+- Scope: backlog items for unique titles, meta descriptions, and one H1 per URL, plus Open Graph and Twitter card tags. No prices. No new claims, clients, or numbers. Knowledge stubs stay `noindex: true`.
+- Titles: `{Page title} • Amoeba` on every page, each at or under 60 characters. The `Base.astro` fallback is no longer the 81-character growth-stage default. It is `Design engineering for ambitious B2B software • Amoeba` (54). `/info` passes its own title. Two article document titles are shortened (shadcn/lint; microinteractions) so the suffix fits. Their visible H1s keep the full frontmatter title. Strings and counts are in `content-ledger.md` and `baseline.md`.
+- Descriptions: one `<meta name="description">` per page. Indexable pages are 152–160 characters, written from the masthead positioning and the copy already on that page. Article metas are the existing frontmatter descriptions (41–67 characters) and were not rewritten, because the bodies are still "Coming soon".
+- H1: the masthead sentence is the H1 on `/` only. Elsewhere it is a paragraph using the old masthead type rules. `/info` promotes its existing first sentence to an H1 with `type-body` so the size, weight, and link color stay put. `/work` and `/knowledge` use a visually hidden H1 ("Work", "Knowledge") because those layouts have no title to restyle. Article pages keep one H1, the article title. `transition:persist` moved from the brand block to the logotype link so a client-side navigation does not keep the homepage H1 stuck on later pages.
+- Share tags in `src/layouts/Base.astro`: `og:title`, `og:description`, `og:url` (canonical), `og:type` (`website`, or `article` on knowledge entries), `og:site_name` (`Amoeba`), `twitter:card` (`summary`), `twitter:title`, `twitter:description`, `twitter:url` (canonical).
+- `TODO(og-image)`: no suitable share image in the repo. `public/` has `robots.txt` and `public/fonts/hex-franklin-variable.woff2` only. Work screenshots were not used. When a 1200×630 file exists at `public/og.png`, emit `og:image` and `twitter:image` as absolute URLs on `https://amoeba.design`.
+- Build: `bun run build` exited 0. Astro 7.3.5, static output, 11 pages. `dist/sitemap-0.xml` still lists only `/`, `/info`, `/knowledge`, and `/work`.
+- Built HTML, every page: exactly one `<title>`, one `<meta name="description">`, one canonical on `https://amoeba.design`, one `<h1>`. `og:url` and `twitter:url` match that canonical. `og:site_name` is `Amoeba`. `og:type` is `article` on the seven knowledge entries and `website` elsewhere. No `og:image`. The `TODO(og-image)` comment is in each built file. No price in any title or description. Every title is 60 characters or fewer.
+- Not done: comparison pages (still blocked; peers are not competitors), article bodies, `og:image` artwork, JSON-LD, HTML 404.
+
 ## 2026-10-10 — Land migration on main; do not noindex www
 
 - PR #9 merged into `cursor/seo-baseline-a5f5`, not `main`. `main` still had an empty `defineConfig({})`. This change merges that branch onto `main` and adds the www exemption below.

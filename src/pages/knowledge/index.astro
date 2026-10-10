@@ -8,7 +8,11 @@ const pages = (await getCollection('knowledge')).sort((a, b) =>
 );
 ---
 
-<LayoutA title="Knowledge | Amoeba Design">
+<LayoutA
+	title="Design engineering knowledge • Amoeba"
+	description="Knowledge from Amoeba on design engineering for ambitious B2B software companies: CSS, Tailwind, native HTML, Figma-to-code, Storybook, and shadcn/lint."
+	heading="Knowledge"
+>
 	<Stack space="8">
 		<Stack as="ul" role="list" space="4">
 			{pages.map((page) => (

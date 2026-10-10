@@ -18,7 +18,7 @@ Do not invent Search Console, DataForSEO, or rank-tracking numbers. Competitors 
 
 Astro project root is the repo root (`package.json`, `astro.config.mjs`). Astro 7.3.5, static output, no integrations, no MDX, no sitemap adapter. Deployed as static files on Vercel.
 
-- Head: `src/layouts/Base.astro`. There is no SEO component. The head sets charset, viewport, and `<title>`.
+- Head: `src/layouts/Base.astro`. There is no SEO component. The head sets charset, viewport, title, description, canonical, Open Graph, and Twitter card tags. No `og:image` yet (`TODO(og-image)` in `Base.astro`).
 - Chrome: `src/layouts/LayoutA.astro` (masthead, nav, main, footer).
 - Pages: `src/pages/index.astro` (`/`), `src/pages/work/index.astro` (`/work`), `src/pages/info/index.astro` (`/info`).
 - Collection: `knowledge` in `src/content.config.ts`, files in `src/content/knowledge/*.md`, listed at `/knowledge`, rendered at `/knowledge/{id}`.
