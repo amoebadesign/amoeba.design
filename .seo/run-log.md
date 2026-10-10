@@ -2,6 +2,13 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Open Graph share images (three options)
+
+- Scope: programmatic 1200×630 PNGs only. `scripts/generate-og-images.mjs` (satori + `@resvg/resvg-js`). Assets at `public/og-options/option-a.png`, `option-b.png`, `option-c.png`. Default share tags in `src/layouts/Base.astro` point at `https://amoeba.design/og-options/option-a.png` with `og:image:width` / `height` / `alt`, `twitter:card` = `summary_large_image`, and optional per-page `ogImage` prop. Did not change sitemap, JSON-LD, `robots.txt`, or page copy.
+- Fonts in the generator: **Libre Franklin 800** for the logotype and **Source Sans 3** for the masthead line. HEX Franklin VF in `public/fonts/` uses CFF2 outlines that satori cannot embed; Acumin remains Adobe-licensed and is not embedded. Regenerate with `npm run generate:og`.
+- Option A: light theme, masthead layout (logotype + lede, top-left). Option B: dark `neutral-950` with inset frame and rule. Option C: `green` theme with pink accent bar, yellow logotype, `amoeba.design` caption.
+- Build: `npm run build` exited 0. Built HTML includes one `og:image` and `twitter:image` per page on the default URL unless a page passes `ogImage`.
+
 ## 2026-10-10 — Merge main into llms.txt branch (PR #15)
 
 - Scope: resolve conflicts with `main` after #13 (offer, checklist, compare and knowledge stubs, `noindex-routes`), #14 (sitewide JSON-LD and 404), and #16 (Typekit performance in `Base.astro`). Keep llms generation, Markdown alternates, and the AI crawler policy from this branch.

@@ -10,8 +10,14 @@ interface Props {
 	description?: string;
 	noindex?: boolean;
 	ogType?: "website" | "article";
+	/** Absolute URL or site-relative path to a 1200×630 share image. */
+	ogImage?: string;
 	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
+
+const DEFAULT_OG_IMAGE = "https://amoeba.design/og-options/option-a.png";
+const OG_IMAGE_ALT =
+	"Amoeba — design engineering studio for ambitious B2B software companies.";
 
 // Fallback only. Every page should pass its own title and description.
 // Pattern is `{Page title} • Amoeba`, roughly 60 characters or less. No prices.
@@ -20,10 +26,14 @@ const {
 	description = "Amoeba is a design engineering studio for ambitious B2B software companies. Rent a design engineer to ship polished UI as pull requests for your team to review.",
 	noindex = false,
 	ogType = "website",
+	ogImage: ogImageProp,
 	jsonLd,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
+const ogImage = ogImageProp
+	? new URL(ogImageProp, Astro.site ?? "https://amoeba.design").href
+	: DEFAULT_OG_IMAGE;
 // Markdown alternates are generated for indexable pages only. vercel.json
 // sends X-Robots-Tag: noindex for `*.md`, and those URLs are not in the sitemap.
 const markdownHref = noindex ? undefined : absoluteUrl(markdownPathname(canonical.pathname), canonical);
@@ -44,11 +54,15 @@ const llmsHref = absoluteUrl("/llms.txt", canonical);
 		<meta property="og:url" content={canonical.href} />
 		<meta property="og:type" content={ogType} />
 		<meta property="og:site_name" content="Amoeba" />
-		<meta name="twitter:card" content="summary" />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={OG_IMAGE_ALT} />
+		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:url" content={canonical.href} />
-		<!-- TODO(og-image): no share image in this repo. public/ has robots.txt and a font file only. Do not point og:image at a work screenshot. When Bryan supplies a 1200×630 asset at public/og.png, emit og:image and twitter:image as absolute URLs on the canonical origin. -->
+		<meta name="twitter:image" content={ogImage} />
 		{noindex && <meta name="robots" content="noindex, follow" />}
 		<SiteGraph />
 		{jsonLd && <JsonLd data={jsonLd} />}
