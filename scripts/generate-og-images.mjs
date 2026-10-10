@@ -17,6 +17,11 @@ const root = join(__dirname, "..");
 const WIDTH = 1200;
 const HEIGHT = 630;
 const OFFER = "Rent a design engineer • $500/wk";
+const PRICE_SNIPPET = "$500/wk";
+
+function shouldShowOfferFooter(headline, subtitle) {
+	return !headline.includes(PRICE_SNIPPET) && !subtitle.includes(PRICE_SNIPPET);
+}
 
 /** From public/fonts/acumin-variable.css — fetched at generate time only. */
 const ACUMIN_WOFF2 =
@@ -30,7 +35,10 @@ function escapeHtml(value) {
 		.replaceAll('"', "&quot;");
 }
 
-function buildHtml({ headline, subtitle }) {
+function buildHtml({ headline, subtitle, showOfferFooter }) {
+	const offerMarkup = showOfferFooter
+		? `<p class="offer">${OFFER}</p>`
+		: "";
 	return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -123,7 +131,7 @@ function buildHtml({ headline, subtitle }) {
       <div class="rule" aria-hidden="true"></div>
       <p class="page-title">${escapeHtml(headline)}</p>
       <p class="subtitle">${escapeHtml(subtitle)}</p>
-      <p class="offer">${OFFER}</p>
+      ${offerMarkup}
     </div>
   </div>
 </body>
@@ -175,7 +183,8 @@ let homePng = null;
 for (const entry of pages) {
 	const headline = stripBrandSuffix(entry.title);
 	const subtitle = entry.description;
-	currentHtml = buildHtml({ headline, subtitle });
+	const showOfferFooter = shouldShowOfferFooter(headline, subtitle);
+	currentHtml = buildHtml({ headline, subtitle, showOfferFooter });
 
 	await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: "networkidle" });
 	await page.evaluate(async () => {

@@ -9,14 +9,16 @@ const STATIC_PAGES = [
 	{
 		pathname: "/",
 		title: "Rent a design engineer, $500/wk • Amoeba",
+		// OG subtitle only — omit $500/wk (already in title); meta description unchanged on the page.
 		description:
-			"Amoeba is a design engineering studio for ambitious B2B software. Rent a design engineer at $500/wk to ship polished UI as pull requests your team reviews.",
+			"Amoeba is a design engineering studio for ambitious B2B software companies. Ship polished UI as pull requests your team reviews.",
 	},
 	{
 		pathname: "/rent-a-design-engineer",
 		title: "Rent a design engineer, $500/wk • Amoeba",
+		// OG subtitle only — price in title; derived from on-page offer copy.
 		description:
-			"Rent a design engineer at $500/wk for ambitious B2B software. Send a UI backlog and I will ship polished SaaS UI as pull requests your engineering team reviews.",
+			"Send a UI backlog. Get polished SaaS UI as pull requests your team reviews.",
 	},
 	{
 		pathname: "/work",
