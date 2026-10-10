@@ -7,6 +7,8 @@ const knowledge = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
+		// Set true while the body is still a stub. Flip to false to index the article.
+		noindex: z.boolean().default(false),
 	}),
 });
 
