@@ -1,0 +1,26 @@
+@layer amoeba.layouts {
+  .layout-switcher {
+    --_threshold: var(--threshold, 30rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space, calc(var(--spacing) * 4));
+  }
+
+  .layout-switcher > * {
+    flex-grow: 1;
+    flex-basis: calc((var(--_threshold) - 100%) * 999);
+  }
+
+  .layout-switcher[data-limit="2"] > :nth-last-child(n + 3),
+  .layout-switcher[data-limit="2"] > :nth-last-child(n + 3) ~ *,
+  .layout-switcher[data-limit="3"] > :nth-last-child(n + 4),
+  .layout-switcher[data-limit="3"] > :nth-last-child(n + 4) ~ *,
+  .layout-switcher[data-limit="4"] > :nth-last-child(n + 5),
+  .layout-switcher[data-limit="4"] > :nth-last-child(n + 5) ~ *,
+  .layout-switcher[data-limit="5"] > :nth-last-child(n + 6),
+  .layout-switcher[data-limit="5"] > :nth-last-child(n + 6) ~ *,
+  .layout-switcher[data-limit="6"] > :nth-last-child(n + 7),
+  .layout-switcher[data-limit="6"] > :nth-last-child(n + 7) ~ * {
+    flex-basis: 100%;
+  }
+}

@@ -1,0 +1,18 @@
+---
+import type { HTMLTag, Polymorphic } from "astro/types";
+import { type Align, type Spacing, type SplitAfter, alignMap, layoutStyle, toSpace } from "./layout";
+
+type Props<Tag extends HTMLTag = "div"> = Polymorphic<{ as: Tag }> & {
+	space?: Spacing;
+	align?: Align;
+	splitAfter?: SplitAfter;
+};
+
+const { as: Tag = "div", space, align, splitAfter, class: className, style, ...rest } = Astro.props;
+---
+<Tag
+	class:list={["layout-stack", className]}
+	style={layoutStyle({ "--space": space && toSpace(space), "--align": align && alignMap[align] }, style)}
+	data-split={splitAfter}
+	{...rest}
+><slot /></Tag>

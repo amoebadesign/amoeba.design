@@ -1,0 +1,25 @@
+@layer amoeba.layouts {
+  .layout-cover {
+    --_space: var(--space, calc(var(--spacing) * 4));
+    display: flex;
+    flex-direction: column;
+    min-block-size: var(--min-height, 100svh);
+    padding: var(--_space);
+  }
+
+  .layout-cover > * {
+    margin-block: var(--_space);
+  }
+
+  .layout-cover > :first-child:not([data-slot="cover-child"]) {
+    margin-block-start: 0;
+  }
+
+  .layout-cover > :last-child:not([data-slot="cover-child"]) {
+    margin-block-end: 0;
+  }
+
+  .layout-cover > [data-slot="cover-child"] {
+    margin-block: auto;
+  }
+}

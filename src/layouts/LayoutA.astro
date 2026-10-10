@@ -4,6 +4,7 @@ import Base from "./Base.astro";
 import Masthead from "../components/Masthead.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import { Stack } from "../components/ui";
 
 interface Props {
 	title?: string;
@@ -22,18 +23,32 @@ const { title } = Astro.props;
 			</div>
 		</header>
 		<div class="split-body">
-			<main class="split-main stack looser" transition:name="content" transition:animate={fade({ duration: "220ms" })}>
+			<Stack as="main" space="4" class="split-main" transition:name="content" transition:animate={fade({ duration: "220ms" })}>
 				<slot />
-			</main>
+			</Stack>
 			<div class="split-rail" transition:persist="rail">
 				<div class="split-sizer" aria-hidden="true">
-					<span class="logotype">Amoeba</span>
+					<span class="type-logotype">Amoeba</span>
 				</div>
 				<Footer />
 			</div>
 		</div>
 	</div>
 </Base>
+
+<style is:global>
+	:root {
+		--chrome-inset: 1rem;
+		--split-gap: 1.25rem;
+		--split-min: 20.5rem;
+		--logotype-min-width: 326.2265625px;
+	}
+
+	body {
+		min-height: 100dvh;
+		padding: var(--chrome-inset);
+	}
+</style>
 
 <style>
 	/*
@@ -109,9 +124,10 @@ const { title } = Astro.props;
 	.split-brand :global(h1) {
 		font-weight: normal;
 		font-size: calc(26px * var(--logotype-fit, 1));
-		letter-spacing: -0.03em;
+		letter-spacing: var(--tracking-tight);
 		max-width: 451px;
 		line-height: 100%;
+		text-wrap: wrap;
 	}
 
 	.split-rail :global(footer) {

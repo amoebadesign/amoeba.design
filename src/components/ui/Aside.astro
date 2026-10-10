@@ -1,0 +1,35 @@
+---
+import type { HTMLTag, Polymorphic } from "astro/types";
+import { type Length, type Spacing, layoutStyle, toLength, toSpace } from "./layout";
+
+type Props<Tag extends HTMLTag = "div"> = Polymorphic<{ as: Tag }> & {
+	space?: Spacing;
+	sideWidth?: Length;
+	contentMin?: Length;
+	side?: "start" | "end";
+};
+
+const {
+	as: Tag = "div",
+	space,
+	sideWidth,
+	contentMin,
+	side = "start",
+	class: className,
+	style,
+	...rest
+} = Astro.props;
+---
+<Tag
+	class:list={["layout-aside", className]}
+	style={layoutStyle(
+		{
+			"--space": space && toSpace(space),
+			"--side-width": sideWidth && toLength(sideWidth),
+			"--content-min": contentMin && toLength(contentMin),
+		},
+		style,
+	)}
+	data-side={side}
+	{...rest}
+><slot /></Tag>

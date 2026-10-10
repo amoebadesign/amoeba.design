@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "HEX Franklin v0.3 Variable";
+  src: url("/fonts/hex-franklin-variable.woff2") format("woff2");
+  font-weight: 1 1000;
+  font-stretch: 60% 120%;
+  font-style: normal;
+  font-display: swap;
+}

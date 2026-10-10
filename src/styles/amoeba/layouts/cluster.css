@@ -1,0 +1,9 @@
+@layer amoeba.layouts {
+  .layout-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: var(--align, center);
+    justify-content: var(--justify, flex-start);
+    gap: var(--space, calc(var(--spacing) * 4));
+  }
+}

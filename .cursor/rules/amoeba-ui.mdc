@@ -1,0 +1,102 @@
+---
+description: Use amoeba UI (tokens, type presets, layout primitives, elements) for all styling and layout
+alwaysApply: true
+---
+
+# amoeba UI
+
+Source of truth: `src/styles/amoeba/` (CSS) and `src/components/ui/` (Astro components). Astro only.
+
+Do not invent, rename, or synonymize primitives, presets, or tokens. If something isn't listed here, it isn't part of the system: ask, or compose from what exists.
+
+## Import
+
+```astro
+import { Stack, Cluster, Button, Input } from "../components/ui";
+```
+
+The CSS is imported once in `src/layouts/Base.astro`. Never link another stylesheet for it.
+
+## Cascade
+
+Layers, lowest to highest: `amoeba.reset`, `amoeba.tokens`, `amoeba.base`, `amoeba.type`, `amoeba.layouts`, `amoeba.elements`. Component `<style>` blocks are unlayered and always win, so site exceptions never need `!important`.
+
+## Layout primitives (only these)
+
+| Name | Component | Class | Role |
+|---|---|---|---|
+| Stack | `<Stack>` | `layout-stack` | Vertical flex with gap |
+| Cluster | `<Cluster>` | `layout-cluster` | Horizontal flex that wraps |
+| Aside | `<Aside>` + `<AsideSide>` + `<AsideContent>` | `layout-aside` | Fixed-width column beside a growing pane; wraps when the pane drops below `contentMin` |
+| Switcher | `<Switcher>` | `layout-switcher` | Row that becomes a column when the container is narrower than `threshold` |
+| Grid | `<Grid>` | `layout-grid` | Auto-fit grid with a minimum column width |
+| Center | `<Center>` | `layout-center` | Measure-constrained, horizontally centered |
+| Cover | `<Cover>` + `<CoverChild>` | `layout-cover` | Min-height column with one vertically centered child |
+
+Props (only these). Every primitive and slot also takes `as` (element tag) and `class`.
+
+- Stack: `space`, `align` (default `stretch`), `splitAfter` (1–8, pushes later children to the end)
+- Cluster: `space`, `justify` (`start` | `center` | `end` | `between`), `align` (default `center`)
+- Aside: `space`, `sideWidth` (default `20rem`), `contentMin` (default `50%`), `side` (`start` | `end`)
+- Switcher: `space`, `threshold` (default `30rem`), `limit` (2–6, more children than this always stack)
+- Grid: `space`, `min` (default `16rem`)
+- Center: `measure` (default the `--measure` token; also `sm`…`7xl`, `prose`), `gutters` (default `0`), `intrinsic`
+- Cover: `space`, `minHeight` (default `100svh`)
+
+`align`: `start` | `center` | `end` | `baseline` | `stretch`.
+
+Rules:
+
+- `space` is a spacing step, never a CSS length: `space="4"` is `calc(var(--spacing) * 4)` = 1rem. Steps: 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4–12, 14, 16, 20–64 by 4, 72, 80, 96.
+- Length props (`sideWidth`, `contentMin`, `threshold`, `min`, `gutters`, `minHeight`) take a spacing step or any CSS length.
+- Aside children MUST be `AsideSide` and `AsideContent`. Cover's centered child MUST be `CoverChild`.
+- Components only set custom properties; the algorithm lives in CSS. In plain markup, use the class plus the custom property (`style="--space: calc(var(--spacing) * 2)"`).
+- Layout knobs (`--space`, `--align`, `--justify`, `--side-width`, `--content-min`, `--threshold`, `--min`, `--center-measure`, `--gutters`, `--min-height`) don't inherit. Set them on the primitive itself.
+- `class` on a primitive is for exceptions, not for gap, direction, wrap, or alignment.
+- Unstyled lists: `<Stack as="ul" role="list">`. Never inline `list-style: none`.
+
+```astro
+<!-- BAD -->
+<div style="display: flex; flex-direction: column; gap: 1rem">…</div>
+<div class="stack looser">…</div>
+
+<!-- GOOD -->
+<Stack space="4">…</Stack>
+<Cluster justify="between">…</Cluster>
+```
+
+## Type presets (CSS classes only)
+
+| Class | Font | Size |
+|---|---|---|
+| `type-display` | Acumin | `--font-size-6`, 700 |
+| `type-title` | Acumin | `--font-size-5`, 700 |
+| `type-heading` | Acumin | `--font-size-4`, 700 |
+| `type-subheading` | Acumin | `--font-size-3`, 700 |
+| `type-body-lg` | Acumin | `--font-size-2`, 400 |
+| `type-body` | Acumin | `--font-size-1`, 400 |
+| `type-caption` | Acumin | `--font-size-0`, 700, uppercase |
+| `type-title-alt` | HEX Franklin | `--font-size-5`, uppercase |
+| `type-logotype` | HEX Franklin | 120px × `--logotype-fit`, uppercase |
+
+`h1`–`h6` and `p` have zero-specificity defaults on the same scale (h1 = size 5 … h6 = size 0, p = size 1). Any preset class overrides them. Headings use `text-wrap: balance`, paragraphs `text-wrap: pretty`.
+
+## Tokens
+
+- Spacing: `--spacing` (0.25rem) times a step. Never use raw rem/px for spacing.
+- Type: `--font-sans`, `--font-display`, `--font-mono`, `--font-size-base`, `--type-scale`, `--font-size-0`…`--font-size-6`, `--tracking-tight`, `--tracking-tighter`.
+- Other: `--measure`, `--radius-sm`, `--radius-md`, `--duration-fast` / `--duration-base` / `--duration-slow`, `--ease-out`.
+- Color (semantic; use these, never palette steps or hex): `--color-bg`, `--color-fg`, `--color-fg-muted`, `--color-surface`, `--color-border`, `--color-border-strong`, `--color-accent`, `--color-accent-fg`, `--color-link`, `--color-link-hover`, `--color-link-visited`, `--color-link-visited-hover`, `--color-heading-link`, `--color-ring`.
+
+## Themes
+
+- `light`, `dark`, `green`. No `data-theme` on `<html>` follows the system setting.
+- `data-theme` on any element re-themes its subtree.
+- The footer year (`[data-theme-cycle]`) cycles system → light → dark → green → system and saves the choice in `localStorage["amoeba-theme"]`. An inline script in `Base.astro` applies it before paint and again on `astro:after-swap`.
+- New themes go in `src/styles/amoeba/themes.css` and must define every semantic color token plus `color-scheme`.
+
+## Elements
+
+- `<Button>`: `variant` = `primary` (default) | `secondary` | `ghost`. Renders `<a>` when given `href`, otherwise `<button type="button">`. The class is `button` with `data-variant`.
+- `<Input>`, `<Textarea>`, `<Select>` (options in the slot), `<Checkbox>`, `<Radio>`: each requires `label` and wraps its control in a `<label>`. Other attributes pass through to the control.
+- Bare `input`, `textarea`, `select`, checkboxes, and radios are styled globally. Bare `<button>` only gets a pointer cursor; use `<Button>` or `.button` for the visual style.
