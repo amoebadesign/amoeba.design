@@ -12,6 +12,7 @@ interface Props {
 	description?: string;
 	noindex?: boolean;
 	ogType?: "website" | "article";
+	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 	/** The masthead sentence is the H1 on the homepage only. */
 	mastheadIsH1?: boolean;
 	/**
@@ -21,9 +22,9 @@ interface Props {
 	heading?: string;
 }
 
-const { title, description, noindex = false, ogType = "website", mastheadIsH1 = false, heading } = Astro.props;
+const { title, description, noindex = false, ogType = "website", jsonLd, mastheadIsH1 = false, heading } = Astro.props;
 ---
-<Base title={title} description={description} noindex={noindex} ogType={ogType}>
+<Base title={title} description={description} noindex={noindex} ogType={ogType} jsonLd={jsonLd}>
 	<div class="split">
 		<header class="split-header">
 			<div class="split-brand">

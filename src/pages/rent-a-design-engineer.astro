@@ -1,0 +1,204 @@
+---
+import LayoutA from "../layouts/LayoutA.astro";
+import { Button, Cluster, Stack } from "../components/ui";
+
+const title = "Rent a design engineer for SaaS • Amoeba";
+const description =
+	"Rent a design engineer for ambitious B2B software companies. Send a UI backlog and I will ship polished SaaS UI as pull requests your engineering team reviews.";
+
+const faqs = [
+	{
+		q: "What do I get?",
+		a: "You populate a backlog of UI issues. I ship polished UI as pull requests for your engineering team to review.",
+	},
+	{
+		q: "What does it cost?",
+		a: "$500 / week.",
+	},
+	{
+		q: "Is this a software design engineer?",
+		a: "Yes. SaaS product UI, React interfaces, and pull requests into a repo. Mechanical and CAD design engineering is a different trade.",
+	},
+	{
+		q: "Who reviews the pull requests?",
+		a: "Your engineering team. The deliverable is a pull request, and review stays with the people who own the codebase.",
+	},
+	{
+		q: "What do you hand over?",
+		a: "Pull requests of polished UI. I work in the repo. When a screen has states worth seeing together, I draw them in Figma and bring the changes back. What you review is the diff.",
+	},
+	{
+		q: "Who is this for?",
+		a: "Ambitious B2B software companies that already have a product, a UI backlog, and engineers who can review pull requests.",
+	},
+	{
+		q: "Where are you based?",
+		a: "Newport, Kentucky.",
+	},
+	{
+		q: "Can I see the work?",
+		a: "The work page is screenshots of product UI. I do not publish client names or results there.",
+	},
+	{
+		q: "Should I hire a product designer or a frontend engineer instead?",
+		a: "Sometimes. The three roles own different work.",
+	},
+	{
+		q: "Should I hire someone full time instead?",
+		a: "Sometimes. A priced week works a backlog. A job holds the product.",
+	},
+	{
+		q: "How do I start?",
+		a: "Message me on X. That is the contact path this site publishes. Send the backlog, or a link to the repo. There is a short intro on the info page.",
+	},
+];
+
+const pageUrl = "https://amoeba.design/rent-a-design-engineer";
+
+const jsonLd = [
+	{
+		"@context": "https://schema.org",
+		"@type": "Service",
+		name: "Rent a design engineer",
+		serviceType: "Design engineering for B2B software UI",
+		description:
+			"Populate a backlog of issues and get polished UI shipped as pull requests for your engineering team to review.",
+		url: pageUrl,
+		provider: {
+			"@type": "Organization",
+			name: "Amoeba",
+			url: "https://amoeba.design",
+			founder: {
+				"@type": "Person",
+				name: "Bryan King",
+				url: "https://x.com/bryan_king",
+				homeLocation: {
+					"@type": "Place",
+					name: "Newport, Kentucky",
+				},
+			},
+		},
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "FAQPage",
+		mainEntity: faqs.map((faq) => ({
+			"@type": "Question",
+			name: faq.q,
+			acceptedAnswer: { "@type": "Answer", text: faq.a },
+		})),
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		itemListElement: [
+			{ "@type": "ListItem", position: 1, name: "Home", item: "https://amoeba.design/" },
+			{ "@type": "ListItem", position: 2, name: "Rent a design engineer", item: pageUrl },
+		],
+	},
+];
+---
+
+<LayoutA title={title} description={description} jsonLd={jsonLd}>
+	<Stack space="8" class="copy">
+		<Stack space="3">
+			<h1 class="type-title-alt">Rent a design engineer for your SaaS UI</h1>
+			<p>Is your app rough around the edges? Are you looking to buff out the AI slop from your interface?</p>
+			<p>
+				Populate a backlog of issues and I’ll ship polished UI as pull requests for your engineering team to review.
+				This is software: SaaS product UI, React interfaces, diffs your team can read.
+			</p>
+			<p class="type-display price">$500 / week</p>
+		</Stack>
+
+		<Stack space="3">
+			<h2>Backlog in, pull requests out</h2>
+			<p>
+				You fill a backlog with interface issues. I work that list. You get pull requests of polished UI. Your
+				engineers review them the same way they review anyone else’s code.
+			</p>
+			<p>
+				I am Bryan King. I run <a href="/">Amoeba</a> from Newport, Kentucky. The rental is the week against that
+				backlog. The same offer, and the same price, sit on the <a href="/">homepage</a>.
+			</p>
+		</Stack>
+
+		<Stack space="3">
+			<h2>Who it’s for</h2>
+			<p>
+				Ambitious B2B software companies. You have a product. Customers are in it. The UI is rough, or a model made
+				it look finished. You have engineers who review pull requests, and you want someone who will design the
+				fix and open it.
+			</p>
+			<p>
+				If the backlog is still a guess, listen to your customers before you rent the week. I can polish the wrong
+				screen as steadily as the right one. The <a href="/work">work page</a> shows the kind of interface I mean:
+				product UI screenshots, with no client names and no writeups.
+			</p>
+		</Stack>
+
+		<Stack space="3">
+			<h2>The chops behind the diff</h2>
+			<p>
+				Product design, design systems, front-end engineering, user research, usability testing, product
+				management, and the software development lifecycle. That list is on the homepage. The rental is the UI
+				backlog, done with those skills, delivered as code.
+			</p>
+			<p>
+				If the backlog is generated UI, run the <a href="/tools/ui-polish-checklist">UI polish checklist</a> and
+				turn the misses into issues.
+			</p>
+		</Stack>
+
+		<Stack space="4">
+			<h2>Questions</h2>
+			{
+				faqs.map((faq) => (
+					<Stack space="1">
+						<h3>{faq.q}</h3>
+						{
+							faq.q === "Can I see the work?" ? (
+								<p>
+									The <a href="/work">work page</a> is screenshots of product UI. I do not publish client names
+									or results there.
+								</p>
+							) : faq.q === "How do I start?" ? (
+								<p>
+									<a href="https://x.com/bryan_king">Message me on X</a>. That is the contact path this site
+									publishes. Send the backlog, or a link to the repo. There is a short intro on the{" "}
+									<a href="/info">info page</a>.
+								</p>
+							) : (
+								<p>{faq.a}</p>
+							)
+						}
+					</Stack>
+				))
+			}
+		</Stack>
+
+		<Stack space="3">
+			<h2>Start</h2>
+			<!-- TODO(contact): no public email, calendar, or form. CTA uses the X profile already linked from /info (https://x.com/bryan_king). Replace when Bryan names a contact path. -->
+			<p>
+				The way to reach me today is on X, the same profile linked from the info page. Send the backlog, or a
+				link to the repo.
+			</p>
+			<Cluster space="2">
+				<Button href="https://x.com/bryan_king" target="_blank" rel="noopener noreferrer">Message me on X</Button>
+				<Button href="/info" variant="secondary">Info</Button>
+			</Cluster>
+		</Stack>
+	</Stack>
+</LayoutA>
+
+<style>
+	.copy {
+		max-inline-size: var(--measure);
+	}
+
+	h1,
+	.price {
+		letter-spacing: var(--tracking-tight);
+	}
+</style>

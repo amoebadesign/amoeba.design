@@ -18,7 +18,7 @@
       "implementedInCode": true,
       "trailingSlash": "never. Homepage canonical is https://amoeba.design/. Other canonicals have no trailing slash. vercel.json trailingSlash false sends a 308 from the slashed form to that canonical.",
       "nonProductionHosts": "vercel.json sets X-Robots-Tag: noindex only when the Host is neither amoeba.design nor www.amoeba.design. Both names are missing-conditions, so the rule cannot noindex either of them. Other hosts, including amoeba-design.vercel.app, still get noindex. www must stay indexable during the transition while Vercel has www as primary. After Bryan flips the project so the apex is primary and www 308s to https://amoeba.design, www can keep this exemption.",
-      "code": "astro.config.mjs sets site to https://amoeba.design and trailingSlash never. src/layouts/Base.astro emits one canonical on that origin per page. Knowledge stubs with noindex: true are omitted from the sitemap and emit meta robots noindex, follow. public/robots.txt allows crawling and points at https://amoeba.design/sitemap-index.xml.",
+      "code": "astro.config.mjs sets site to https://amoeba.design and trailingSlash never. src/layouts/Base.astro emits one canonical on that origin per page. Knowledge stubs with noindex: true, and page routes listed in src/noindex-routes.mjs, are omitted from the sitemap and emit meta robots noindex, follow. public/robots.txt allows crawling and points at https://amoeba.design/sitemap-index.xml.",
       "legacySite": "Checked 2026-10-10 after Bryan attached the domain: https://amoeba.design 308s to https://www.amoeba.design/, and www returned the Astro homepage that was already deployed (title still the long default, no canonical). Canonicals and the sitemap in this repo stay on https://amoeba.design.",
       "legacyPaths": {
         "status": "closed",
@@ -47,7 +47,7 @@
     "summary": "Product design and design engineering services for ambitious B2B software companies",
     "pricing": {
       "currentClaim": "$500/week, Rent a design engineer (test pricing, offer not yet formalized)",
-      "rule": "That homepage price is an accurate current claim and stays on the page while Bryan tests it. Do not put prices in titles, meta descriptions, schema, or new content. Every other offer and price, including the commented $5,000 design-system block in src/pages/index.astro, is not formalized and must not be used."
+      "rule": "The homepage price is an accurate current claim and stays while Bryan tests it. It is also stated as \"$500 / week\" on /rent-a-design-engineer (the price line and the cost FAQ). The hiring comparison is a stub and does not state it. Titles and meta descriptions stay free of prices. Service JSON-LD has no Offer price. The cost FAQ text includes the figure, so FAQPage JSON-LD does too. No other offer or price, including the commented $5,000 design-system block in src/pages/index.astro, is formalized or allowed."
     }
   },
   "audience": {
@@ -98,13 +98,17 @@
       "src/pages/work/index.astro → /work",
       "src/pages/info/index.astro → /info",
       "src/pages/knowledge/index.astro → /knowledge",
-      "src/pages/knowledge/[id].astro → /knowledge/{id}"
+      "src/pages/knowledge/[id].astro → /knowledge/{id}",
+      "src/pages/rent-a-design-engineer.astro → /rent-a-design-engineer",
+      "src/pages/compare/design-engineer-vs-product-designer-vs-frontend-engineer.astro → /compare/design-engineer-vs-product-designer-vs-frontend-engineer",
+      "src/pages/compare/rent-a-design-engineer-vs-hiring.astro → /compare/rent-a-design-engineer-vs-hiring",
+      "src/pages/tools/ui-polish-checklist.astro → /tools/ui-polish-checklist"
     ],
     "layouts": [
       "src/layouts/Base.astro — document shell and <head> (title only)",
       "src/layouts/LayoutA.astro — masthead, nav, main, footer"
     ],
-    "seoHead": "There is no SEO component. The document head lives inline in src/layouts/Base.astro: title, description, canonical, Open Graph, and Twitter card tags. og:image is TODO(og-image) in that file until a share image exists at public/og.png.",
+    "seoHead": "There is no SEO component. The document head lives inline in src/layouts/Base.astro: title, description, canonical, Open Graph, and Twitter card tags. Pages pass jsonLd into Base, which renders script type application/ld+json via src/components/JsonLd.astro. og:image is TODO(og-image) in Base.astro until a share image exists at public/og.png.",
     "navigation": "src/components/nav-items.ts",
     "whereNewContentShouldLive": {
       "blogPosts": {
@@ -114,16 +118,16 @@
         "note": "This is the only article collection. The footer link labeled Blog points off-site to http://amoebaunlimited.com (redirects to https://www.amoebaunlimited.com/). Confirm with Bryan before adding a second blog."
       },
       "comparisonPages": {
-        "status": "proposed, not created",
+        "status": "exists",
         "path": "src/pages/compare/{slug}.astro",
         "url": "/compare/{slug}",
-        "note": "No comparison or alternatives routes exist. peers is not a competitor list. Do not add one until a page is actually being written."
+        "note": "Two pages exist as \"Coming soon\" stubs. Bryan writes the copy from .seo/outlines/. Stub page routes are listed in src/noindex-routes.mjs, which sets noindex, follow and drops them from the sitemap. Remove a path there to publish it. peers is not a competitor list. Do not name those sites as competitors."
       },
       "freeTools": {
-        "status": "proposed, not created",
+        "status": "exists",
         "path": "src/pages/tools/{slug}.astro",
         "url": "/tools/{slug}",
-        "note": "No tools routes exist. Do not invent a tool."
+        "note": "/tools/ui-polish-checklist is the one tool. Checks persist in localStorage. No account and no external dependencies."
       }
     }
   },

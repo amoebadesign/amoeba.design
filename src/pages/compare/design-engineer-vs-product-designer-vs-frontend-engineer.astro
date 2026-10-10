@@ -1,0 +1,68 @@
+---
+import LayoutA from "../../layouts/LayoutA.astro";
+import { Stack } from "../../components/ui";
+import { noindexRoutes } from "../../noindex-routes.mjs";
+
+// Outline: .seo/outlines/design-engineer-vs-product-designer-vs-frontend-engineer.md
+const path = "/compare/design-engineer-vs-product-designer-vs-frontend-engineer";
+const pageUrl = new URL(path, "https://amoeba.design").href;
+const noindex = noindexRoutes.has(path);
+const headline = "Design engineer vs product designer vs frontend engineer";
+const title = "Design engineer vs designer vs front end • Amoeba";
+const description =
+	"A design engineer, a product designer, and a frontend engineer own different parts of a SaaS product. When I would hire each, and why the titles differ.";
+// ISO date (YYYY-MM-DD) for Article schema once the body is real.
+const published: string | undefined = undefined;
+
+const article: Record<string, unknown> = {
+	"@context": "https://schema.org",
+	"@type": "Article",
+	headline,
+	description,
+	inLanguage: "en",
+	author: { "@type": "Person", name: "Bryan King", url: "https://x.com/bryan_king" },
+	publisher: { "@type": "Organization", name: "Amoeba", url: "https://amoeba.design" },
+	mainEntityOfPage: pageUrl,
+};
+if (published) {
+	article.datePublished = published;
+	article.dateModified = published;
+}
+
+const jsonLd = noindex
+	? undefined
+	: [
+			article,
+			{
+				"@context": "https://schema.org",
+				"@type": "BreadcrumbList",
+				itemListElement: [
+					{ "@type": "ListItem", position: 1, name: "Home", item: "https://amoeba.design/" },
+					{ "@type": "ListItem", position: 2, name: headline, item: pageUrl },
+				],
+			},
+		];
+---
+
+<LayoutA title={title} description={description} noindex={noindex} ogType="article" jsonLd={jsonLd}>
+	<Stack space="4" class="copy">
+		<h1 class="type-title-alt">{headline}</h1>
+		<p>Coming soon</p>
+		<Stack as="ul" role="list" space="1">
+			<li><a href="/knowledge/more-than-microinteractions">There's more to design engineering than microinteractions</a></li>
+			<li><a href="/compare/rent-a-design-engineer-vs-hiring">Rent a design engineer vs hiring</a></li>
+			<li><a href="/rent-a-design-engineer">Rent a design engineer</a></li>
+			<li><a href="/knowledge">Knowledge</a></li>
+		</Stack>
+	</Stack>
+</LayoutA>
+
+<style>
+	.copy {
+		max-inline-size: var(--measure);
+	}
+
+	h1 {
+		letter-spacing: var(--tracking-tight);
+	}
+</style>

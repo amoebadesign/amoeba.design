@@ -2,6 +2,40 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Remove claims that point to unpublished pages
+
+- Scope: deletions only on the two live pages. No replacement prose.
+- `/rent-a-design-engineer`: removed the paragraph pointing to both comparisons, both stub articles, and "More writing lives on Knowledge". Kept its checklist sentence, trimmed to the checklist link. Two FAQ answers lost their trailing sentence ("I wrote up when I would hire each one…", "The tradeoffs are on…"). They are now plain `faqs` entries, so the visible answers and the FAQPage JSON-LD text are the same strings.
+- `/tools/ui-polish-checklist`: removed "I wrote the longer version of the slop problem in fix the AI slop in your UI" from the intro, and the closing sentence linking `/knowledge/more-than-microinteractions` and "the rest of the writing" on Knowledge. Links to the offer page and the homepage stay.
+- Neither page links a stub now. The `/knowledge` link left on both is the site nav. `/knowledge`'s own "Also" list still links the comparison stubs, which is allowed.
+- Outlines updated where they described those sentences (`rent-a-design-engineer.md`, `fix-ai-slop-ui.md`): add the links back as each piece publishes.
+- Build: `bun run build` exited 0. 16 pages. Sitemap unchanged at 6 URLs. Internal link check: 0 broken. Word counts in `<main>`: offer 556, checklist 400.
+
+## 2026-10-10 — Outlines only; four pages back to stubs
+
+- Scope: Bryan does not want AI-written prose and will write these pieces by hand. Same branch and PR as the entry below. No new copy.
+- Outlines in `.seo/outlines/`: `rent-a-design-engineer.md`, `design-engineer-vs-product-designer-vs-frontend-engineer.md`, `rent-a-design-engineer-vs-hiring.md`, `more-than-microinteractions.md`, `fix-ai-slop-ui.md`. Each has the title and meta set plus alternatives with character counts, target and secondary queries, intent and reader, a one-sentence thesis, H2/H3 structure with bullets, `[YOUR EXAMPLE: …]` prompts, Bryan's own public statements with quote and source, a competitor angle from `peer-research.md` (peers not named on pages), FAQ, internal links, schema/AEO notes, length, pitfalls, and a publishing checklist. Theses on the two comparisons and the hiring page are proposals for Bryan to accept or replace.
+- Stubs: both `/compare/` pages, `/knowledge/more-than-microinteractions`, and `/knowledge/fix-ai-slop-ui` are "Coming soon" with a short list of related links. Routes, titles, meta descriptions, and internal links are kept. Article and BreadcrumbList code is kept but only emitted when the page is indexable. `published` dates were removed from the two knowledge entries.
+- Noindex for page routes: new `src/noindex-routes.mjs`. The compare pages read it for `noindex, follow`, and `astro.config.mjs` drops the same paths from the sitemap. Knowledge entries still use `noindex: true` in frontmatter.
+- Live and unchanged: `/rent-a-design-engineer` and `/tools/ui-polish-checklist`. Bryan will rewrite the offer copy.
+- Flag, not edited: the offer page says "I wrote up…" and links the role comparison, the hiring comparison, the microinteractions article, and the fix-ai-slop article; the same text is in its FAQPage JSON-LD. The checklist intro says "I wrote the longer version of the slop problem in fix the AI slop". Those targets are now "Coming soon". The links resolve; the sentences overstate what exists until Bryan publishes or rewrites them.
+- Facts Bryan must supply before the offer page FAQ can grow: hours per week, minimum engagement and billing, turnaround, contact path (replaces `TODO(contact)`), how a week starts, stack and out-of-scope work, one client at a time or several, communication and time zone, IP and NDA, whether Figma files are included, whether "test pricing" is labeled. The hiring comparison also needs any rent-to-hire arrangement, and every market figure needs a real source.
+- Build: `bun run build` exited 0. 16 pages. `dist/sitemap-0.xml` lists `/`, `/info`, `/knowledge`, `/rent-a-design-engineer`, `/tools/ui-polish-checklist`, `/work`. All nine stubs emit `noindex, follow` and no JSON-LD. Internal link check over `dist/`: 0 broken.
+
+## 2026-10-10 — Offer page, comparisons, two articles, polish checklist
+
+- Scope: the six pages Bryan approved. Branched from `main`. Voice from `.seo/voice-guide.md`. Queries from `.seo/peer-research.md`. Both files are copies of the briefs for this run. No new prices, clients, results, or hours. `$500 / week` is stated the way the homepage states it.
+- `/rent-a-design-engineer`: offer page. H1 "Rent a design engineer for your SaaS UI". Body repeats the homepage promise and the price. FAQPage JSON-LD for questions answerable from published facts and his public practice (Figma in the loop, Newport, review stays with the client's engineers). Service JSON-LD has no Offer price. The cost FAQ text is `$500 / week`, so that figure is inside FAQPage JSON-LD and nowhere else in schema. Titles and meta descriptions have no price.
+- `/compare/design-engineer-vs-product-designer-vs-frontend-engineer` and `/compare/rent-a-design-engineer-vs-hiring`: Article and BreadcrumbList JSON-LD. The hiring page states the homepage price once and does not quote a salary. No peer is named as a competitor.
+- `/knowledge/more-than-microinteractions`: body replaced, URL kept, `noindex` set to false. The first paragraph answers what a design engineer is. Document title stays shortened so it fits 60 characters.
+- `/knowledge/fix-ai-slop-ui`: new indexable article.
+- `/tools/ui-polish-checklist`: 23 native checkboxes, progress text, `localStorage` key `amoeba-ui-polish-checklist`, reset. No account and no external script.
+- Links: the homepage offer heading links to the offer page. `/knowledge` lists the offer, both comparisons, and the checklist under "Also". The new pages link to each other, the homepage, and `/knowledge`. Nav was not redesigned.
+- `TODO(contact)` in `src/pages/rent-a-design-engineer.astro`. There is still no email, calendar, or form. The CTA is the X profile already linked from `/info` (https://x.com/bryan_king).
+- Head: `Base.astro` accepts `jsonLd`. Indexable articles emit Article and BreadcrumbList. Stubs stay `noindex: true` and out of the sitemap.
+- Build: `bun run build` exited 0. 16 pages. `dist/sitemap-0.xml` lists `/`, `/info`, `/knowledge`, `/work`, the offer, both comparisons, both indexable articles, and the checklist. The five stubs are absent. Checked in the browser: offer page, homepage link into the offer, checklist check/reload/reset/keyboard/client-side return, mobile width on the checklist and the roles table. Favicon 404 and the font preload warning are the existing head, not these pages.
+- Word counts, titles, and descriptions are in `content-ledger.md`. Articles are 1,793 and 1,794 words in `<main>`.
+
 ## 2026-10-10 — On-page titles, descriptions, H1s, and share tags
 
 - Scope: backlog items for unique titles, meta descriptions, and one H1 per URL, plus Open Graph and Twitter card tags. No prices. No new claims, clients, or numbers. Knowledge stubs stay `noindex: true`.

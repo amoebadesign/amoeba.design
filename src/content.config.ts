@@ -9,6 +9,8 @@ const knowledge = defineCollection({
 		description: z.string(),
 		// Set true while the body is still a stub. Flip to false to index the article.
 		noindex: z.boolean().default(false),
+		// ISO date (YYYY-MM-DD) once the body is a real article.
+		published: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
 	}),
 });
 

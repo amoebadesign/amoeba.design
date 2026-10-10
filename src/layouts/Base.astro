@@ -1,12 +1,14 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "../styles/amoeba/index.css";
+import JsonLd from "../components/JsonLd.astro";
 
 interface Props {
 	title?: string;
 	description?: string;
 	noindex?: boolean;
 	ogType?: "website" | "article";
+	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 // Fallback only. Every page should pass its own title and description.
@@ -16,6 +18,7 @@ const {
 	description = "Amoeba is a design engineering studio for ambitious B2B software companies. Rent a design engineer to ship polished UI as pull requests for your team to review.",
 	noindex = false,
 	ogType = "website",
+	jsonLd,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
@@ -39,6 +42,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 		<meta name="twitter:url" content={canonical.href} />
 		<!-- TODO(og-image): no share image in this repo. public/ has robots.txt and a font file only. Do not point og:image at a work screenshot. When Bryan supplies a 1200×630 asset at public/og.png, emit og:image and twitter:image as absolute URLs on the canonical origin. -->
 		{noindex && <meta name="robots" content="noindex, follow" />}
+		{jsonLd && <JsonLd data={jsonLd} />}
 		<script is:inline>
 			(() => {
 				const apply = () => {

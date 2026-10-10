@@ -25,6 +25,53 @@ const documentTitles: Record<string, string> = {
 	"There's more to design engineering than microinteractions": "Design engineering beyond microinteractions",
 };
 const documentTitle = documentTitles[page.data.title] ?? page.data.title;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const publishedLabel = page.data.published
+	? new Date(`${page.data.published}T00:00:00Z`).toLocaleDateString("en-US", {
+			month: "long",
+			day: "numeric",
+			year: "numeric",
+			timeZone: "UTC",
+		})
+	: null;
+
+const articleLd: Record<string, unknown> = {
+	"@context": "https://schema.org",
+	"@type": "Article",
+	headline: page.data.title,
+	description: page.data.description,
+	inLanguage: "en",
+	author: {
+		"@type": "Person",
+		name: "Bryan King",
+		url: "https://x.com/bryan_king",
+	},
+	publisher: {
+		"@type": "Organization",
+		name: "Amoeba",
+		url: "https://amoeba.design",
+	},
+	mainEntityOfPage: canonical.href,
+};
+if (page.data.published) {
+	articleLd.datePublished = page.data.published;
+	articleLd.dateModified = page.data.published;
+}
+
+const jsonLd = page.data.noindex
+	? undefined
+	: [
+			articleLd,
+			{
+				"@context": "https://schema.org",
+				"@type": "BreadcrumbList",
+				itemListElement: [
+					{ "@type": "ListItem", position: 1, name: "Home", item: "https://amoeba.design/" },
+					{ "@type": "ListItem", position: 2, name: "Knowledge", item: "https://amoeba.design/knowledge" },
+					{ "@type": "ListItem", position: 3, name: page.data.title, item: canonical.href },
+				],
+			},
+		];
 ---
 
 <LayoutA
@@ -32,9 +79,13 @@ const documentTitle = documentTitles[page.data.title] ?? page.data.title;
 	description={page.data.description}
 	noindex={page.data.noindex}
 	ogType="article"
+	jsonLd={jsonLd}
 >
 	<Stack as="article" space="4" class="article">
 		<h1 class="type-title-alt">{page.data.title}</h1>
+		{publishedLabel && page.data.published && (
+			<p class="published"><time datetime={page.data.published}>{publishedLabel}</time></p>
+		)}
 		<Content />
 	</Stack>
 </LayoutA>
@@ -42,5 +93,22 @@ const documentTitle = documentTitles[page.data.title] ?? page.data.title;
 <style>
 	.article {
 		max-inline-size: var(--measure);
+	}
+
+	.published {
+		color: var(--color-fg-muted);
+	}
+
+	.article :global(h2) {
+		margin-block-start: calc(var(--spacing) * 4);
+	}
+
+	.article :global(ul),
+	.article :global(ol) {
+		padding-inline-start: calc(var(--spacing) * 6);
+	}
+
+	.article :global(li + li) {
+		margin-block-start: calc(var(--spacing) * 2);
 	}
 </style>

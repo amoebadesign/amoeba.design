@@ -10,7 +10,7 @@ const pages = (await getCollection('knowledge')).sort((a, b) =>
 
 <LayoutA
 	title="Design engineering knowledge • Amoeba"
-	description="Knowledge from Amoeba on design engineering for ambitious B2B software companies: CSS, Tailwind, native HTML, Figma-to-code, Storybook, and shadcn/lint."
+	description="Knowledge from Amoeba on design engineering for ambitious B2B software: CSS, Tailwind, native HTML, Figma, Storybook, shadcn/lint, and fixing AI slop in the UI."
 	heading="Knowledge"
 >
 	<Stack space="8">
@@ -23,6 +23,15 @@ const pages = (await getCollection('knowledge')).sort((a, b) =>
 					<p>{page.data.description}</p>
 				</Stack>
 			))}
+		</Stack>
+		<Stack space="2">
+			<p class="type-caption">Also</p>
+			<Stack as="ul" role="list" space="1">
+				<li><a href="/rent-a-design-engineer">Rent a design engineer</a></li>
+				<li><a href="/compare/design-engineer-vs-product-designer-vs-frontend-engineer">Design engineer vs product designer vs frontend engineer</a></li>
+				<li><a href="/compare/rent-a-design-engineer-vs-hiring">Rent a design engineer vs hiring</a></li>
+				<li><a href="/tools/ui-polish-checklist">UI polish checklist</a></li>
+			</Stack>
 		</Stack>
 	</Stack>
 </LayoutA>

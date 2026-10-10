@@ -1,0 +1,233 @@
+---
+import LayoutA from "../../layouts/LayoutA.astro";
+import { Button, Checkbox, Cluster, Stack } from "../../components/ui";
+
+const title = "UI polish checklist • Amoeba";
+const description =
+	"A free checklist for teams cleaning up product UI. Read the code, remove overrides, use the browser, and check the states a SaaS interface actually has.";
+const pageUrl = "https://amoeba.design/tools/ui-polish-checklist";
+
+const groups = [
+	{
+		legend: "Read it before you ship it",
+		items: [
+			{ id: "polish-read-code", label: "Read the code behind the screen, including code an agent wrote." },
+			{ id: "polish-click-path", label: "Click the main task yourself and count the clicks." },
+			{ id: "polish-states", label: "Check empty, loading, error, and a name long enough to wrap." },
+			{ id: "polish-keyboard", label: "Finish that same task with the keyboard only." },
+			{ id: "polish-diff", label: "Review the diff. A screenshot is a glance." },
+		],
+	},
+	{
+		legend: "Kill the overrides",
+		items: [
+			{ id: "polish-list-overrides", label: "List every override of a component's default styles." },
+			{ id: "polish-delete-noise", label: "Delete overrides that were accidents." },
+			{ id: "polish-promote", label: "Move overrides you meant into the component, then delete the one-off." },
+			{ id: "polish-one-pattern", label: "Use one button, one input, and one dialog for this workflow." },
+			{ id: "polish-ci", label: "Fail CI when the design system is violated." },
+			{ id: "polish-docs", label: "Point agents at Storybook, or other docs that show the real component." },
+		],
+	},
+	{
+		legend: "Use what the browser gives you",
+		items: [
+			{ id: "polish-native", label: "Prefer a native dialog, popover, disclosure, or form control before a custom widget." },
+			{ id: "polish-focus", label: "Keep a visible focus style." },
+			{ id: "polish-labels", label: "Label each control with what will happen." },
+			{ id: "polish-scale", label: "Stick to one type scale and one spacing scale." },
+			{ id: "polish-utilities", label: "Use an existing layout pattern instead of a new string of utility classes." },
+			{
+				id: "polish-contrast",
+				label: "Check that text stays readable. WCAG 2.2 AA is the reference for contrast.",
+			},
+		],
+	},
+	{
+		legend: "Make the task obvious",
+		items: [
+			{ id: "polish-primary", label: "Give the screen one primary action. Make secondary actions look secondary." },
+			{ id: "polish-destructive", label: "Name destructive actions for the damage they do." },
+			{ id: "polish-errors", label: "Write errors that say what to fix." },
+			{ id: "polish-chat", label: "Remove a chat affordance that does not change the task." },
+			{ id: "polish-align", label: "Align text, icons, and actions to the same edges." },
+			{ id: "polish-backlog", label: "Write one issue per problem, then limit how many you fix at once." },
+		],
+	},
+];
+
+const total = groups.reduce((count, group) => count + group.items.length, 0);
+
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	itemListElement: [
+		{ "@type": "ListItem", position: 1, name: "Home", item: "https://amoeba.design/" },
+		{ "@type": "ListItem", position: 2, name: "UI polish checklist", item: pageUrl },
+	],
+};
+---
+
+<LayoutA title={title} description={description} jsonLd={jsonLd}>
+	<Stack space="8" class="copy">
+		<Stack space="3">
+			<h1 class="type-title-alt">UI polish checklist</h1>
+			<p>
+				A free pass for teams cleaning up product UI. No account, no email gate. Checks stay in this browser.
+				Clearing site data clears them.
+			</p>
+			<p>
+				Use it on one workflow, not the whole app. A campaigns table, a settings form, an invite modal: click
+				the task, read the code, then mark what is actually true. The misses are a backlog.
+				Contrast, when you want the spec, is
+				<a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html">WCAG 2.2 AA</a>.
+			</p>
+			<p id="polish-status" aria-live="polite">0 of {total} checked</p>
+			<progress id="polish-progress" max={total} value="0">0 of {total} checked</progress>
+		</Stack>
+
+		<div id="polish-checklist">
+			<Stack space="6">
+				{
+					groups.map((group) => (
+						<fieldset>
+							<legend>{group.legend}</legend>
+							<Stack space="3">
+								{group.items.map((item) => (
+									<div class="check-item">
+										<Checkbox id={item.id} label={item.label} />
+									</div>
+								))}
+							</Stack>
+						</fieldset>
+					))
+				}
+			</Stack>
+		</div>
+
+		<Cluster space="2">
+			<Button id="polish-reset" variant="secondary">Reset checklist</Button>
+		</Cluster>
+
+		<Stack space="3">
+			<h2>When the list is a backlog</h2>
+			<p>
+				A quiet screen with a few honest checks beats every box ticked from memory. Write an issue for each
+				miss. One issue, one problem. Then stop adding scope.
+			</p>
+			<p>
+				If that backlog is longer than your engineers can pick up, the offer on this site is
+				<a href="/rent-a-design-engineer">rent a design engineer</a>: you populate the issues, I ship polished
+ UI as pull requests for your team to review. The <a href="/">homepage</a> is the short version.
+			</p>
+		</Stack>
+	</Stack>
+</LayoutA>
+
+<script>
+	const KEY = "amoeba-ui-polish-checklist";
+
+	function boxes() {
+		return Array.from(document.querySelectorAll<HTMLInputElement>("#polish-checklist input[type='checkbox']"));
+	}
+
+	function read(): string[] {
+		try {
+			const raw = localStorage.getItem(KEY);
+			if (!raw) return [];
+			const parsed: unknown = JSON.parse(raw);
+			return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === "string") : [];
+		} catch {
+			return [];
+		}
+	}
+
+	function write(ids: string[]) {
+		try {
+			localStorage.setItem(KEY, JSON.stringify(ids));
+		} catch {
+			/* private mode and blocked storage: the boxes still work for this view */
+		}
+	}
+
+	function render() {
+		const all = boxes();
+		if (all.length === 0) return;
+		const saved = new Set(read());
+		for (const box of all) box.checked = saved.has(box.id);
+		const done = all.filter((box) => box.checked).length;
+		const text = `${done} of ${all.length} checked`;
+		const status = document.getElementById("polish-status");
+		const progress = document.getElementById("polish-progress");
+		if (status) status.textContent = text;
+		if (progress instanceof HTMLProgressElement) {
+			progress.max = all.length;
+			progress.value = done;
+			progress.textContent = text;
+		}
+	}
+
+	function init() {
+		const root = document.getElementById("polish-checklist");
+		if (!root || root.dataset.bound === "true") return;
+		root.dataset.bound = "true";
+		render();
+		root.addEventListener("change", (event) => {
+			const target = event.target;
+			if (!(target instanceof HTMLInputElement) || target.type !== "checkbox") return;
+			write(boxes().filter((box) => box.checked).map((box) => box.id));
+			render();
+		});
+		document.getElementById("polish-reset")?.addEventListener("click", () => {
+			write([]);
+			render();
+		});
+	}
+
+	document.addEventListener("astro:page-load", init);
+	init();
+</script>
+
+<style>
+	.copy {
+		max-inline-size: var(--measure);
+	}
+
+	h1 {
+		letter-spacing: var(--tracking-tight);
+	}
+
+	progress {
+		inline-size: 100%;
+		max-inline-size: var(--measure);
+		block-size: calc(var(--spacing) * 2);
+		accent-color: var(--color-accent);
+	}
+
+	fieldset {
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		margin: 0;
+		padding: calc(var(--spacing) * 4);
+	}
+
+	legend {
+		padding-inline: calc(var(--spacing) * 2);
+		font-weight: 700;
+	}
+
+	.check-item :global(.field-inline) {
+		display: flex;
+		align-items: flex-start;
+		gap: calc(var(--spacing) * 2);
+	}
+
+	.check-item :global(input) {
+		flex: none;
+		margin-block-start: calc(var(--spacing) * 0.5);
+	}
+
+	.check-item :global(.field-label) {
+		font-weight: 400;
+	}
+</style>
