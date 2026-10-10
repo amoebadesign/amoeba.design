@@ -41,11 +41,11 @@ const faqs = [
 	},
 	{
 		q: "Should I hire a product designer or a frontend engineer instead?",
-		a: "Sometimes. The three roles own different work. I wrote up when I would hire each one: design engineer vs product designer vs frontend engineer.",
+		a: "Sometimes. The three roles own different work.",
 	},
 	{
 		q: "Should I hire someone full time instead?",
-		a: "Sometimes. A priced week works a backlog. A job holds the product. The tradeoffs are on rent a design engineer vs hiring.",
+		a: "Sometimes. A priced week works a backlog. A job holds the product.",
 	},
 	{
 		q: "How do I start?",
@@ -145,16 +145,8 @@ const jsonLd = [
 				backlog, done with those skills, delivered as code.
 			</p>
 			<p>
-				If you are choosing a title, read
-				<a href="/compare/design-engineer-vs-product-designer-vs-frontend-engineer">design engineer vs product designer vs frontend engineer</a>.
-				If you are choosing a week or a job, read
-				<a href="/compare/rent-a-design-engineer-vs-hiring">rent a design engineer vs hiring</a>.
-				If the backlog is generated UI, start with
-				<a href="/knowledge/fix-ai-slop-ui">fixing the AI slop</a>
-				or run the <a href="/tools/ui-polish-checklist">UI polish checklist</a> and turn the misses into issues.
-				The longer definition is
-				<a href="/knowledge/more-than-microinteractions">what a design engineer is</a>.
-				More writing lives on <a href="/knowledge">Knowledge</a>.
+				If the backlog is generated UI, run the <a href="/tools/ui-polish-checklist">UI polish checklist</a> and
+				turn the misses into issues.
 			</p>
 		</Stack>
 
@@ -165,20 +157,7 @@ const jsonLd = [
 					<Stack space="1">
 						<h3>{faq.q}</h3>
 						{
-							faq.q === "Should I hire a product designer or a frontend engineer instead?" ? (
-								<p>
-									Sometimes. The three roles own different work. I wrote up when I would hire each one:{" "}
-									<a href="/compare/design-engineer-vs-product-designer-vs-frontend-engineer">
-										design engineer vs product designer vs frontend engineer
-									</a>
-									.
-								</p>
-							) : faq.q === "Should I hire someone full time instead?" ? (
-								<p>
-									Sometimes. A priced week works a backlog. A job holds the product. The tradeoffs are on{" "}
-									<a href="/compare/rent-a-design-engineer-vs-hiring">rent a design engineer vs hiring</a>.
-								</p>
-							) : faq.q === "Can I see the work?" ? (
+							faq.q === "Can I see the work?" ? (
 								<p>
 									The <a href="/work">work page</a> is screenshots of product UI. I do not publish client names
 									or results there.
