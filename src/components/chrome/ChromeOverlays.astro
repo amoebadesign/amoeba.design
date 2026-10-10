@@ -6,7 +6,7 @@ import OverlayMenu from "./OverlayMenu.astro";
 import BottomSheet from "./BottomSheet.astro";
 import ChromeJig from "./ChromeJig.astro";
 ---
-{shipsChrome("collapse") && <CollapseBar />}
+{(shipsChrome("collapse") || shipsChrome("collapse-top")) && <CollapseBar />}
 {shipsChrome("pill") && <PillBar />}
 {shipsChrome("overlay") && <OverlayMenu />}
 {shipsChrome("sheet") && <BottomSheet />}

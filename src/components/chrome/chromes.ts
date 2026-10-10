@@ -2,6 +2,7 @@ export const chromes = [
 	{ slug: "inline", label: "Inline (current)" },
 	{ slug: "hidey", label: "Scroll-hiding row" },
 	{ slug: "collapse", label: "Large-title collapse" },
+	{ slug: "collapse-top", label: "Large-title collapse, nav on top" },
 	{ slug: "pill", label: "Floating pill" },
 	{ slug: "overlay", label: "Full-screen menu" },
 	{ slug: "sheet", label: "Bottom sheet" },

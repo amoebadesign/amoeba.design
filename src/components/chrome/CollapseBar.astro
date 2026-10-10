@@ -1,7 +1,7 @@
 ---
 import { navItems, isActive } from "../nav-items";
 ---
-<header class="collapse-bar" aria-hidden="true" inert>
+<header class="collapse-bar">
 	<span class="collapse-bg" aria-hidden="true"></span>
 	<a class="collapse-logotype logotype" href="/">Amoeba</a>
 	<nav class="collapse-nav">
@@ -13,8 +13,7 @@ import { navItems, isActive } from "../nav-items";
 
 <script>
 	const root = document.documentElement;
-	const wordmarkRange = { start: 0, mid: 50, end: 100 };
-	const navRange = { start: 160, end: 190 };
+	const range = { start: 0, end: 100 };
 	let ticking = false;
 
 	const docTop = (element: HTMLElement) => {
@@ -27,40 +26,30 @@ import { navItems, isActive } from "../nav-items";
 		return top;
 	};
 
-	const progress = (y: number, start: number, end: number) =>
-		Math.min(1, Math.max(0, (y - start) / Math.max(1, end - start)));
-
 	const update = () => {
 		ticking = false;
 		const bar = document.querySelector<HTMLElement>(".collapse-bar");
 		if (!bar) return;
 		const y = Math.max(0, window.scrollY);
-		const navProgress = progress(y, navRange.start, navRange.end);
-		root.style.setProperty("--collapse-wm", progress(y, wordmarkRange.start, wordmarkRange.end).toFixed(3));
-		root.style.setProperty("--collapse-logo", progress(y, wordmarkRange.mid, wordmarkRange.end).toFixed(3));
-		root.style.setProperty("--collapse-nav", navProgress.toFixed(3));
-		const collapsed = navProgress > 0.5;
-		if (collapsed !== root.hasAttribute("data-collapsed")) {
-			root.toggleAttribute("data-collapsed", collapsed);
-			bar.inert = !collapsed;
-			bar.setAttribute("aria-hidden", String(!collapsed));
-		}
+		const value = Math.min(1, Math.max(0, (y - range.start) / Math.max(1, range.end - range.start)));
+		root.style.setProperty("--collapse", value.toFixed(3));
+		const collapsed = value > 0.5;
+		if (collapsed !== root.hasAttribute("data-collapsed")) root.toggleAttribute("data-collapsed", collapsed);
+		const hidden = root.dataset.chrome === "collapse" && !collapsed;
+		bar.inert = hidden;
+		if (hidden) bar.setAttribute("aria-hidden", "true");
+		else bar.removeAttribute("aria-hidden");
 	};
 
-	// Ranges are tied to where the wordmark and inline nav actually sit, so the
-	// collapse tracks the finger instead of firing at an arbitrary threshold.
+	// One range, measured from the wordmark passing under the bar, drives every part at once.
 	const measure = () => {
 		const wordmark = document.querySelector<HTMLElement>(".split-brand .logotype");
-		const inlineNav = document.querySelector<HTMLElement>(".split-nav");
 		const bar = document.querySelector<HTMLElement>(".collapse-bar");
-		if (!wordmark || !inlineNav || !bar) return;
+		if (!wordmark || !bar) return;
 		const barHeight = bar.offsetHeight || 52;
 		const top = docTop(wordmark);
-		wordmarkRange.start = Math.max(0, top - barHeight / 2);
-		wordmarkRange.end = Math.max(wordmarkRange.start + 1, top + wordmark.offsetHeight - barHeight / 2);
-		wordmarkRange.mid = (wordmarkRange.start + wordmarkRange.end) / 2;
-		navRange.start = Math.max(0, docTop(inlineNav) - barHeight);
-		navRange.end = navRange.start + Math.max(16, inlineNav.offsetHeight);
+		range.start = Math.max(0, top - barHeight / 2);
+		range.end = Math.max(range.start + 1, top + wordmark.offsetHeight - barHeight / 2);
 		update();
 	};
 
@@ -80,9 +69,9 @@ import { navItems, isActive } from "../nav-items";
 		display: none;
 	}
 
-	/* Progress variables default to 0, so if the script never runs the bar stays hidden. */
+	/* --collapse defaults to 0, so if the script never runs the page shows its expanded state. */
 	@media (max-width: 44.25rem) {
-		:global(html[data-chrome="collapse"]) .collapse-bar {
+		:global(html:is([data-chrome="collapse"], [data-chrome="collapse-top"])) .collapse-bar {
 			position: fixed;
 			inset: 0 0 auto;
 			z-index: 10;
@@ -95,11 +84,6 @@ import { navItems, isActive } from "../nav-items";
 			pointer-events: none;
 		}
 
-		:global(html[data-chrome="collapse"][data-collapsed]) .collapse-bar > a,
-		:global(html[data-chrome="collapse"][data-collapsed]) .collapse-nav {
-			pointer-events: auto;
-		}
-
 		.collapse-bg {
 			position: absolute;
 			inset: 0;
@@ -108,21 +92,20 @@ import { navItems, isActive } from "../nav-items";
 			-webkit-backdrop-filter: blur(16px) saturate(1.6);
 			backdrop-filter: blur(16px) saturate(1.6);
 			box-shadow: 0 1px 0 rgb(0 0 0 / 0.08);
-			opacity: var(--collapse-wm, 0);
+			opacity: var(--collapse, 0);
 		}
 
 		.collapse-logotype {
 			--logotype-fit: 0.24;
-			opacity: var(--collapse-logo, 0);
-			translate: 0 calc((1 - var(--collapse-logo, 0)) * 40%);
+			opacity: var(--collapse, 0);
+			translate: 0 calc((1 - var(--collapse, 0)) * 40%);
 		}
 
 		.collapse-nav {
 			display: flex;
 			gap: 0.875rem;
+			margin-left: auto;
 			font-size: 15px;
-			opacity: var(--collapse-nav, 0);
-			translate: 0 calc((1 - var(--collapse-nav, 0)) * 40%);
 		}
 
 		.collapse-bar a {
@@ -135,12 +118,39 @@ import { navItems, isActive } from "../nav-items";
 			font-weight: 600;
 		}
 
-		:global(html[data-chrome="collapse"] .split-brand .logotype) {
-			opacity: calc(1 - var(--collapse-wm, 0));
+		:global(html:is([data-chrome="collapse"], [data-chrome="collapse-top"])[data-collapsed]) .collapse-logotype {
+			pointer-events: auto;
+		}
+
+		:global(html:is([data-chrome="collapse"], [data-chrome="collapse-top"]) .split-brand .logotype) {
+			opacity: calc(1 - var(--collapse, 0));
+		}
+
+		/* Nav below the tagline: the bar's links swap in for the inline row on the same progress. */
+		:global(html[data-chrome="collapse"]) .collapse-nav {
+			opacity: var(--collapse, 0);
+			translate: 0 calc((1 - var(--collapse, 0)) * 40%);
+		}
+
+		:global(html[data-chrome="collapse"][data-collapsed]) .collapse-nav {
+			pointer-events: auto;
 		}
 
 		:global(html[data-chrome="collapse"] .split-nav) {
-			opacity: calc(1 - var(--collapse-nav, 0));
+			opacity: calc(1 - var(--collapse, 0));
+		}
+
+		/* Nav on top: the links live in the bar from the start and never move. */
+		:global(html[data-chrome="collapse-top"]) .collapse-nav {
+			pointer-events: auto;
+		}
+
+		:global(html[data-chrome="collapse-top"] body) {
+			padding-top: calc(var(--chrome-inset) + 52px + env(safe-area-inset-top, 0px));
+		}
+
+		:global(html[data-chrome="collapse-top"] .split-nav) {
+			display: none;
 		}
 	}
 </style>
