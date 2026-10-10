@@ -36,14 +36,14 @@
 
   [data-theme="green"] {
     color-scheme: dark;
-    --color-bg: var(--color-green-1000);
+    --color-bg: var(--color-green-950);
     --color-fg: var(--color-green-50);
     --color-fg-muted: var(--color-green-200);
-    --color-surface: var(--color-green-950);
+    --color-surface: var(--color-green-1000);
     --color-border: rgb(255 255 255 / 0.25);
     --color-border-strong: var(--color-green-50);
     --color-accent: var(--color-pink-400);
-    --color-accent-fg: var(--color-green-1000);
+    --color-accent-fg: var(--color-green-950);
     --color-link: var(--color-yellow-300);
     --color-link-hover: var(--color-yellow-500);
     --color-link-visited: var(--color-pink-300);
