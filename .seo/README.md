@@ -13,10 +13,12 @@ Do not invent Search Console, DataForSEO, or rank-tracking numbers. Competitors 
 | `content-ledger.md` | Every indexable URL |
 | `baseline.md` | Technical baseline and the ranked backlog |
 | `run-log.md` | Append-only log of runs |
+| `voice-guide.md`, `peer-research.md` | Voice and query research briefs from the 2026-10-10 content run |
+| `outlines/*.md` | Outlines Bryan writes from. One per unpublished page. Not copy |
 
 ## Content structure
 
-Astro project root is the repo root (`package.json`, `astro.config.mjs`). Astro 7.3.5, static output, no integrations, no MDX, no sitemap adapter. Deployed as static files on Vercel.
+Astro project root is the repo root (`package.json`, `astro.config.mjs`). Astro 7.3.5, static output, `@astrojs/sitemap`, no MDX. Deployed as static files on Vercel.
 
 - Head: `src/layouts/Base.astro`. There is no SEO component. The head sets charset, viewport, title, description, canonical, Open Graph, and Twitter card tags. No `og:image` yet (`TODO(og-image)` in `Base.astro`).
 - Chrome: `src/layouts/LayoutA.astro` (masthead, nav, main, footer).
@@ -27,3 +29,5 @@ Astro project root is the repo root (`package.json`, `astro.config.mjs`). Astro 
 New blog posts belong in `src/content/knowledge/` until Bryan says the off-site blog at amoebaunlimited.com is the blog of record.
 
 Comparison pages live in `src/pages/compare/{slug}.astro`. The free tool lives in `src/pages/tools/{slug}.astro`. Offer page: `src/pages/rent-a-design-engineer.astro`. Voice and peer research for this program are `voice-guide.md` and `peer-research.md` in this directory.
+
+Bryan writes article and comparison prose himself. Agents write outlines in `outlines/`, not copy. Unpublished pages stay "Coming soon" and out of the index: knowledge entries with `noindex: true` in frontmatter, page routes by listing the path in `src/noindex-routes.mjs`. Both drive the `noindex, follow` tag and the sitemap filter in `astro.config.mjs`.

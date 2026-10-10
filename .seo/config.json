@@ -18,7 +18,7 @@
       "implementedInCode": true,
       "trailingSlash": "never. Homepage canonical is https://amoeba.design/. Other canonicals have no trailing slash. vercel.json trailingSlash false sends a 308 from the slashed form to that canonical.",
       "nonProductionHosts": "vercel.json sets X-Robots-Tag: noindex only when the Host is neither amoeba.design nor www.amoeba.design. Both names are missing-conditions, so the rule cannot noindex either of them. Other hosts, including amoeba-design.vercel.app, still get noindex. www must stay indexable during the transition while Vercel has www as primary. After Bryan flips the project so the apex is primary and www 308s to https://amoeba.design, www can keep this exemption.",
-      "code": "astro.config.mjs sets site to https://amoeba.design and trailingSlash never. src/layouts/Base.astro emits one canonical on that origin per page. Knowledge stubs with noindex: true are omitted from the sitemap and emit meta robots noindex, follow. public/robots.txt allows crawling and points at https://amoeba.design/sitemap-index.xml.",
+      "code": "astro.config.mjs sets site to https://amoeba.design and trailingSlash never. src/layouts/Base.astro emits one canonical on that origin per page. Knowledge stubs with noindex: true, and page routes listed in src/noindex-routes.mjs, are omitted from the sitemap and emit meta robots noindex, follow. public/robots.txt allows crawling and points at https://amoeba.design/sitemap-index.xml.",
       "legacySite": "Checked 2026-10-10 after Bryan attached the domain: https://amoeba.design 308s to https://www.amoeba.design/, and www returned the Astro homepage that was already deployed (title still the long default, no canonical). Canonicals and the sitemap in this repo stay on https://amoeba.design.",
       "legacyPaths": {
         "status": "closed",
@@ -47,7 +47,7 @@
     "summary": "Product design and design engineering services for ambitious B2B software companies",
     "pricing": {
       "currentClaim": "$500/week, Rent a design engineer (test pricing, offer not yet formalized)",
-      "rule": "The homepage price is an accurate current claim and stays while Bryan tests it. It is also stated as \"$500 / week\" on /rent-a-design-engineer (the price line and the cost FAQ) and once on /compare/rent-a-design-engineer-vs-hiring. Titles and meta descriptions stay free of prices. Service JSON-LD has no Offer price. The cost FAQ text includes the figure, so FAQPage JSON-LD does too. No other offer or price, including the commented $5,000 design-system block in src/pages/index.astro, is formalized or allowed."
+      "rule": "The homepage price is an accurate current claim and stays while Bryan tests it. It is also stated as \"$500 / week\" on /rent-a-design-engineer (the price line and the cost FAQ). The hiring comparison is a stub and does not state it. Titles and meta descriptions stay free of prices. Service JSON-LD has no Offer price. The cost FAQ text includes the figure, so FAQPage JSON-LD does too. No other offer or price, including the commented $5,000 design-system block in src/pages/index.astro, is formalized or allowed."
     }
   },
   "audience": {
@@ -121,7 +121,7 @@
         "status": "exists",
         "path": "src/pages/compare/{slug}.astro",
         "url": "/compare/{slug}",
-        "note": "Two pages exist. peers is not a competitor list. Do not name those sites as competitors."
+        "note": "Two pages exist as \"Coming soon\" stubs. Bryan writes the copy from .seo/outlines/. Stub page routes are listed in src/noindex-routes.mjs, which sets noindex, follow and drops them from the sitemap. Remove a path there to publish it. peers is not a competitor list. Do not name those sites as competitors."
       },
       "freeTools": {
         "status": "exists",
