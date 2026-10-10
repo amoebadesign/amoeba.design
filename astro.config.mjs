@@ -34,6 +34,8 @@ export default defineConfig({
 			filter: (page) => {
 				const url = new URL(page);
 				if (url.pathname !== '/') url.pathname = url.pathname.replace(/\/$/, '');
+				// 404.astro is the error document. It is noindex and not a URL to list.
+				if (url.pathname === '/404' || url.pathname === '/404.html') return false;
 				return !noindexUrls.has(url.href);
 			},
 		}),

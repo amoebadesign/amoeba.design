@@ -2,6 +2,18 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Sitewide JSON-LD and branded 404
+
+- Scope: one `@graph` in `src/components/SiteGraph.astro`, included from `src/layouts/Base.astro`. A branded `src/pages/404.astro`. Sitemap filter drops `/404`. No prices. No page-level types (no Service, Article, or BreadcrumbList). Knowledge stubs stay `noindex: true` and get only this graph. Did not touch `llms.txt`, `robots.txt`, `public/og.png`, or the speed work.
+- Graph `@id` values, stable for later page-level nodes: `https://amoeba.design/#organization`, `https://amoeba.design/#website`, `https://amoeba.design/#bryan-king`.
+- Organization: name `Amoeba`, url `https://amoeba.design`, description is the masthead sentence, `founder` points at the Person `@id`. `sameAs` is only the footer profiles: `https://twitter.com/amoeba_design` and `https://github.com/amoebadesign`. The footer Blog link (`http://amoebaunlimited.com`) is not a profile of this site, so it is not in `sameAs`. Astro, Vercel, and the type foundry links on `/info` are credits, not profiles.
+- WebSite: name `Amoeba`, url `https://amoeba.design`, `publisher` points at the Organization `@id`, `inLanguage` `en` (the document `lang`). No `SearchAction`.
+- Person: name `Bryan King`, url `https://amoeba.design/info` (the page that names him), `homeLocation` is a Place named `Newport, Kentucky`, `sameAs` is `https://x.com/bryan_king` (the link on `/info`).
+- 404: `src/pages/404.astro` uses `LayoutA`. Title `Not found • Amoeba`. Visible H1 and meta description: `That page isn’t on this site.` `noindex, follow`. Links in the main content: `/` Home, `/work` Work, `/knowledge` Knowledge, `/info` Info. The masthead stays a paragraph.
+- Build: `bun run build` exited 0. Astro 7.3.5, static output, 12 pages. The build wrote `dist/404.html` (not `dist/404/index.html`). `astro preview` returned HTTP 404 for `/does-not-exist` and served that file (title, H1, `noindex`). `/`, `/work`, `/info`, `/knowledge`, and a knowledge stub returned 200. Requesting `/404` itself is 200 because the file is also a route; Vercel uses root `404.html` as the error document for unknown paths. In the browser, the four content links landed on Home, Work, Knowledge, and Info.
+- Sitemap: `dist/sitemap-0.xml` still lists only `https://amoeba.design/`, `/info`, `/knowledge`, and `/work`. The 404 and the seven `noindex` articles are absent.
+- JSON-LD: every built page has exactly one `application/ld+json` block, and the twelve blocks are identical. `JSON.parse` succeeds. The string contains no `$` and no `500`. schema.org vocabulary check (domainIncludes, including parent types, and rangeIncludes for nested types and `@id` refs): 0 errors. `https://validator.schema.org/validate` returned `totalNumErrors` 0 and `totalNumWarnings` 0. It resolved Organization, WebSite, Person, and Place, and followed `founder` and `publisher` to the `@id` nodes.
+
 ## 2026-10-10 — On-page titles, descriptions, H1s, and share tags
 
 - Scope: backlog items for unique titles, meta descriptions, and one H1 per URL, plus Open Graph and Twitter card tags. No prices. No new claims, clients, or numbers. Knowledge stubs stay `noindex: true`.
