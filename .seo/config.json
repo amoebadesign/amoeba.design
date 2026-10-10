@@ -2,16 +2,28 @@
   "program": "seo-aeo",
   "setupDate": "2026-10-10",
   "owner": "Bryan King",
-  "notes": "Owner-supplied facts are labeled ownerSupplied. Observed facts come from this repo or from HTTP responses fetched on 2026-10-10. Competitors were not guessed. No Search Console, DataForSEO, or rank-tracking numbers exist in this file.",
+  "notes": "Owner-supplied facts are labeled ownerSupplied. Observed facts come from this repo or from HTTP responses fetched on 2026-10-10. Competitors were not guessed. Search Console numbers in dataSources are the legacy site at https://amoeba.design, not this Astro build. Do not invent metrics beyond that export.",
   "sites": {
     "productionUrl": "https://amoeba-design.vercel.app",
-    "productionUrlSource": "owner brief, confirmed live 2026-10-10 (Vercel, Astro HTML matching this repo)",
+    "productionUrlSource": "Where this repo deploys today. Confirmed live 2026-10-10 (Vercel, Astro HTML matching this repo). Pre-launch host, not the launch canonical.",
+    "preLaunchDeployUrl": "https://amoeba-design.vercel.app",
+    "launchDomain": "https://amoeba.design",
     "brandDomain": "https://amoeba.design",
     "www": "https://www.amoeba.design does not resolve (DNS name not found on 2026-10-10)",
     "canonical": {
-      "domain": null,
-      "status": "unset",
-      "reason": "This repo does not set Astro `site` and does not emit <link rel=\"canonical\">. https://amoeba-design.vercel.app is the host serving this codebase. https://amoeba.design is a different Next.js application that emits its own canonical to https://amoeba.design. Bryan has not confirmed which origin should be canonical for this Astro site."
+      "domain": "https://amoeba.design",
+      "status": "implemented in this repo; the host redirect and Search Console sitemap submission are still manual",
+      "decidedBy": "Bryan King, 2026-10-10",
+      "decision": "This Astro build will replace the site currently live at https://amoeba.design. Launch and canonical origin is https://amoeba.design. https://amoeba-design.vercel.app remains the current pre-launch deploy URL.",
+      "implementedInCode": true,
+      "trailingSlash": "never. Homepage canonical is https://amoeba.design/. Other canonicals have no trailing slash. vercel.json trailingSlash false sends a 308 from the slashed form to that canonical.",
+      "nonProductionHosts": "vercel.json sets X-Robots-Tag: noindex on every response whose Host is not exactly amoeba.design. The production host is the missing condition, so this rule cannot attach noindex to amoeba.design. A redirect from the Vercel hostname is still a project setting Bryan applies at cutover.",
+      "code": "astro.config.mjs sets site to https://amoeba.design and trailingSlash never. src/layouts/Base.astro emits one canonical on that origin per page. Knowledge stubs with noindex: true are omitted from the sitemap and emit meta robots noindex, follow. public/robots.txt allows crawling and points at https://amoeba.design/sitemap-index.xml.",
+      "legacySite": "https://amoeba.design currently serves a different Next.js app. That app emits its own canonical to https://amoeba.design. It is the site this build will replace, not this repo's output.",
+      "legacyPaths": {
+        "status": "closed",
+        "answer": "Bryan, 2026-10-10: the legacy amoeba.design site has only the homepage. No other legacy URLs need 301s. The homepage path stays /."
+      }
     }
   },
   "brand": {
@@ -26,9 +38,18 @@
       "Other pages: {Page title} | Amoeba Design"
     ]
   },
+  "positioning": {
+    "source": "ownerSupplied",
+    "line": "ambitious B2B software companies",
+    "note": "Bryan, 2026-10-10: keep the current masthead wording for now. Do not replace it with growth-stage or early-stage in new content."
+  },
   "offering": {
     "source": "ownerSupplied",
-    "summary": "Product design and design engineering services for growth-stage B2B software companies"
+    "summary": "Product design and design engineering services for ambitious B2B software companies",
+    "pricing": {
+      "currentClaim": "$500/week, Rent a design engineer (test pricing, offer not yet formalized)",
+      "rule": "That homepage price is an accurate current claim and stays on the page while Bryan tests it. Do not put prices in titles, meta descriptions, schema, or new content. Every other offer and price, including the commented $5,000 design-system block in src/pages/index.astro, is not formalized and must not be used."
+    }
   },
   "audience": {
     "source": "ownerSupplied",
@@ -97,7 +118,7 @@
         "status": "proposed, not created",
         "path": "src/pages/compare/{slug}.astro",
         "url": "/compare/{slug}",
-        "note": "No comparison or alternatives routes exist. Create them here when a competitor list exists. A content collection is optional later; do not add one until a page is actually being written."
+        "note": "No comparison or alternatives routes exist. peers is not a competitor list. Do not add one until a page is actually being written."
       },
       "freeTools": {
         "status": "proposed, not created",
@@ -108,11 +129,69 @@
     }
   },
   "competitors": [],
-  "competitorsTodo": "TODO: ask Bryan for the competitors, alternatives, and substitute workflows he wants named. Do not guess.",
+  "competitorsTodo": "Bryan supplied peers, not strict competitors. Do not treat peers as competitors and do not guess a competitor list.",
+  "peers": {
+    "framing": "People doing similar things. Not strict competitors.",
+    "urls": [
+      "https://halaska.com/",
+      "https://www.baselinedesign.com/",
+      "https://permanent.is/",
+      "https://southleft.com/",
+      "https://www.thomasmeijer.design/",
+      "https://directed.design/",
+      "https://turbodesign.co/",
+      "https://littleplains.com/",
+      "https://www.outpacestudios.com/",
+      "https://www.melior.design/",
+      "https://baked.design/"
+    ]
+  },
   "dataSources": {
-    "googleSearchConsole": null,
+    "googleSearchConsole": {
+      "available": true,
+      "via": "bot connector",
+      "property": "sc-domain:amoeba.design",
+      "covers": "Whatever is currently live at https://amoeba.design (the legacy Next.js site). Not this Astro build.",
+      "role": "Pre-migration baseline to protect. Not a performance baseline for https://amoeba-design.vercel.app. This repo has no Search Console data of its own.",
+      "sitemapSubmitted": false,
+      "dateRange": {
+        "start": "2026-07-10",
+        "end": "2026-10-08",
+        "lengthDays": 90,
+        "comparedWith": "the prior 90 days"
+      },
+      "pagesWithImpressions": [
+        {
+          "url": "https://amoeba.design/",
+          "clicks": 5,
+          "impressions": 298,
+          "impressionsPrior90Days": 11,
+          "ctr": "1.7%",
+          "averagePosition": 11.3,
+          "averagePositionPrior90Days": 23.0
+        }
+      ],
+      "queriesAllToHomepage": [
+        { "query": "amoeba ide", "impressions": 60, "position": 6.6, "clicks": 1 },
+        { "query": "amoeba designs", "impressions": 9, "position": 21.2 },
+        { "query": "amoeba design", "impressions": 5, "position": 7.4 },
+        { "query": "ameoba ide", "impressions": 3, "position": 7.3 },
+        { "query": "amoeba architects", "impressions": 3, "position": 35 },
+        { "query": "ameba design", "impressions": 2, "position": 6.5 },
+        { "query": "amoeba creative sdn bhd", "impressions": 2, "position": 27.5 },
+        { "query": "amoeba design website", "impressions": 1, "position": 3 },
+        { "query": "amoeba coding", "impressions": 1, "position": 8 },
+        { "query": "in points", "impressions": 1, "position": 2 },
+        { "query": "amoeba design studio", "impressions": 1, "position": 39 },
+        { "query": "amoeba studios", "impressions": 1, "position": 38 },
+        { "query": "amoeba project", "impressions": 1, "position": 50 },
+        { "query": "amoeba ai", "impressions": 1, "position": 69 }
+      ],
+      "queryClicksNote": "A click count is stored only for amoeba ide, the only query the export broke out. Other queries were reported with impressions and position only. Do not treat a missing click count as zero. Homepage clicks for the period are 5.",
+      "nonBrandedServiceQueries": 0,
+      "note": "Only https://amoeba.design/ had any impressions. Zero non-branded service queries. No other metrics were provided."
+    },
     "dataForSeo": null,
-    "rankTracking": null,
-    "note": "None of these are available yet. Do not invent impressions, clicks, positions, or search volume."
+    "rankTracking": null
   }
 }

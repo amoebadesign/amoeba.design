@@ -8,7 +8,8 @@ Date: 2026-10-10. Scope is this Astro repo and the URLs it publishes. No page or
 - `bun run build` with Astro 7.3.5 (lockfile resolution). Exit 0. Output mode `static`. 11 pages in about 6.8s. Build directory `dist/` (gitignored).
 - Fetched production HTML and response headers for https://amoeba-design.vercel.app (home, `/work`, `/work/`, `/info`, `/knowledge`, `/knowledge/`, all seven articles, a missing path, `robots.txt`, `sitemap.xml`, `llms.txt`).
 - Fetched https://amoeba.design, http://amoeba.design, and https://www.amoeba.design.
-- No Google Search Console, DataForSEO, or rank-tracking export was available. This file has no impressions, clicks, positions, or search volume.
+- Re-checked https://amoeba-design.vercel.app/ response headers on 2026-10-10: HTTP 200, no `Location` redirect.
+- Search Console property `sc-domain:amoeba.design` is connected via the bot's connector. The numbers below are the export Bryan supplied for 2026-07-10 to 2026-10-08 versus the prior 90 days. They describe the legacy site at https://amoeba.design, which this build will replace. This Astro deploy has no Search Console data of its own. DataForSEO and rank tracking are still absent. No metric was added beyond that export.
 
 ## Project
 
@@ -24,35 +25,67 @@ Date: 2026-10-10. Scope is this Astro repo and the URLs it publishes. No page or
 | Package manager | bun (`bun.lock`). README dev command is `bun dev`. Node engine `>=22.12.0`. |
 | Head | `src/layouts/Base.astro` only. No SEO component. |
 
-`Base.astro` emits charset, viewport, a title, an inline theme script, Astro `ClientRouter`, a font preload, and the Adobe Typekit stylesheet. It does not emit a description, canonical, robots meta, Open Graph, Twitter cards, or JSON-LD.
+`Base.astro` emits charset, viewport, a title, a canonical URL on `https://amoeba.design`, an inline theme script, Astro `ClientRouter`, a font preload, and the Adobe Typekit stylesheet. It emits `noindex, follow` only when a page asks for it. It does not emit a description, Open Graph, Twitter cards, or JSON-LD.
 
-## Canonical host
+## Launch domain
 
-This repo does not declare a site URL.
+Answered by Bryan on 2026-10-10: this Astro build will replace the site that is live at https://amoeba.design. The launch and canonical origin is **https://amoeba.design**. The current deploy of this repo stays **https://amoeba-design.vercel.app** until that cutover.
 
-- `astro.config.mjs` does not set `site`.
-- No `<link rel="canonical">` in source or in the built HTML.
-- https://amoeba-design.vercel.app serves this codebase. Homepage title on 2026-10-10: "Amoeba Design | Design engineering studio for growth-stage B2B software companies". Response size about 12.5 KB. No `x-robots-tag`.
-- https://amoeba.design is a different application. Response headers include `x-nextjs-prerender` and `vary: rsc`. Homepage title: "Amoeba • Design engineering for early-stage B2B startups". It emits `<link rel="canonical" href="https://amoeba.design">`, a meta description, and Open Graph / Twitter tags. Visible H1: "Design engineering for early-stage B2B startups". Body copy describes Bryan as one person covering product, design, and front-end. That copy is not in this repo and is not copied into `truth.md`.
-- http://amoeba.design redirects to https://amoeba.design.
-- https://www.amoeba.design did not resolve (name not found).
+The repo now implements the canonical origin. The live Vercel project does not, until this branch is deployed and Bryan attaches the domain.
 
-Canonical for the Astro site: **unset**. The brand domain is in use, and it canonicalizes itself, but it is not this project. Both origins are indexable. They disagree on stage ("growth-stage" / "ambitious" B2B software companies on this site, "early-stage B2B startups" on the Next.js site) and on shape (a studio in the masthead, "just me" on the brand domain). Ask Bryan which origin should rank before any redirect or canonical tag is added.
+- `astro.config.mjs` sets `site` to `https://amoeba.design` and `trailingSlash` to `never`.
+- `src/layouts/Base.astro` emits one `<link rel="canonical">` per page on that origin. The homepage canonical is `https://amoeba.design/`. Other pages have no trailing slash, for example `https://amoeba.design/work`.
+- `vercel.json` sets `trailingSlash: false` (308 from `/work/` to `/work`) and `X-Robots-Tag: noindex` only when the request host is not exactly `amoeba.design`.
+- `package.json` `"name": "amoeba.design"` is still just the npm package name.
+- Before this change, https://amoeba-design.vercel.app/ returned HTTP 200 on 2026-10-10 with no `Location` header. The header rule is the code safeguard. It is not a redirect. Bryan still redirects the Vercel hostname to the custom domain at cutover.
+- https://amoeba.design still serves a different Next.js application. Its own pages emit `<link rel="canonical" href="https://amoeba.design">`. Homepage title there: "Amoeba • Design engineering for early-stage B2B startups". Visible H1: "Design engineering for early-stage B2B startups". That copy is not in this repo and is not in `truth.md`.
+- http://amoeba.design redirects to https://amoeba.design. https://www.amoeba.design did not resolve.
 
-The Vercel host is indexable beside the brand domain. There is no `noindex` and no robots file on https://amoeba-design.vercel.app. These are not byte-for-byte duplicates. The risk is two public sites for one brand, plus slash-duplicate URLs on the Astro host (below).
+Until the domain is attached, https://amoeba.design still serves the legacy Next.js app, and https://amoeba-design.vercel.app still serves whatever deployment is current. After this branch deploys, the Vercel host should answer with `X-Robots-Tag: noindex` and canonicals pointing at https://amoeba.design. Slash duplicates are handled by `trailingSlash: false` in `vercel.json`.
+
+## Legacy Search Console (pre-migration baseline)
+
+Property: `sc-domain:amoeba.design`, via the bot's connector. This is whatever is live on that domain today, not https://amoeba-design.vercel.app. No sitemap has been submitted in Search Console.
+
+Period: 2026-07-10 to 2026-10-08 (90 days), compared with the prior 90 days. Only one page had any impressions.
+
+| URL | Clicks | Impressions | Prior 90 impressions | CTR | Avg position | Prior 90 position |
+|---|---|---|---|---|---|---|
+| https://amoeba.design/ | 5 | 298 | 11 | 1.7% | 11.3 | 23.0 |
+
+Queries, all to that homepage. A click count is listed only where the export included one.
+
+| Query | Impressions | Position | Clicks |
+|---|---|---|---|
+| amoeba ide | 60 | 6.6 | 1 |
+| amoeba designs | 9 | 21.2 | |
+| amoeba design | 5 | 7.4 | |
+| ameoba ide | 3 | 7.3 | |
+| amoeba architects | 3 | 35 | |
+| ameba design | 2 | 6.5 | |
+| amoeba creative sdn bhd | 2 | 27.5 | |
+| amoeba design website | 1 | 3 | |
+| amoeba coding | 1 | 8 | |
+| in points | 1 | 2 | |
+| amoeba design studio | 1 | 39 | |
+| amoeba studios | 1 | 38 | |
+| amoeba project | 1 | 50 | |
+| amoeba ai | 1 | 69 | |
+
+Zero non-branded service queries. No other pages, queries, or periods were in the export.
+
+**Branding / disambiguation.** "amoeba ide" is the largest query: 60 impressions and 1 click at position 6.6. The exact phrase "amoeba design" has 5 impressions at position 7.4. The same homepage also appears for the misspellings "ameoba ide" and "ameba design", and for other names that share the word Amoeba (architects, creative sdn bhd, studios, project, ai). People are reaching the legacy homepage through ambiguous brand-adjacent queries, not through queries about design engineering. The export does not say what "amoeba ide" refers to, and this note does not guess. The new homepage title is "Design engineering for ambitious B2B software • Amoeba" so the URL that inherits this query mix names the practice. The H1 is still the masthead sentence.
 
 ## Titles
 
-Preferred pattern from Bryan: `{Page Title} • Amoeba`. It is not implemented.
-
-Implemented pattern on most URLs: `{Page title} | Amoeba Design`. Home and info do not pass a title, so they share the 81-character default in `src/layouts/Base.astro`.
+Preferred pattern from Bryan: `{Page Title} • Amoeba`. The homepage uses it. Other pages still use `{Page title} | Amoeba Design`, and `/info` still falls through to the default in `src/layouts/Base.astro`.
 
 Character counts are the decoded title string.
 
 | URL | Chars | Title | Notes |
 |---|---|---|---|
-| `/` | 81 | Amoeba Design \| Design engineering studio for growth-stage B2B software companies | Same title as `/info`. Longer than a typical SERP truncation around 60 characters. Does not use the preferred suffix. |
-| `/info` | 81 | Same as `/` | Duplicate title. File: `src/pages/info/index.astro` (no `title` prop). |
+| `/` | 54 | Design engineering for ambitious B2B software • Amoeba | Set in `src/pages/index.astro`. No price. Disambiguates the legacy "amoeba ide" queries. |
+| `/info` | 81 | Amoeba Design \| Design engineering studio for growth-stage B2B software companies | Still the default in `src/layouts/Base.astro`. Next titles pass. |
 | `/work` | 20 | Work \| Amoeba Design | Short and generic. `src/pages/work/index.astro`. |
 | `/knowledge` | 25 | Knowledge \| Amoeba Design | Short and generic. `src/pages/knowledge/index.astro`. |
 | `/knowledge/shake-what-the-browser-gives-ya` | 46 | Shake what the browser gave ya \| Amoeba Design | |
@@ -63,9 +96,9 @@ Character counts are the decoded title string.
 | `/knowledge/css-is-nothing-to-fear` | 38 | Don't be afraid of CSS \| Amoeba Design | |
 | `/knowledge/figma-to-code` | 50 | One-shotting Figma designs in code \| Amoeba Design | |
 
-Every built page has exactly one `<title>`. Production matched these strings.
+Every built page has exactly one `<title>`. The homepage title above is what `bun run build` emitted. The other titles are unchanged.
 
-There is no impression data, so this audit cannot rank title fixes by current clicks. The commercial URLs are `/` and `/work`. `/` is also the duplicate-title URL.
+This Astro build has no impressions of its own. The legacy URL it will replace, https://amoeba.design/, is the only URL with Search Console impressions (298 in the last 90 days, 5 clicks). `/work`, `/info`, and `/knowledge` still need their own titles and descriptions.
 
 ## Meta descriptions
 
@@ -75,9 +108,7 @@ Knowledge frontmatter `description` is required by `src/content.config.ts` and i
 
 ## Canonical tags and trailing slashes
 
-No canonical tag on any Astro URL.
-
-The build writes directory indexes (`dist/work/index.html`, `dist/knowledge/figma-to-code/index.html`, and so on). On production, `/work` and `/work/` both returned 200 with the same HTML length and the same title. The same was true for `/knowledge` and `/knowledge/`. Without a canonical, those pairs are duplicate URLs.
+Every built page has one canonical on `https://amoeba.design`. Policy is `trailingSlash: 'never'`: the homepage is `https://amoeba.design/`, and `/work` is `https://amoeba.design/work`. The build still writes directory indexes (`dist/work/index.html`). `vercel.json` `trailingSlash: false` 308s `/work/` to `/work` once this config is deployed. Before that, the live Vercel host served both forms with 200.
 
 ## Open Graph and Twitter
 
@@ -89,7 +120,7 @@ Not in the repo, not in `dist/`, and https://amoeba-design.vercel.app/robots.txt
 
 ## Sitemap
 
-`@astrojs/sitemap` is not a dependency. No `sitemap.xml` or `sitemap-index.xml` in `dist/`. Production returned 404 for `/sitemap.xml`. Astro would also need a `site` value before a sitemap integration could emit absolute URLs.
+`@astrojs/sitemap` 3.7.4 writes `dist/sitemap-index.xml` and `dist/sitemap-0.xml`. The built sitemap lists `https://amoeba.design/`, `/info`, `/knowledge`, and `/work`. The seven `noindex: true` articles are excluded. `public/robots.txt` allows crawling and points at `https://amoeba.design/sitemap-index.xml`. Search Console still has no sitemap submitted. Bryan submits `https://amoeba.design/sitemap-index.xml` on `sc-domain:amoeba.design` after the domain serves this build.
 
 ## JSON-LD
 
@@ -114,7 +145,7 @@ Home, work, info, and the knowledge index have no unique H1. Article URLs have t
 
 Rendered `<main>` word counts are in `content-ledger.md`.
 
-- All seven articles: body text is "Coming soon" (2 words). With the in-main title, main text is 7–11 words. They are live, linked from `/knowledge`, and return 200. They are thin indexable URLs.
+- All seven articles: body text is "Coming soon" (2 words). With the in-main title, main text is 7–11 words. They are still linked from `/knowledge`, and each has `noindex: true`, so they are built but kept out of the sitemap and out of the index.
 - `/info`: 21 words.
 - `/work`: 3 visible words, all lightbox controls ("Close", "Previous", "Next"). No captions and no case-study prose. 13 images carry alt text (46 words total).
 - `/`: 59 words. Short, and it is the only page with an offer and a price.
@@ -150,40 +181,53 @@ The 404 on https://amoeba.design is that other Next.js app (HTML 404, `noindex`,
 
 ## llms.txt and AI crawlers
 
-https://amoeba-design.vercel.app/llms.txt returned the same plain-text 404. Nothing in the repo references `llms.txt`, GPTBot, Google-Extended, or other AI user agents. With no robots.txt, this host does not publish an allow or disallow policy for them.
+https://amoeba-design.vercel.app/llms.txt returned the same plain-text 404 before this change, and this repo still has no `llms.txt`. `public/robots.txt` allows all crawlers and does not name AI user agents. Host-level noindex is the `X-Robots-Tag` rule in `vercel.json`, not a robots.txt disallow, because that file is shared with https://amoeba.design.
 
 Adding `llms.txt` now would point models at "Coming soon" articles and a 59-word homepage. That is recorded as a later backlog item.
 
 ## Ranked backlog
 
-Order follows the program priority: accuracy and broken technical issues, then titles and meta (no impression data, so the commercial pages come first), then comparison pages, then buyer-question articles, then free tools, then other technical work, then AEO. Impact and effort are 1–5 judgments. Impact is not based on traffic numbers. Nothing below has been implemented.
+Order follows the program priority: accuracy and broken technical issues (including the domain migration, which is what protects the only URL with impressions), then titles and meta on that URL, then comparison pages, then buyer-question articles, then free tools, then other technical work, then AEO. Impact and effort are 1–5 judgments.
 
-1. **Decide the canonical host, then make the other origin stop competing.** Impact 5, effort 2 after Bryan answers. This Astro app is live at https://amoeba-design.vercel.app with no canonical and no `noindex`. https://amoeba.design is a separate Next.js site that already canonicalizes to itself and uses different positioning ("early-stage B2B startups"). Files to touch once the decision exists: `astro.config.mjs` (`site`) and `src/layouts/Base.astro`. Host redirects are a Vercel project setting, not a file in this repo.
-2. **Keep the seven "Coming soon" URLs out of the index until they have a real body.** Impact 5, effort 1. Files: `src/content/knowledge/*.md` and `src/pages/knowledge/[id].astro`. They are linked, return 200, and have a two-word body. Unpublishing or `noindex` is the fix. Writing them is item 7, not this item.
-3. **Give every indexable URL a unique title ending in `• Amoeba`, plus a meta description.** Impact 4, effort 2. Home and info share an 81-character title (`src/layouts/Base.astro`, `src/pages/info/index.astro`). `/work` and `/knowledge` are generic. No description meta exists. Do `/` and `/work` first. The head change belongs in `src/layouts/Base.astro`.
-4. **Use one unique H1 per URL.** Impact 3, effort 1. The masthead H1 in `src/components/Masthead.astro` is the only H1 on `/`, `/work`, `/info`, and `/knowledge`. Article pages add a second H1 in `src/pages/knowledge/[id].astro`.
-5. **Emit one canonical URL per page and pick one trailing-slash form.** Impact 4, effort 2. Depends on item 1. `/work` and `/work/` both returned 200. No canonical in `src/layouts/Base.astro`. `site` is unset in `astro.config.mjs`.
-6. **Add high-intent comparison, alternatives, or use-case pages.** Impact 4, effort 4. None exist. Blocked on a competitor list (empty in `config.json` on purpose). When unblocked, put them in `src/pages/compare/{slug}.astro`.
-7. **Replace the knowledge stubs with in-depth buyer-question articles.** Impact 4, effort 5. The seven titles already name topics (working with a design engineer, CSS, Figma-to-code, Tailwind, shadcn/lint, Storybook, native HTML). Bodies are "Coming soon". Do this after item 2 so the stubs are not sitting in the index while they are being written.
-8. **Ship one free tool.** Impact 3, effort 4. No tool exists. Blocked on Bryan choosing the tool. Convention, not yet a directory: `src/pages/tools/{slug}.astro`.
-9. **Add `robots.txt` and an XML sitemap after the indexable set is real.** Impact 3, effort 1. Missing today. A sitemap of the current 11 URLs would advertise seven empty articles, so this waits on items 1 and 2. `@astrojs/sitemap` also needs `site`.
-10. **Add JSON-LD and a real HTML 404.** Impact 2, effort 2. No Organization, WebSite, Person, Service, Article, or BreadcrumbList. No `src/pages/404.astro`; unknown URLs are the Vercel plain-text 404. Schema should wait until the canonical host and the published claims are confirmed.
+Done in this change:
 
-Next, and not in the top 10: `llms.txt` and an explicit AI-crawler policy (AEO). Low value until the articles exist. Also later: more specific work-image alts once clients can be named (`src/pages/work/index.astro`), and `target="_blank"` on the external anchors. No lab speed data was collected. The build does emit responsive WebP for the work images. Typekit is a render-blocking stylesheet in `src/layouts/Base.astro`. No Core Web Vitals number is claimed here.
+1. **Domain migration readiness.** `site`, canonicals, trailing-slash policy, `robots.txt`, and the sitemap are in the repo. Legacy amoeba.design has only the homepage, so there is no extra 301 map. Still manual at cutover: point the Vercel project domain at this deployment and redirect `amoeba-design.vercel.app` to `https://amoeba.design`, then submit `https://amoeba.design/sitemap-index.xml` in Search Console. After launch, compare the homepage with the legacy table, including "amoeba ide".
+2. **Stubs stay out of the index.** Each knowledge file has `noindex: true`. The article template emits `<meta name="robots" content="noindex, follow">`, and the sitemap filter drops those URLs. Set the flag to `false` when a body is real.
+3. **Homepage title only.** `Design engineering for ambitious B2B software • Amoeba` (54 characters, no price). Passed from `src/pages/index.astro`. `/info` still uses the old 81-character default.
+
+Trailing slash is done with the migration: canonicals use `trailingSlash: 'never'`, and `vercel.json` 308s a slashed path to the slashless path. The homepage stays `https://amoeba.design/`.
+
+Still to do, in program order:
+
+1. **Titles and meta descriptions on the remaining pages.** Impact 4, effort 2. `/info` still uses the old 81-character default in `src/layouts/Base.astro`. `/work` and `/knowledge` are still `Work | Amoeba Design` and `Knowledge | Amoeba Design`. No page has a meta description. Keep the `• Amoeba` suffix and keep prices out, including the $500/week test price. This is the next run.
+2. **Use one unique H1 per URL.** Impact 3, effort 1. The masthead H1 in `src/components/Masthead.astro` is the only H1 on `/`, `/work`, `/info`, and `/knowledge`. Article pages add a second H1 in `src/pages/knowledge/[id].astro`.
+3. **Add high-intent comparison, alternatives, or use-case pages.** Impact 4, effort 4. None exist. The legacy property has zero non-branded service queries. `config.json` has a peer set, not a competitor list. Do not publish those URLs as competitors. When a page is written, put it in `src/pages/compare/{slug}.astro`.
+4. **Replace the knowledge stubs with in-depth buyer-question articles.** Impact 4, effort 5. The seven titles already name the topics. Bodies are "Coming soon". They are `noindex` until `noindex` is set to `false`.
+5. **Ship one free tool.** Impact 3, effort 4. No tool exists. Blocked on Bryan choosing the tool. Convention, not yet a directory: `src/pages/tools/{slug}.astro`.
+6. **Add JSON-LD and a real HTML 404.** Impact 2, effort 2. No Organization, WebSite, Person, Service, Article, or BreadcrumbList. No `src/pages/404.astro`. Do not put the test price in schema. Use the claims in `truth.md`.
+7. **Add `llms.txt` and an explicit AI-crawler policy.** Impact 2, effort 1. Do this after the articles have real bodies. `public/robots.txt` currently allows all crawlers.
+
+Also later, not a separate ranked item: more specific work-image alts once clients can be named (`src/pages/work/index.astro`), and `target="_blank"` on the external anchors. No lab speed data was collected. The build does emit responsive WebP for the work images. Typekit is a render-blocking stylesheet in `src/layouts/Base.astro`. No Core Web Vitals number is claimed here.
 
 Internal-link repair is not in the backlog. The audit found no broken internal links and no orphan URLs.
 
 ## What would most improve the next runs
 
-Ask Bryan:
+Answered:
 
-1. Which host should be canonical for this business: https://amoeba-design.vercel.app, https://amoeba.design, or another hostname pointed at this Astro app? The two live sites disagree (growth-stage studio vs early-stage, one person).
-2. Google Search Console on the chosen property. No query data exists, so title and content work cannot be ordered by impressions yet.
-3. The competitor and alternatives list. It is an empty TODO. Do not guess.
-4. Priority keywords or jobs-to-be-hired, if he has them. The ledger topics are inferred from titles only.
-5. Pricing. The only published price is $500 / week for "Rent a design engineer". The commented block in `src/pages/index.astro` mentions a design-system figure of $5,000 and a prototyping figure of "$x,000" plus lorem ipsum. Is any of that real?
+1. Which domain will this build launch on, and is a migration from the current amoeba.design planned? **Yes.** Launch and canonical origin is https://amoeba.design. This repo now sets `site` and canonicals to that origin. https://amoeba-design.vercel.app stays the pre-launch host until Bryan attaches the domain and redirects it.
+
+Answered on 2026-10-10, continued:
+
+2. Legacy amoeba.design has only the homepage. No other legacy URLs need 301s. This question is closed.
+3. Pricing: $500/week, Rent a design engineer (test pricing, offer not yet formalized) is an accurate current claim and stays on the homepage. Other offers and prices, including the commented $5,000 design-system block, are not formalized and must not be used. Keep prices out of titles and meta descriptions.
+4. Positioning: keep "ambitious B2B software companies" (the current masthead). Peers, not strict competitors, are listed in `config.json`.
+
+Still ask Bryan:
+
+5. Priority service keywords, if he has them. The ledger topics are inferred from titles. The legacy property's queries are brand-adjacent only, led by "amoeba ide".
 6. Whether the work screenshots may name a client, product, and outcome. Filenames are not treated as names.
 7. Whether amoebaunlimited.com is still the blog, or whether `/knowledge` is the only place new posts should go.
-8. A contact path he wants published (email or calendar). None is on the site.
+8. A contact path he wants published (email or calendar). None is on this build.
 9. Which free tool, if any, is worth building.
-10. Confirmation that the owner-supplied audience and the "product design and design engineering for growth-stage B2B software" line should be the positioning, given the masthead says "ambitious" and the other site says "early-stage".
+10. Whether any peer should be named on a comparison page. The peer list is context, not approval to publish those sites as competitors.

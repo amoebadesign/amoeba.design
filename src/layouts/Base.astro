@@ -4,11 +4,15 @@ import "../styles/amoeba/index.css";
 
 interface Props {
 	title?: string;
+	noindex?: boolean;
 }
 
 const {
 	title = "Amoeba Design | Design engineering studio for growth-stage B2B software companies",
+	noindex = false,
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 ---
 <!doctype html>
 <html lang="en" transition:animate="none">
@@ -16,6 +20,8 @@ const {
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>{title}</title>
+		<link rel="canonical" href={canonical.href} />
+		{noindex && <meta name="robots" content="noindex, follow" />}
 		<script is:inline>
 			(() => {
 				const apply = () => {
