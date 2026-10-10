@@ -60,10 +60,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 		<script is:inline src="https://cdn.usefathom.com/script.js" data-site="DJDIBJEG" data-spa="auto" defer></script>
 		<!-- / Fathom -->
 		<link rel="preload" href="/fonts/hex-franklin-variable.woff2" as="font" type="font/woff2" crossorigin>
-		<link rel="preload" href="https://use.typekit.net/dit6fmi.css" as="style">
-		<link rel="preconnect" href="https://use.typekit.net">
-		<link rel="preconnect" href="https://p.typekit.net" crossorigin>
-		<link rel="stylesheet" href="https://use.typekit.net/dit6fmi.css">
+		<link rel="preconnect" href="https://use.typekit.net" crossorigin>
+		<link rel="preload" href="/fonts/acumin-variable.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<noscript><link rel="stylesheet" href="/fonts/acumin-variable.css"></noscript>
 	</head>
 	<body>
 		<slot />
