@@ -1,0 +1,14 @@
+/*
+ * Acumin VF from Adobe Fonts kit dit6fmi (last published 2025-02-24).
+ * The file stays on Adobe's CDN. The Typekit web license does not allow
+ * self-hosting these bytes. font-display: swap keeps text visible; the kit
+ * stylesheet itself uses font-display: auto and a render-blocking @import.
+ */
+@font-face {
+  font-family: "acumin-variable";
+  src: url("https://use.typekit.net/af/cd27bb/0000000000000000774be2a6/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-stretch: normal;
+  font-display: swap;
+}

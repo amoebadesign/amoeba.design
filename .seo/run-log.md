@@ -2,6 +2,48 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Merge main into the performance branch
+
+- Scope: bring PR #14 (sitewide JSON-LD and the 404) and PR #13 (offer page, checklist, stubs, `noindex-routes`) onto the performance branch before merging PR #16. No new copy.
+- Conflict: `.seo/run-log.md` only. Both sides' entries stay. This note is newest.
+- `src/layouts/Base.astro` merged cleanly. `SiteGraph`, the page `jsonLd` slot, and `noindex` stay. The non-blocking Acumin stylesheet stays in place of the render-blocking Typekit kit. `astro.config.mjs` and `src/noindex-routes.mjs` were not edited. The sitemap filter still drops `/404` and every `noindex` URL.
+- New pages have no content images: `/rent-a-design-engineer`, `/tools/ui-polish-checklist`, both `/compare/` stubs, `/404`, and the knowledge routes. They use `LayoutA`, so they get the Typekit change from `Base.astro`. `/work` already had the LCP image `priority`, sizes, and 640w candidate. The `/fonts/` cache header in `vercel.json` is unchanged.
+- The performance entry below says `/rent-a-design-engineer` 404'd. That was the live host before this route existed in the repo. The page is in this tree now.
+
+## 2026-10-10 — Performance: Typekit, work images, font cache
+
+- Scope: lab performance only. No schema, 404, `llms.txt`, or `og:image` edits. `src/layouts/Base.astro` changed only in the font links. Titles, descriptions, canonicals, and share tags were not touched.
+- Tool: Lighthouse 13.5.0, mobile, simulated throttling, performance category only. One run per URL, then a second run of local `/` and `/work` after the change (those two matched the first run within 3 ms). INP is not emitted by this lab run. TBT is the lab stand-in. `/rent-a-design-engineer` is not a page: `https://amoeba.design/rent-a-design-engineer` returned 404, and `https://www.amoeba.design/rent-a-design-engineer` returned 307 to that 404. It was not scored.
+- Live "after" is not in this table. These numbers are the production host before this branch is deployed, and a local `astro preview` of `main` versus this branch. Cold loads. Cache-Control does not move these scores.
+
+Performance score is Lighthouse's 0–100 score. Times are milliseconds.
+
+| Page | Where | Score | LCP | CLS | TBT | FCP |
+|---|---|---|---|---|---|---|
+| `/` | live before | 96 | 2306 | 0.0093 | 0 | 2306 |
+| `/` | local before | 97 | 2129 | 0.0093 | 0 | 2129 |
+| `/` | local after | 100 | 1505 | 0.0093 | 0 | 937 |
+| `/work` | live before | 94 | 2631 | 0.0002 | 0 | 2352 |
+| `/work` | local before | 95 | 2635 | 0.0002 | 0 | 2131 |
+| `/work` | local after | 98 | 2403 | 0.0002 | 0 | 933 |
+| `/info` | live before | 96 | 2292 | 0.0042 | 0 | 2292 |
+| `/info` | local before | 97 | 2125 | 0.0042 | 0 | 2125 |
+| `/info` | local after | 100 | 1505 | 0.0050 | 0 | 933 |
+| `/knowledge` | live before | 96 | 2292 | 0.0135 | 0 | 2292 |
+| `/knowledge` | local before | 97 | 2136 | 0.0135 | 0 | 2136 |
+| `/knowledge` | local after | 100 | 1503 | 0.0135 | 0 | 929 |
+
+Repeat local after: `/` score 100, LCP 1504, CLS 0.0093, TBT 0, FCP 936. `/work` score 98, LCP 2406, CLS 0.0002, TBT 0, FCP 936.
+
+- LCP element was the logotype "AMOEBA" on `/`, `/info`, and `/knowledge`, and the first work image on `/work`. That stayed true after the change.
+- Render-blocking before, every page: `https://use.typekit.net/dit6fmi.css` (~760–780 ms) and its `@import` of `https://p.typekit.net/p.css` (~760 ms). Estimated savings about 1,310–1,480 ms. The kit CSS sets `font-display: auto` on Acumin VF. `p.css` is an empty file. The preconnect to `p.typekit.net` was unused because it was `crossorigin` and the import is a no-cors stylesheet request.
+- Acumin is not self-hosted. Adobe Fonts' web license does not allow hosting the font files. `public/fonts/acumin-variable.css` points at the kit's woff2 on `use.typekit.net` and sets `font-display: swap`. `Base.astro` preconnects to that origin with `crossorigin` and preloads the small stylesheet, then swaps it to `rel="stylesheet"` on load. The font request in the after trace was still `https://use.typekit.net/af/...woff2` (638,885 bytes). In the browser, `document.fonts` reported `acumin-variable` status `loaded` and display `swap`, and HEX Franklin still `loaded`. CLS on `/`, `/work`, and `/knowledge` did not move. `/info` moved from 0.0042 to 0.0050.
+- `/work` images already had `width` and `height`. The unsized-images audit passed, and CLS was 0.0002. The LCP image was missing `fetchpriority=high`, and `sizes="100vw"` made mobile download the 768w file (60,942 bytes) for a slot of about 553 device pixels. The image-delivery audit estimated 103 KiB savings. The first image now uses Astro `priority` (`loading="eager"`, `decoding="sync"`, `fetchpriority="high"`). `sizes` matches the column and the button padding. A 640w candidate was added. The after trace fetched the 640w file (42,902 bytes). The image-delivery audit passed, and the LCP checklist shows `fetchpriority=high`.
+- ClientRouter was not removed. The unused-JavaScript audit reported 0 wasted bytes, and TBT was 0 ms. The router is what runs the view transitions. A click from `/work` to `/info` stayed on the same document.
+- Caching, measured with `curl -I` on the live host before this change: `/_astro/*` already sends `public, max-age=31536000, immutable`. `/fonts/hex-franklin-variable.woff2` sent `public, max-age=0, must-revalidate`. `vercel.json` now sets `public, max-age=31536000, immutable` for `/fonts/(.*)`. `astro preview` does not apply `vercel.json`, so this header is not in the lab scores. Replacing that font file in place will stay cached for a year; a new filename is the cache bust.
+- Build: `bun run build` exited 0. Astro 7.3.5, static output, 11 pages.
+- Left alone: the design-system stylesheet is still render-blocking (about 300 ms on localhost, no estimated savings once Typekit was gone). Inlining it was not worth a layout-CSS change at a score of 100. The 638 KB variable font is still downloaded from Adobe. Subsetting it would mean self-hosting.
+
 ## 2026-10-10 — Merge main (sitewide JSON-LD, 404) into the offer/outlines branch
 
 - Scope: bring PR #14 into PR #13 before merging #13. No copy changes.
