@@ -12,11 +12,13 @@
     "www": "https://www.amoeba.design does not resolve (DNS name not found on 2026-10-10)",
     "canonical": {
       "domain": "https://amoeba.design",
-      "status": "decided, not implemented in this repo",
+      "status": "implemented in this repo; the host redirect and Search Console sitemap submission are still manual",
       "decidedBy": "Bryan King, 2026-10-10",
       "decision": "This Astro build will replace the site currently live at https://amoeba.design. Launch and canonical origin is https://amoeba.design. https://amoeba-design.vercel.app remains the current pre-launch deploy URL.",
-      "implementedInCode": false,
-      "code": "astro.config.mjs does not set site. src/layouts/Base.astro does not emit a canonical link. There is no vercel.json. The package.json name amoeba.design is the npm package name, not a canonical URL. On 2026-10-10, https://amoeba-design.vercel.app/ returned HTTP 200 with no Location redirect to https://amoeba.design.",
+      "implementedInCode": true,
+      "trailingSlash": "never. Homepage canonical is https://amoeba.design/. Other canonicals have no trailing slash. vercel.json trailingSlash false sends a 308 from the slashed form to that canonical.",
+      "nonProductionHosts": "vercel.json sets X-Robots-Tag: noindex on every response whose Host is not exactly amoeba.design. The production host is the missing condition, so this rule cannot attach noindex to amoeba.design. A redirect from the Vercel hostname is still a project setting Bryan applies at cutover.",
+      "code": "astro.config.mjs sets site to https://amoeba.design and trailingSlash never. src/layouts/Base.astro emits one canonical on that origin per page. Knowledge stubs with noindex: true are omitted from the sitemap and emit meta robots noindex, follow. public/robots.txt allows crawling and points at https://amoeba.design/sitemap-index.xml.",
       "legacySite": "https://amoeba.design currently serves a different Next.js app. That app emits its own canonical to https://amoeba.design. It is the site this build will replace, not this repo's output.",
       "legacyPaths": {
         "status": "closed",

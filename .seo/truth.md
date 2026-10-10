@@ -74,7 +74,7 @@ Seven entries exist. Each has a title and a description in frontmatter. The rend
 - Process: how an engagement starts, how long it runs, what Bryan will not do. UNKNOWN.
 - Named clients, case-study results, or permission to name the companies in the work screenshots. UNKNOWN.
 - A public email, calendar link, or contact form. UNKNOWN. The published contact paths are the X profile on `/info` and the footer Twitter/GitHub links.
-- Launch domain, answered by Bryan on 2026-10-10: this Astro build will replace the current site at https://amoeba.design. That origin is the canonical to implement. It is not set in this repo yet (`astro.config.mjs` has no `site`; `src/layouts/Base.astro` has no canonical). The current pre-launch deploy is https://amoeba-design.vercel.app. Legacy copy on the Next.js site is still not recorded here.
+- Launch domain, answered by Bryan on 2026-10-10: this Astro build will replace the current site at https://amoeba.design. `astro.config.mjs` now sets `site` to that origin and `src/layouts/Base.astro` emits canonicals there. The pre-launch deploy remains https://amoeba-design.vercel.app until Bryan attaches the domain. Legacy copy on the Next.js site is still not recorded here.
 - Legacy URLs, answered by Bryan on 2026-10-10: amoeba.design has only the homepage. No other legacy URLs need 301s.
 - Competitors. UNKNOWN. Bryan named a peer set (people doing similar things, not strict competitors) in `.seo/config.json` under `peers`. Do not treat those sites as competitors.
 - Audience segments. The owner stated them for the program (see config). The site itself does not list an audience.
