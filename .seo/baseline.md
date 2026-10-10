@@ -180,9 +180,9 @@ The 404 on https://amoeba.design is that other Next.js app (HTML 404, `noindex`,
 
 ## llms.txt and AI crawlers
 
-https://amoeba-design.vercel.app/llms.txt returned the same plain-text 404 before this change, and this repo still has no `llms.txt`. `public/robots.txt` allows all crawlers and does not name AI user agents. Host-level noindex is the `X-Robots-Tag` rule in `vercel.json`, not a robots.txt disallow, because that file is shared with https://amoeba.design.
+`public/robots.txt` names the major AI user agents and allows every one of them. `User-agent: *` still allows anyone not named. Host-level noindex for non-production hosts stays the `X-Robots-Tag` rule in `vercel.json`, not a robots.txt disallow, because that file is shared with https://amoeba.design.
 
-Adding `llms.txt` now would point models at "Coming soon" articles and a 59-word homepage. That is recorded as a later backlog item.
+`/llms.txt`, `/llms-full.txt`, and Markdown alternates of the indexable pages are written at the end of `astro build` (`src/integrations/llms-txt.mjs`). They are not committed under `public/`, so a published article cannot drift from a checked-in copy. Knowledge entries with `noindex: true` are omitted. See the run log for the file list and the duplicate-content handling (`rel="alternate"` plus `X-Robots-Tag: noindex` on `*.md`, and no `.md` URLs in the sitemap).
 
 ## Ranked backlog
 
@@ -199,6 +199,10 @@ Done in the on-page metadata run:
 4. **Unique titles, meta descriptions, and share tags on every page.** `{Page title} • Amoeba`, including the `Base.astro` fallback. One description per page. No prices. Open Graph and Twitter tags as described above. No share image (`TODO(og-image)`).
 5. **One H1 per URL.** Masthead sentence is the H1 on `/` only. Article pages keep the article title as their only H1.
 
+Done in the llms.txt run:
+
+6. **`llms.txt` and an explicit AI-crawler policy.** `public/robots.txt` allows the named AI user agents and still allows `User-agent: *`. The build writes `/llms.txt`, `/llms-full.txt`, and Markdown for indexable pages only. Unpublished knowledge articles stay out until `noindex` is not true.
+
 Trailing slash is done with the migration: canonicals use `trailingSlash: 'never'`, and `vercel.json` 308s a slashed path to the slashless path. The homepage stays `https://amoeba.design/`.
 
 Still to do, in program order:
@@ -207,8 +211,7 @@ Still to do, in program order:
 2. **Replace the knowledge stubs with in-depth buyer-question articles.** Impact 4, effort 5. The seven titles already name the topics. Bodies are "Coming soon". They are `noindex` until `noindex` is set to `false`. This is the next unblocked content action. Start with "There's more to design engineering than microinteractions".
 3. **Ship one free tool.** Impact 3, effort 4. No tool exists. Blocked on Bryan choosing the tool. Convention, not yet a directory: `src/pages/tools/{slug}.astro`.
 4. **Add JSON-LD and a real HTML 404.** Impact 2, effort 2. No Organization, WebSite, Person, Service, Article, or BreadcrumbList. No `src/pages/404.astro`. Do not put the test price in schema. Use the claims in `truth.md`.
-5. **Add `llms.txt` and an explicit AI-crawler policy.** Impact 2, effort 1. Do this after the articles have real bodies. `public/robots.txt` currently allows all crawlers.
-6. **Add `public/og.png` and emit `og:image` / `twitter:image`.** Impact 2, effort 1. Blocked on artwork from Bryan. The hook is `TODO(og-image)` in `src/layouts/Base.astro`.
+5. **Add `public/og.png` and emit `og:image` / `twitter:image`.** Impact 2, effort 1. Blocked on artwork from Bryan. The hook is `TODO(og-image)` in `src/layouts/Base.astro`.
 
 Also later, not a separate ranked item: more specific work-image alts once clients can be named (`src/pages/work/index.astro`), and `target="_blank"` on the external anchors. No lab speed data was collected. The build does emit responsive WebP for the work images. Typekit is a render-blocking stylesheet in `src/layouts/Base.astro`. No Core Web Vitals number is claimed here.
 

@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import { absoluteUrl, markdownPathname } from "../llms/urls.mjs";
 import "../styles/amoeba/index.css";
 
 interface Props {
@@ -19,6 +20,10 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
+// Markdown alternates are generated for indexable pages only. vercel.json
+// sends X-Robots-Tag: noindex for `*.md`, and those URLs are not in the sitemap.
+const markdownHref = noindex ? undefined : absoluteUrl(markdownPathname(canonical.pathname), canonical);
+const llmsHref = absoluteUrl("/llms.txt", canonical);
 ---
 <!doctype html>
 <html lang="en" transition:animate="none">
@@ -28,6 +33,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical.href} />
+		{markdownHref && <link rel="alternate" type="text/markdown" href={markdownHref} />}
+		<link rel="describedby" href={llmsHref} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical.href} />

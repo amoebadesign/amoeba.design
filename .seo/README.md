@@ -26,4 +26,6 @@ Astro project root is the repo root (`package.json`, `astro.config.mjs`). Astro 
 
 New blog posts belong in `src/content/knowledge/` until Bryan says the off-site blog at amoebaunlimited.com is the blog of record.
 
+`/llms.txt`, `/llms-full.txt`, and `/{route}.md` (homepage: `/index.md`) are generated at the end of `astro build` from the built HTML. `src/noindex-routes.mjs` is the shared list of knowledge paths with `noindex: true`. The sitemap filter and the generator both use it. Those text files are not committed under `public/`.
+
 Comparison pages and free tools do not exist. When a later run adds one, use `src/pages/compare/{slug}.astro` and `src/pages/tools/{slug}.astro`. Those directories are a convention recorded in `config.json`. They were not created in the setup run.
