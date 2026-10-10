@@ -1,182 +1,58 @@
 ---
 import LayoutA from "../../layouts/LayoutA.astro";
 import { Stack } from "../../components/ui";
+import { noindexRoutes } from "../../noindex-routes.mjs";
 
+// Outline: .seo/outlines/design-engineer-vs-product-designer-vs-frontend-engineer.md
+const path = "/compare/design-engineer-vs-product-designer-vs-frontend-engineer";
+const pageUrl = new URL(path, "https://amoeba.design").href;
+const noindex = noindexRoutes.has(path);
+const headline = "Design engineer vs product designer vs frontend engineer";
 const title = "Design engineer vs designer vs front end • Amoeba";
 const description =
 	"A design engineer, a product designer, and a frontend engineer own different parts of a SaaS product. When I would hire each, and why the titles differ.";
-const pageUrl =
-	"https://amoeba.design/compare/design-engineer-vs-product-designer-vs-frontend-engineer";
+// ISO date (YYYY-MM-DD) for Article schema once the body is real.
+const published: string | undefined = undefined;
 
-const jsonLd = [
-	{
-		"@context": "https://schema.org",
-		"@type": "Article",
-		headline: "Design engineer vs product designer vs frontend engineer",
-		description,
-		inLanguage: "en",
-		datePublished: "2026-10-10",
-		dateModified: "2026-10-10",
-		author: {
-			"@type": "Person",
-			name: "Bryan King",
-			url: "https://x.com/bryan_king",
-		},
-		publisher: {
-			"@type": "Organization",
-			name: "Amoeba",
-			url: "https://amoeba.design",
-		},
-		mainEntityOfPage: pageUrl,
-	},
-	{
-		"@context": "https://schema.org",
-		"@type": "BreadcrumbList",
-		itemListElement: [
-			{ "@type": "ListItem", position: 1, name: "Home", item: "https://amoeba.design/" },
+const article: Record<string, unknown> = {
+	"@context": "https://schema.org",
+	"@type": "Article",
+	headline,
+	description,
+	inLanguage: "en",
+	author: { "@type": "Person", name: "Bryan King", url: "https://x.com/bryan_king" },
+	publisher: { "@type": "Organization", name: "Amoeba", url: "https://amoeba.design" },
+	mainEntityOfPage: pageUrl,
+};
+if (published) {
+	article.datePublished = published;
+	article.dateModified = published;
+}
+
+const jsonLd = noindex
+	? undefined
+	: [
+			article,
 			{
-				"@type": "ListItem",
-				position: 2,
-				name: "Design engineer vs product designer vs frontend engineer",
-				item: pageUrl,
+				"@context": "https://schema.org",
+				"@type": "BreadcrumbList",
+				itemListElement: [
+					{ "@type": "ListItem", position: 1, name: "Home", item: "https://amoeba.design/" },
+					{ "@type": "ListItem", position: 2, name: headline, item: pageUrl },
+				],
 			},
-		],
-	},
-];
+		];
 ---
 
-<LayoutA title={title} description={description} ogType="article" jsonLd={jsonLd}>
-	<Stack space="8">
-		<Stack space="4" class="copy">
-			<h1 class="type-title-alt">Design engineer vs product designer vs frontend engineer</h1>
-			<p>
-				The titles get used as synonyms in job posts and in search. They are three different gaps on a product
-				team. I have done the work of all three, sometimes in the same week, and the expensive mistake is hiring
-				the title you like instead of the gap you have.
-			</p>
-			<p>
-				A design engineer decides how a software interface should behave and ships that decision as code. I wrote
-				the longer definition in
-				<a href="/knowledge/more-than-microinteractions">what a design engineer is</a>.
-				This page is the hiring version: what each role owns, and when I would hire which.
-			</p>
-		</Stack>
-
-		<div class="table-wrap">
-			<table>
-				<caption>What each role owns, and when I would hire them</caption>
-				<thead>
-					<tr>
-						<th scope="col">Role</th>
-						<th scope="col">What they own</th>
-						<th scope="col">When I would hire them</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th scope="row">Product designer</th>
-						<td>The problem, the flows, the research, and the argument for why this solution is the one.</td>
-						<td>The problem is still muddy, and you already have people who can build a faithful interface.</td>
-					</tr>
-					<tr>
-						<th scope="row">Frontend engineer</th>
-						<td>The implementation: components, states, accessibility, performance, a codebase that holds.</td>
-						<td>The design is settled, and the surface area needs an owner who lives in the repo.</td>
-					</tr>
-					<tr>
-						<th scope="row">Design engineer</th>
-						<td>The decision and the diff. Design sense, front-end chops, enough of the system to shape it, and product judgment.</td>
-						<td>The gap is between a UI decision and a pull request. The backlog is real. Engineers can review.</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<Stack space="4" class="copy">
-			<h2>Product designer</h2>
-			<p>
-				A product designer owns the problem. What the customer is trying to finish, which flow deserves to exist,
-				what the research actually said, and the explanation that makes a team trust the call. The best ones are
-				what I call omakase designers. They decide what should be served. They do not take a ticket and decorate
-				it.
-			</p>
-			<p>
-				Communication is the skill that makes the rest of it land. I have watched great design get ignored
-				because nobody could say why it was the solution, and I have watched ordinary design win because the
-				argument was precise. User research and usability testing belong here. I list both on the
-				<a href="/">homepage</a> because a screen designed without them is a guess with better type.
-			</p>
-			<p>
-				Plenty of excellent product designers stop at a design file. That is a complete job when your engineers
-				can build what was drawn, and build it faithfully. Hire this person when the company does not yet know
-				what to ship, or when the interface decisions are political and someone has to hold the why. If the file
-				is already trusted and the product still feels rough in the browser, you have a different opening.
-			</p>
-
-			<h2>Frontend engineer</h2>
-			<p>
-				A frontend engineer owns the implementation. Components, the states a screenshot skips, accessibility,
-				performance, and a pull request that still makes sense next year. Front-end chops are the whole job, and
-				it is a deep one. Taste shows up in this work all the time. The center of the role is the code.
-			</p>
-			<p>
-				Hire a frontend engineer when the design is settled and the surface area is large. Design systems,
-				rendering, the boring edges of a SaaS app: tables that survive real data, forms that fail honestly,
-				focus that a keyboard user can see. A specialist here is a full seat. I want that person when the
-				product is big enough that "someone will tidy the CSS" is how the CSS dies.
-			</p>
-			<p>
-				The failure mode is asking a frontend engineer to also discover the product, or asking a product designer
-				to also be the person who lands the diff at midnight. Some people can. Most should not be staffed as if
-				they can. I would rather name the gap than flatter the job description.
-			</p>
-
-			<h2>Design engineer</h2>
-			<p>
-				A design engineer owns the overlap. Design sense, front-end chops, enough back-end knowledge to shape
-				the system around the screen, and product judgment about what matters. The deliverable I trust is a
-				pull request, reviewed by the engineers who live in the repo. The picture, when there is one, is a tool
-				on the way to the diff.
-			</p>
-			<p>
-				The job is also the unglamorous half. Writing the RFC that says how the design system changes. Putting
-				strict checks in CI so the next agent session cannot quietly override the components. Reading the code,
-				including the code a model wrote. I joked once that you are not really a design engineer until you are
-				writing a long RFC and wiring the lint into the pipeline. The joke is the job description. There is
-				<a href="/knowledge/more-than-microinteractions">more to it than microinteractions</a>.
-			</p>
-			<p>
-				Hire a design engineer when the company can describe the interface pain and cannot get a reviewed diff
-				out of it. Rough edges. A design system the product ignores. AI slop that looks finished from across the
-				room. A React UI for a SaaS product where the workflow takes too many clicks and nobody owns both the
-				fix and the pull request. That is the gap behind
-				<a href="/rent-a-design-engineer">rent a design engineer</a>.
-			</p>
-
-			<h2>How I would choose</h2>
-			<p>
-				Start from the artifact you are missing. If you are missing a point of view, hire a product designer and
-				let them talk to customers. Your customers will tell you what they want. Someone has to listen, and then
-				say why this solution is the one. If you are missing an owner for a large front end, hire a frontend
-				engineer and give them the system. If you are missing the person who will do both on a defined backlog,
-				hire a design engineer.
-			</p>
-			<p>
-				Small teams blur this, and I like a skilled generalist while a B2B product is going from zero to one.
-				One person with the combination, plus a model as a pairing partner, can ship a lot. The boost is real
-				and capped. I still read the code. Blurring the titles stops working when "everyone does a bit of
-				design" means the interface belongs to nobody. Then hire the role and follow the methodology you already
-				claim, by the book.
-			</p>
-			<p>
-				A week and a full-time seat are a separate choice. I compared them in
-				<a href="/compare/rent-a-design-engineer-vs-hiring">rent a design engineer vs hiring</a>.
-				If the pain is generated UI, the practical pass is
-				<a href="/knowledge/fix-ai-slop-ui">fixing the AI slop</a>
-				and the <a href="/tools/ui-polish-checklist">UI polish checklist</a>. The rest of the writing lives on
-				<a href="/knowledge">Knowledge</a>.
-			</p>
-			<p>Hire the gap. The title is just the label you put on the req.</p>
+<LayoutA title={title} description={description} noindex={noindex} ogType="article" jsonLd={jsonLd}>
+	<Stack space="4" class="copy">
+		<h1 class="type-title-alt">{headline}</h1>
+		<p>Coming soon</p>
+		<Stack as="ul" role="list" space="1">
+			<li><a href="/knowledge/more-than-microinteractions">There's more to design engineering than microinteractions</a></li>
+			<li><a href="/compare/rent-a-design-engineer-vs-hiring">Rent a design engineer vs hiring</a></li>
+			<li><a href="/rent-a-design-engineer">Rent a design engineer</a></li>
+			<li><a href="/knowledge">Knowledge</a></li>
 		</Stack>
 	</Stack>
 </LayoutA>
@@ -188,21 +64,5 @@ const jsonLd = [
 
 	h1 {
 		letter-spacing: var(--tracking-tight);
-	}
-
-	.table-wrap {
-		max-inline-size: 100%;
-		overflow-x: auto;
-	}
-
-	caption {
-		caption-side: top;
-		text-align: start;
-		font-weight: 700;
-		margin-block-end: calc(var(--spacing) * 2);
-	}
-
-	th {
-		text-align: start;
 	}
 </style>

@@ -3,11 +3,15 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { noindexRoutes } from './src/noindex-routes.mjs';
 
 const SITE = 'https://amoeba.design';
 
-/** Paths whose knowledge frontmatter says `noindex: true`. Flip that flag to include the article. */
-function noindexKnowledgeUrls() {
+/**
+ * Knowledge entries whose frontmatter says `noindex: true`, plus the page routes in
+ * src/noindex-routes.mjs. Flip the flag, or remove the route, to include the page.
+ */
+function noindexPageUrls() {
 	const dir = join(process.cwd(), 'src/content/knowledge');
 	const urls = new Set();
 	for (const file of readdirSync(dir)) {
@@ -18,10 +22,11 @@ function noindexKnowledgeUrls() {
 		const slug = file.slice(0, -'.md'.length);
 		urls.add(new URL(`/knowledge/${slug}`, SITE).href);
 	}
+	for (const path of noindexRoutes) urls.add(new URL(path, SITE).href);
 	return urls;
 }
 
-const noindexUrls = noindexKnowledgeUrls();
+const noindexUrls = noindexPageUrls();
 
 // https://astro.build/config
 export default defineConfig({
