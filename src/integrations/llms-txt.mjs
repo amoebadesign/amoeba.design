@@ -8,8 +8,8 @@ import { noindexPathnames } from '../noindex-routes.mjs';
 /**
  * Writes `/llms.txt`, `/llms-full.txt`, and a Markdown alternate for every
  * indexable HTML page. Runs after the pages exist so the text matches the
- * build. `noindex` frontmatter (via `src/noindex-routes.mjs`) and a robots
- * noindex meta both omit a page.
+ * build. `noindexPathnames()` in `src/noindex-routes.mjs` (knowledge frontmatter
+ * plus stub compare routes) and a robots noindex meta both omit a page.
  *
  * @param {{ site: string }} options
  */

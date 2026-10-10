@@ -1,18 +1,25 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
+// Page routes (not knowledge entries) that are still stubs. They emit `noindex, follow`
+// and astro.config.mjs drops them from the sitemap. Remove a path here to publish it.
+// Knowledge entries use `noindex: true` in their frontmatter instead.
+export const noindexRoutes = new Set([
+	'/compare/design-engineer-vs-product-designer-vs-frontend-engineer',
+	'/compare/rent-a-design-engineer-vs-hiring',
+]);
+
 /**
- * Knowledge articles whose frontmatter says `noindex: true`.
- * The sitemap filter and the llms.txt build both call this, so a flag flip
- * publishes the article in both places on the next build.
+ * Pathnames that must stay out of the sitemap, llms.txt, and Markdown alternates.
+ * Knowledge articles with `noindex: true` plus stub routes in `noindexRoutes`.
  *
  * @param {string} [root]
  * @returns {Set<string>} Pathnames such as `/knowledge/shadcn-lint`. No trailing slash.
  */
 export function noindexPathnames(root = process.cwd()) {
-	const dir = join(root, 'src/content/knowledge');
 	/** @type {Set<string>} */
-	const paths = new Set();
+	const paths = new Set(noindexRoutes);
+	const dir = join(root, 'src/content/knowledge');
 	let files;
 	try {
 		files = readdirSync(dir);
@@ -31,7 +38,7 @@ export function noindexPathnames(root = process.cwd()) {
 }
 
 /**
- * Absolute sitemap URLs for those articles.
+ * Absolute URLs for every noindex pathname.
  *
  * @param {string} site Origin, including protocol, with no path.
  * @param {string} [root]

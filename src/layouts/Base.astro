@@ -1,5 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import JsonLd from "../components/JsonLd.astro";
+import SiteGraph from "../components/SiteGraph.astro";
 import { absoluteUrl, markdownPathname } from "../llms/urls.mjs";
 import "../styles/amoeba/index.css";
 
@@ -8,6 +10,7 @@ interface Props {
 	description?: string;
 	noindex?: boolean;
 	ogType?: "website" | "article";
+	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 // Fallback only. Every page should pass its own title and description.
@@ -17,6 +20,7 @@ const {
 	description = "Amoeba is a design engineering studio for ambitious B2B software companies. Rent a design engineer to ship polished UI as pull requests for your team to review.",
 	noindex = false,
 	ogType = "website",
+	jsonLd,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
@@ -46,6 +50,8 @@ const llmsHref = absoluteUrl("/llms.txt", canonical);
 		<meta name="twitter:url" content={canonical.href} />
 		<!-- TODO(og-image): no share image in this repo. public/ has robots.txt and a font file only. Do not point og:image at a work screenshot. When Bryan supplies a 1200×630 asset at public/og.png, emit og:image and twitter:image as absolute URLs on the canonical origin. -->
 		{noindex && <meta name="robots" content="noindex, follow" />}
+		<SiteGraph />
+		{jsonLd && <JsonLd data={jsonLd} />}
 		<script is:inline>
 			(() => {
 				const apply = () => {
@@ -67,10 +73,9 @@ const llmsHref = absoluteUrl("/llms.txt", canonical);
 		<script is:inline src="https://cdn.usefathom.com/script.js" data-site="DJDIBJEG" data-spa="auto" defer></script>
 		<!-- / Fathom -->
 		<link rel="preload" href="/fonts/hex-franklin-variable.woff2" as="font" type="font/woff2" crossorigin>
-		<link rel="preload" href="https://use.typekit.net/dit6fmi.css" as="style">
-		<link rel="preconnect" href="https://use.typekit.net">
-		<link rel="preconnect" href="https://p.typekit.net" crossorigin>
-		<link rel="stylesheet" href="https://use.typekit.net/dit6fmi.css">
+		<link rel="preconnect" href="https://use.typekit.net" crossorigin>
+		<link rel="preload" href="/fonts/acumin-variable.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<noscript><link rel="stylesheet" href="/fonts/acumin-variable.css"></noscript>
 	</head>
 	<body>
 		<slot />

@@ -38,9 +38,11 @@ const VOID = new Set([
 
 const PAGE_LABELS = {
 	'/': 'Home',
+	'/rent-a-design-engineer': 'Rent a design engineer',
 	'/work': 'Work',
 	'/info': 'Info',
 	'/knowledge': 'Knowledge',
+	'/tools/ui-polish-checklist': 'UI polish checklist',
 };
 
 /**
@@ -393,7 +395,7 @@ function plainText(value) {
 }
 
 const UNPUBLISHED_KNOWLEDGE =
-	'No knowledge articles are published yet. An article is added to this file when its frontmatter `noindex` flag is not true.';
+	'No knowledge articles are published yet. An article is added to this file when its frontmatter `noindex` flag is not true. Comparison pages listed in `src/noindex-routes.mjs` are omitted the same way.';
 
 /**
  * Copy from `.seo/truth.md`: the homepage price is test pricing and the offer is not formalized.
@@ -420,8 +422,10 @@ export function pageFromHtml(html, pathname, options) {
 	if (path === '/knowledge' && !/\/knowledge\/[^)\s]+/.test(body)) {
 		body = body ? `${body}\n\n${UNPUBLISHED_KNOWLEDGE}` : UNPUBLISHED_KNOWLEDGE;
 	}
-	const price = path === '/' ? priceText(mainHtml) : '';
-	if (price) body = body ? `${body}\n\n${TEST_PRICE_NOTE}` : TEST_PRICE_NOTE;
+	const price = path === '/' || path === '/rent-a-design-engineer' ? priceText(mainHtml) : '';
+	if (price && (path === '/' || path === '/rent-a-design-engineer')) {
+		body = body ? `${body}\n\n${TEST_PRICE_NOTE}` : TEST_PRICE_NOTE;
+	}
 
 	const description = metaContent(html, 'description');
 	const canonical = canonicalUrl(path, options.site);
@@ -457,10 +461,17 @@ function linkLabel(page) {
  * @param {ReturnType<typeof pageFromHtml>[]} pages
  */
 function sortPages(pages) {
-	const rank = { '/': 0, '/work': 1, '/info': 2, '/knowledge': 3 };
+	const rank = {
+		'/': 0,
+		'/rent-a-design-engineer': 1,
+		'/work': 2,
+		'/info': 3,
+		'/knowledge': 4,
+		'/tools/ui-polish-checklist': 5,
+	};
 	return [...pages].sort((a, b) => {
-		const ra = rank[a.pathname] ?? (a.pathname.startsWith('/knowledge/') ? 4 : 5);
-		const rb = rank[b.pathname] ?? (b.pathname.startsWith('/knowledge/') ? 4 : 5);
+		const ra = rank[a.pathname] ?? (a.pathname.startsWith('/knowledge/') ? 6 : 7);
+		const rb = rank[b.pathname] ?? (b.pathname.startsWith('/knowledge/') ? 6 : 7);
 		if (ra !== rb) return ra - rb;
 		return a.plainHeading.localeCompare(b.plainHeading) || a.pathname.localeCompare(b.pathname);
 	});
@@ -487,6 +498,7 @@ function listItem(page, site) {
 export function renderLlmsTxt(pages, site) {
 	const ordered = sortPages(pages);
 	const home = ordered.find((page) => page.pathname === '/');
+	const offer = ordered.find((page) => page.pathname === '/rent-a-design-engineer');
 	const info = ordered.find((page) => page.pathname === '/info');
 	const articles = ordered.filter((page) => page.pathname.startsWith('/knowledge/'));
 	const staticPages = ordered.filter((page) => !page.pathname.startsWith('/knowledge/'));
@@ -502,10 +514,17 @@ export function renderLlmsTxt(pages, site) {
 
 	/** @type {string[]} */
 	const details = [];
-	if (home?.offerHeading && home.offerBody) {
-		let offer = `The published offer is ${home.offerHeading}: ${home.offerBody}`;
-		if (home.price) offer += ` The homepage shows this at ${home.price}. ${TEST_PRICE_NOTE}`;
-		details.push(offer);
+	if (offer) {
+		let offerDetail = `The published offer is [Rent a design engineer](${absoluteUrl(markdownPathname('/rent-a-design-engineer'), site)}): ${offer.description}`;
+		if (offer.price || home?.price) {
+			const shown = offer.price || home?.price;
+			offerDetail += ` The site shows ${shown}. ${TEST_PRICE_NOTE}`;
+		}
+		details.push(offerDetail);
+	} else if (home?.offerHeading && home.offerBody) {
+		let offerFallback = `The published offer is ${home.offerHeading}: ${home.offerBody}`;
+		if (home.price) offerFallback += ` The homepage shows this at ${home.price}. ${TEST_PRICE_NOTE}`;
+		details.push(offerFallback);
 	}
 	if (home && home.expertise.length > 0) {
 		details.push(`Expertise named on the homepage: ${joinList(home.expertise)}.`);
@@ -516,7 +535,7 @@ export function renderLlmsTxt(pages, site) {
 		details.push(`Profiles linked from the site: ${joinList(linked)}.`);
 	}
 	details.push(
-		'The list below is every indexable page, as Markdown. Pages with `noindex` in frontmatter, including unpublished knowledge articles, are left out. Those Markdown URLs are not in the sitemap. Responses for them send `X-Robots-Tag: noindex`, and robots.txt still allows the crawl. Cite the canonical HTML URL.',
+		'The list below is every indexable page, as Markdown. Pages with `noindex` in frontmatter, routes in `src/noindex-routes.mjs`, and the branded 404 are left out. Those Markdown URLs are not in the sitemap. Responses for them send `X-Robots-Tag: noindex`, and robots.txt still allows the crawl. Cite the canonical HTML URL.',
 	);
 
 	const sections = [`# Amoeba`, '', `> ${summary}`, '', details.join('\n\n'), '', '## Pages', '', staticPages.map((page) => listItem(page, site)).join('\n')];

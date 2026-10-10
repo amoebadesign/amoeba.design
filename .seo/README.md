@@ -13,10 +13,12 @@ Do not invent Search Console, DataForSEO, or rank-tracking numbers. Competitors 
 | `content-ledger.md` | Every indexable URL |
 | `baseline.md` | Technical baseline and the ranked backlog |
 | `run-log.md` | Append-only log of runs |
+| `voice-guide.md`, `peer-research.md` | Voice and query research briefs from the 2026-10-10 content run |
+| `outlines/*.md` | Outlines Bryan writes from. One per unpublished page. Not copy |
 
 ## Content structure
 
-Astro project root is the repo root (`package.json`, `astro.config.mjs`). Astro 7.3.5, static output, no integrations, no MDX, no sitemap adapter. Deployed as static files on Vercel.
+Astro project root is the repo root (`package.json`, `astro.config.mjs`). Astro 7.3.5, static output, `@astrojs/sitemap`, no MDX. Deployed as static files on Vercel.
 
 - Head: `src/layouts/Base.astro`. There is no SEO component. The head sets charset, viewport, title, description, canonical, Open Graph, and Twitter card tags. No `og:image` yet (`TODO(og-image)` in `Base.astro`).
 - Chrome: `src/layouts/LayoutA.astro` (masthead, nav, main, footer).
@@ -26,6 +28,8 @@ Astro project root is the repo root (`package.json`, `astro.config.mjs`). Astro 
 
 New blog posts belong in `src/content/knowledge/` until Bryan says the off-site blog at amoebaunlimited.com is the blog of record.
 
-`/llms.txt`, `/llms-full.txt`, and `/{route}.md` (homepage: `/index.md`) are generated at the end of `astro build` from the built HTML. `src/noindex-routes.mjs` is the shared list of knowledge paths with `noindex: true`. The sitemap filter and the generator both use it. Those text files are not committed under `public/`.
+Comparison pages live in `src/pages/compare/{slug}.astro`. The free tool lives in `src/pages/tools/{slug}.astro`. Offer page: `src/pages/rent-a-design-engineer.astro`. Voice and peer research for this program are `voice-guide.md` and `peer-research.md` in this directory.
 
-Comparison pages and free tools do not exist. When a later run adds one, use `src/pages/compare/{slug}.astro` and `src/pages/tools/{slug}.astro`. Those directories are a convention recorded in `config.json`. They were not created in the setup run.
+Bryan writes article and comparison prose himself. Agents write outlines in `outlines/`, not copy. Unpublished pages stay "Coming soon" and out of the index: knowledge entries with `noindex: true` in frontmatter, page routes by listing the path in `src/noindex-routes.mjs`. Both drive the `noindex, follow` tag and the sitemap filter in `astro.config.mjs`.
+
+`/llms.txt`, `/llms-full.txt`, and `/{route}.md` (homepage: `/index.md`) are generated at the end of `astro build` from the built HTML. `noindexPathnames()` in `src/noindex-routes.mjs` is the shared list for knowledge `noindex: true` and stub routes. The sitemap filter and the llms generator both use it. Those text files are not committed under `public/`.

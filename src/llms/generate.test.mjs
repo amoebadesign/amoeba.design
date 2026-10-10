@@ -15,12 +15,15 @@ test('markdown paths follow the route, and the homepage is index.md', () => {
 	assert.equal(canonicalUrl('/info', SITE), 'https://amoeba.design/info');
 });
 
-test('knowledge frontmatter noindex matches the seven stubs', () => {
+test('noindex pathnames include knowledge stubs and compare routes', () => {
 	const paths = noindexPathnames();
-	assert.equal(paths.size, 7);
+	assert.equal(paths.size, 10);
 	assert.ok(paths.has('/knowledge/shadcn-lint'));
-	assert.ok(paths.has('/knowledge/more-than-microinteractions'));
+	assert.ok(paths.has('/knowledge/fix-ai-slop-ui'));
+	assert.ok(paths.has('/compare/rent-a-design-engineer-vs-hiring'));
 	assert.equal(paths.has('/knowledge'), false);
+	assert.equal(paths.has('/rent-a-design-engineer'), false);
+	assert.equal(paths.has('/tools/ui-polish-checklist'), false);
 });
 
 test('indexable pages become llms.txt entries and coming-soon articles do not', () => {
