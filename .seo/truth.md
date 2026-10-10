@@ -8,12 +8,12 @@ Fetched 2026-10-10: production HTML at https://amoeba-design.vercel.app matches 
 
 ## Identity and positioning
 
-- Amoeba is a design engineering studio for ambitious B2B software companies. Source: `src/components/Masthead.astro` (the page H1 on every URL that uses `LayoutA`).
-- The default document title calls the same practice a design engineering studio for growth-stage B2B software companies, under the name Amoeba Design. Source: `src/layouts/Base.astro`.
+- Amoeba is a design engineering studio for ambitious B2B software companies. Source: `src/components/Masthead.astro`. That sentence is the H1 on `/` only. On every other `LayoutA` page it is a paragraph with the same visual style.
+- Document titles use `{Page title} • Amoeba`. The fallback in `src/layouts/Base.astro`, used only when a page does not pass a title, is `Design engineering for ambitious B2B software • Amoeba`. The old growth-stage "Amoeba Design | …" default is gone.
 - The logotype text is "Amoeba". Source: `src/components/Masthead.astro`.
-- "Amoeba Design" is the name used in document titles. Source: `src/layouts/Base.astro`, `src/pages/work/index.astro`, `src/pages/knowledge/index.astro`, `src/pages/knowledge/[id].astro`.
+- Document titles end in "Amoeba", not "Amoeba Design".
 
-The masthead says "ambitious". The default title says "growth-stage". Both are published. They are not the same phrase. Bryan said on 2026-10-10 to keep "ambitious B2B software companies" (the masthead wording) for positioning. Do not write new content with the growth-stage or early-stage lines.
+Bryan said on 2026-10-10 to keep "ambitious B2B software companies" (the masthead wording) for positioning. Do not write new content with the growth-stage or early-stage lines. Titles and meta descriptions do not include prices.
 
 ## Who runs it
 
@@ -46,7 +46,7 @@ Listed without further description. Source: `src/pages/index.astro`.
 
 ## Knowledge
 
-Seven entries exist. Each has a title and a description in frontmatter. The rendered article body of every entry is "Coming soon". Sources: `src/content/knowledge/*.md`, rendered by `src/pages/knowledge/[id].astro`. Descriptions are shown on `/knowledge` (`src/pages/knowledge/index.astro`). They are not meta descriptions.
+Seven entries exist. Each has a title and a description in frontmatter. The rendered article body of every entry is "Coming soon". Sources: `src/content/knowledge/*.md`, rendered by `src/pages/knowledge/[id].astro`. Descriptions are shown on `/knowledge` (`src/pages/knowledge/index.astro`). Article pages also use that frontmatter string as `<meta name="description">` (`src/pages/knowledge/[id].astro`). Two document titles are shortened so `{Title} • Amoeba` stays at or under 60 characters: shadcn/lint, and the microinteractions article. Their visible H1s stay the full frontmatter titles.
 
 | Title | Description on the index | Body |
 |---|---|---|

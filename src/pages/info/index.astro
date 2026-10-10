@@ -2,11 +2,37 @@
 import LayoutA from "../../layouts/LayoutA.astro";
 import { Stack } from "../../components/ui";
 ---
-<LayoutA>
+<LayoutA
+  title="Bryan King, Newport, Kentucky • Amoeba"
+  description="Amoeba is a design engineering studio run by Bryan King from Newport, Kentucky. The site is set in HEX Franklin and Acumin VF, and powered by Astro and Vercel."
+>
   <Stack space="2">
-    <p>Amoeba is run by <a href="https://x.com/bryan_king" target="blank">Bryan King</a> from Newport, Kentucky.</p>
+    <h1 class="type-body info-lede">Amoeba is run by <a href="https://x.com/bryan_king" target="blank">Bryan King</a> from Newport, Kentucky.</h1>
     <h3>Colophon</h3>
     <p>Typefaces: <a href="https://hex.xyz/HEX_Franklin/" target="blank">HEX Franklin</a> and <a href="https://acumin.typekit.com/" target="blank">Acumin VF</a></p>
     <p>Powered by <a href="https://astro.build" target="blank">Astro</a> and <a href="https://vercel.com" target="blank">Vercel</a></p>
   </Stack>
 </LayoutA>
+
+<style>
+  /* Same size, weight, wrap, and link color as the paragraph this sentence used to be. */
+  .info-lede {
+    text-wrap: pretty;
+  }
+
+  .info-lede a {
+    color: var(--color-link);
+  }
+
+  .info-lede a:hover {
+    color: var(--color-link-hover);
+  }
+
+  .info-lede a:visited {
+    color: var(--color-link-visited);
+  }
+
+  .info-lede a:visited:hover {
+    color: var(--color-link-visited-hover);
+  }
+</style>

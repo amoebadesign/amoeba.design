@@ -1,5 +1,13 @@
-<a class="type-logotype" href="/">Amoeba</a>
-<h1>Amoeba is a design engineering studio for ambitious B2B software companies.</h1>
+---
+interface Props {
+	/** Homepage passes `h1`. Every other page keeps this sentence as a paragraph. */
+	as?: "h1" | "p";
+}
+
+const { as: Tag = "p" } = Astro.props;
+---
+<a class="type-logotype" href="/" transition:persist="logotype">Amoeba</a>
+<Tag class="masthead-lede">Amoeba is a design engineering studio for ambitious B2B software companies.</Tag>
 
 <style>
 	a,
