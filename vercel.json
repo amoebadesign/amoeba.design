@@ -8,6 +8,10 @@
         {
           "type": "host",
           "value": "amoeba.design"
+        },
+        {
+          "type": "host",
+          "value": "www.amoeba.design"
         }
       ],
       "headers": [

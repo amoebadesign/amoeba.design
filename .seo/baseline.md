@@ -35,13 +35,13 @@ The repo now implements the canonical origin. The live Vercel project does not, 
 
 - `astro.config.mjs` sets `site` to `https://amoeba.design` and `trailingSlash` to `never`.
 - `src/layouts/Base.astro` emits one `<link rel="canonical">` per page on that origin. The homepage canonical is `https://amoeba.design/`. Other pages have no trailing slash, for example `https://amoeba.design/work`.
-- `vercel.json` sets `trailingSlash: false` (308 from `/work/` to `/work`) and `X-Robots-Tag: noindex` only when the request host is not exactly `amoeba.design`.
+- `vercel.json` sets `trailingSlash: false` (308 from `/work/` to `/work`) and `X-Robots-Tag: noindex` only when the host is neither `amoeba.design` nor `www.amoeba.design`.
 - `package.json` `"name": "amoeba.design"` is still just the npm package name.
 - Before this change, https://amoeba-design.vercel.app/ returned HTTP 200 on 2026-10-10 with no `Location` header. The header rule is the code safeguard. It is not a redirect. Bryan still redirects the Vercel hostname to the custom domain at cutover.
 - https://amoeba.design still serves a different Next.js application. Its own pages emit `<link rel="canonical" href="https://amoeba.design">`. Homepage title there: "Amoeba • Design engineering for early-stage B2B startups". Visible H1: "Design engineering for early-stage B2B startups". That copy is not in this repo and is not in `truth.md`.
-- http://amoeba.design redirects to https://amoeba.design. https://www.amoeba.design did not resolve.
+- Checked again on 2026-10-10 after the domain was attached: `https://amoeba.design/` returned 308 to `https://www.amoeba.design/`. `https://www.amoeba.design/` returned 200 with the Astro homepage that is deployed today (the long default title, no canonical). www is primary. Canonicals in this repo stay on the apex. Bryan should flip Vercel so the apex is primary and www redirects to `https://amoeba.design`.
 
-Until the domain is attached, https://amoeba.design still serves the legacy Next.js app, and https://amoeba-design.vercel.app still serves whatever deployment is current. After this branch deploys, the Vercel host should answer with `X-Robots-Tag: noindex` and canonicals pointing at https://amoeba.design. Slash duplicates are handled by `trailingSlash: false` in `vercel.json`.
+www is the host Vercel is serving right now, so the noindex rule must leave both `amoeba.design` and `www.amoeba.design` alone. `amoeba-design.vercel.app` and any other host still get `X-Robots-Tag: noindex`. Slash duplicates are handled by `trailingSlash: false` in `vercel.json`.
 
 ## Legacy Search Console (pre-migration baseline)
 

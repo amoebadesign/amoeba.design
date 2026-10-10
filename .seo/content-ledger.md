@@ -2,7 +2,7 @@
 
 Canonical URLs for this build. `astro.config.mjs` sets `site` to https://amoeba.design and `trailingSlash` to `never`, so every canonical below is on that origin and, except the homepage, has no trailing slash.
 
-The pre-launch deploy is still https://amoeba-design.vercel.app. `vercel.json` sends `X-Robots-Tag: noindex` when the host is not exactly `amoeba.design`. Search Console `sc-domain:amoeba.design` still measures the legacy site until cutover. That legacy site has only the homepage.
+`vercel.json` sends `X-Robots-Tag: noindex` when the host is neither `amoeba.design` nor `www.amoeba.design`. As of 2026-10-10, Vercel has www as primary: the apex 308s to www. Canonicals stay on the apex. Search Console `sc-domain:amoeba.design` covers both names. The legacy site had only the homepage.
 
 Knowledge articles with `noindex: true` are built and linked, omitted from `sitemap-0.xml`, and marked No in the sitemap column. Flip the flag to `false` to index one article.
 

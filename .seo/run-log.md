@@ -2,6 +2,13 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Land migration on main; do not noindex www
+
+- PR #9 merged into `cursor/seo-baseline-a5f5`, not `main`. `main` still had an empty `defineConfig({})`. This change merges that branch onto `main` and adds the www exemption below.
+- Checked after Bryan attached the domain: `https://amoeba.design/` returned 308 to `https://www.amoeba.design/`. www returned 200 and the Astro homepage already deployed (long default title, no canonical). www is primary and has a CNAME to Vercel. Apex is not what visitors land on.
+- Canonicals and the sitemap stay on `https://amoeba.design`. Recommendation for Bryan: in Vercel, make the apex the primary domain and redirect www to the apex. Do not change `site` or the canonicals to www.
+- `vercel.json` previously noindexed every host except `amoeba.design`, which would have noindexed `www.amoeba.design` while it is the live host. The rule now requires both `amoeba.design` and `www.amoeba.design` to be missing before it sets `X-Robots-Tag: noindex`. Neither name can receive that header. `amoeba-design.vercel.app` and other hosts still can. www must stay indexable through the transition, including after it only redirects.
+
 ## 2026-10-10 — Domain migration readiness and stub noindex
 
 - Scope: canonicals, sitemap, robots, non-production noindex, homepage title, and `noindex` on the seven knowledge stubs. The homepage `$500 / week` line was not edited.

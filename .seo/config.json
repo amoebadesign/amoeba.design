@@ -9,7 +9,7 @@
     "preLaunchDeployUrl": "https://amoeba-design.vercel.app",
     "launchDomain": "https://amoeba.design",
     "brandDomain": "https://amoeba.design",
-    "www": "https://www.amoeba.design does not resolve (DNS name not found on 2026-10-10)",
+    "www": "https://www.amoeba.design is attached in Vercel and, as of 2026-10-10, is the primary host. https://amoeba.design returns 308 to https://www.amoeba.design/. www served the pre-migration Astro homepage (no canonical). Recommendation: make the apex primary and redirect www to https://amoeba.design. Code keeps the apex as the canonical origin.",
     "canonical": {
       "domain": "https://amoeba.design",
       "status": "implemented in this repo; the host redirect and Search Console sitemap submission are still manual",
@@ -17,9 +17,9 @@
       "decision": "This Astro build will replace the site currently live at https://amoeba.design. Launch and canonical origin is https://amoeba.design. https://amoeba-design.vercel.app remains the current pre-launch deploy URL.",
       "implementedInCode": true,
       "trailingSlash": "never. Homepage canonical is https://amoeba.design/. Other canonicals have no trailing slash. vercel.json trailingSlash false sends a 308 from the slashed form to that canonical.",
-      "nonProductionHosts": "vercel.json sets X-Robots-Tag: noindex on every response whose Host is not exactly amoeba.design. The production host is the missing condition, so this rule cannot attach noindex to amoeba.design. A redirect from the Vercel hostname is still a project setting Bryan applies at cutover.",
+      "nonProductionHosts": "vercel.json sets X-Robots-Tag: noindex only when the Host is neither amoeba.design nor www.amoeba.design. Both names are missing-conditions, so the rule cannot noindex either of them. Other hosts, including amoeba-design.vercel.app, still get noindex. www must stay indexable during the transition while Vercel has www as primary. After Bryan flips the project so the apex is primary and www 308s to https://amoeba.design, www can keep this exemption.",
       "code": "astro.config.mjs sets site to https://amoeba.design and trailingSlash never. src/layouts/Base.astro emits one canonical on that origin per page. Knowledge stubs with noindex: true are omitted from the sitemap and emit meta robots noindex, follow. public/robots.txt allows crawling and points at https://amoeba.design/sitemap-index.xml.",
-      "legacySite": "https://amoeba.design currently serves a different Next.js app. That app emits its own canonical to https://amoeba.design. It is the site this build will replace, not this repo's output.",
+      "legacySite": "Checked 2026-10-10 after Bryan attached the domain: https://amoeba.design 308s to https://www.amoeba.design/, and www returned the Astro homepage that was already deployed (title still the long default, no canonical). Canonicals and the sitemap in this repo stay on https://amoeba.design.",
       "legacyPaths": {
         "status": "closed",
         "answer": "Bryan, 2026-10-10: the legacy amoeba.design site has only the homepage. No other legacy URLs need 301s. The homepage path stays /."
