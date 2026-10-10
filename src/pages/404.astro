@@ -1,0 +1,16 @@
+---
+import LayoutA from "../layouts/LayoutA.astro";
+import { Cluster, Stack } from "../components/ui";
+---
+
+<LayoutA title="Not found • Amoeba" description="That page isn’t on this site." noindex>
+	<Stack space="4">
+		<h1 class="type-body">That page isn’t on this site.</h1>
+		<Cluster as="nav" space="2" align="baseline" aria-label="Site">
+			<a href="/">Home</a>
+			<a href="/work">Work</a>
+			<a href="/knowledge">Knowledge</a>
+			<a href="/info">Info</a>
+		</Cluster>
+	</Stack>
+</LayoutA>
