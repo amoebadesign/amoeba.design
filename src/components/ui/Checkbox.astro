@@ -1,0 +1,11 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = Omit<HTMLAttributes<"input">, "type"> & { label: string };
+
+const { label, class: className, ...rest } = Astro.props;
+---
+<label class:list={["field-inline", className]}>
+	<input {...rest} type="checkbox" />
+	<span class="field-label">{label}</span>
+</label>

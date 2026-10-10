@@ -1,0 +1,25 @@
+@layer amoeba.layouts {
+  .layout-aside {
+    --_side-width: var(--side-width, 20rem);
+    --_content-min: var(--content-min, 50%);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: var(--space, calc(var(--spacing) * 4));
+  }
+
+  .layout-aside > [data-slot="aside-side"] {
+    flex-basis: var(--_side-width);
+    flex-grow: 1;
+  }
+
+  .layout-aside > [data-slot="aside-content"] {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: min(100%, var(--_content-min));
+  }
+
+  .layout-aside[data-side="end"] > [data-slot="aside-side"] {
+    order: 1;
+  }
+}

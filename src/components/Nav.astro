@@ -1,9 +1,10 @@
 ---
 import NavLink from "./NavLink.astro";
 import { navItems } from "./nav-items";
+import { Cluster } from "./ui";
 ---
-<nav class="cluster">
+<Cluster as="nav" space="4" align="baseline">
 	{navItems.map((item) => (
 		<NavLink href={item.href} label={item.label} />
 	))}
-</nav>
+</Cluster>

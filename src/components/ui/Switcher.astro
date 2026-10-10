@@ -1,0 +1,24 @@
+---
+import type { HTMLTag, Polymorphic } from "astro/types";
+import { type Length, type Spacing, type SwitcherLimit, layoutStyle, toLength, toSpace } from "./layout";
+
+type Props<Tag extends HTMLTag = "div"> = Polymorphic<{ as: Tag }> & {
+	space?: Spacing;
+	threshold?: Length;
+	limit?: SwitcherLimit;
+};
+
+const { as: Tag = "div", space, threshold, limit, class: className, style, ...rest } = Astro.props;
+---
+<Tag
+	class:list={["layout-switcher", className]}
+	style={layoutStyle(
+		{
+			"--space": space && toSpace(space),
+			"--threshold": threshold && toLength(threshold),
+		},
+		style,
+	)}
+	data-limit={limit}
+	{...rest}
+><slot /></Tag>

@@ -1,0 +1,14 @@
+@layer amoeba.layouts {
+  .layout-center {
+    box-sizing: content-box;
+    max-inline-size: var(--center-measure, var(--measure));
+    margin-inline: auto;
+    padding-inline: var(--gutters, 0);
+  }
+
+  .layout-center[data-intrinsic] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

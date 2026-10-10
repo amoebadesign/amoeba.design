@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import "../styles/amoeba/index.css";
 
 interface Props {
 	title?: string;
@@ -15,21 +16,27 @@ const {
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>{title}</title>
+		<script is:inline>
+			(() => {
+				const apply = () => {
+					let theme = null;
+					try {
+						theme = localStorage.getItem("amoeba-theme");
+					} catch {}
+					if (theme) document.documentElement.dataset.theme = theme;
+					else delete document.documentElement.dataset.theme;
+				};
+				apply();
+				// ClientRouter replaces <html> attributes on every navigation.
+				document.addEventListener("astro:after-swap", apply);
+			})();
+		</script>
 		<ClientRouter />
 		<link rel="preload" href="/fonts/hex-franklin-variable.woff2" as="font" type="font/woff2" crossorigin>
 		<link rel="preload" href="https://use.typekit.net/dit6fmi.css" as="style">
 		<link rel="preconnect" href="https://use.typekit.net">
 		<link rel="preconnect" href="https://p.typekit.net" crossorigin>
 		<link rel="stylesheet" href="https://use.typekit.net/dit6fmi.css">
-		<link rel="stylesheet" href="https://amoeba-ui.vercel.app/css/amoeba-0.1.0-alpha.css">
-		<link rel="stylesheet" href="/styles/logotype.css">
-		<link rel="stylesheet" href="/styles/main.css">
-		<style is:global>
-			:root {
-				--font-sans: "acumin-variable", sans-serif;
-				--font-family-sans-serif: "acumin-variable", sans-serif;
-			}
-		</style>
 	</head>
 	<body>
 		<slot />

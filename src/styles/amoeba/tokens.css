@@ -1,0 +1,74 @@
+/*
+  Per-instance layout knobs. They don't inherit, so a nested primitive never
+  picks up its parent's value. Primitives whose children need a knob copy it
+  into a private `--_*` property on themselves.
+*/
+@property --space { syntax: "*"; inherits: false; }
+@property --align { syntax: "*"; inherits: false; }
+@property --justify { syntax: "*"; inherits: false; }
+@property --side-width { syntax: "*"; inherits: false; }
+@property --content-min { syntax: "*"; inherits: false; }
+@property --threshold { syntax: "*"; inherits: false; }
+@property --min { syntax: "*"; inherits: false; }
+@property --center-measure { syntax: "*"; inherits: false; }
+@property --gutters { syntax: "*"; inherits: false; }
+@property --min-height { syntax: "*"; inherits: false; }
+
+@layer amoeba.tokens {
+  :root {
+    /* spacing: steps are multiples, `calc(var(--spacing) * 4)` = 1rem */
+    --spacing: 0.25rem;
+    --measure: 60ch;
+
+    /* type */
+    --font-sans: "acumin-variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-display: "HEX Franklin v0.3 Variable", var(--font-sans);
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --font-size-base: 0.875rem;
+    --type-scale: 1.125; /* major second */
+    --font-size-0: calc(var(--font-size-base) / var(--type-scale));
+    --font-size-1: calc(var(--font-size-base) * var(--type-scale));
+    --font-size-2: calc(var(--font-size-1) * var(--type-scale));
+    --font-size-3: calc(var(--font-size-2) * var(--type-scale));
+    --font-size-4: calc(var(--font-size-3) * var(--type-scale));
+    --font-size-5: calc(var(--font-size-4) * var(--type-scale));
+    --font-size-6: calc(var(--font-size-5) * var(--type-scale));
+
+    --tracking-tight: -0.03em;
+    --tracking-tighter: -0.04em;
+
+    /* shape */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.375rem;
+
+    /* motion */
+    --duration-fast: 150ms;
+    --duration-base: 180ms;
+    --duration-slow: 220ms;
+    --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+
+    /* palette */
+    --color-white: oklch(100% 0 0);
+    --color-black: oklch(0% 0 0);
+    --color-neutral-50: oklch(98.5% 0 0);
+    --color-neutral-100: oklch(97% 0 0);
+    --color-neutral-300: oklch(87% 0 0);
+    --color-neutral-400: oklch(70.8% 0 0);
+    --color-neutral-500: oklch(55.6% 0 0);
+    --color-neutral-700: oklch(37.1% 0 0);
+    --color-neutral-900: oklch(20.5% 0 0);
+    --color-neutral-950: oklch(14.5% 0 0);
+
+    --color-green-50: oklch(98.2% 0.018 155.826);
+    --color-green-200: oklch(92.5% 0.084 155.995);
+    --color-green-950: oklch(26.6% 0.065 152.934);
+    --color-green-1000: oklch(20% 0.045 152.934);
+    --color-pink-300: oklch(82.3% 0.12 346.018);
+    --color-pink-400: oklch(71.8% 0.202 349.761);
+    --color-pink-500: oklch(65.6% 0.241 354.308);
+    --color-yellow-300: oklch(90.5% 0.182 98.111);
+    --color-yellow-500: oklch(79.5% 0.184 86.047);
+    --color-blue-300: oklch(80.9% 0.105 251.813);
+  }
+}

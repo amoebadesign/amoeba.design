@@ -1,5 +1,6 @@
 ---
 import LayoutA from '../../layouts/LayoutA.astro';
+import { Stack } from '../../components/ui';
 import { getCollection } from 'astro:content';
 
 const pages = (await getCollection('knowledge')).sort((a, b) =>
@@ -8,16 +9,25 @@ const pages = (await getCollection('knowledge')).sort((a, b) =>
 ---
 
 <LayoutA title="Knowledge | Amoeba Design">
-	<div class="stack loosest">
-		<ul class="stack looser" style="list-style: none; padding: 0; margin: 0;">
+	<Stack space="8">
+		<Stack as="ul" role="list" space="4">
 			{pages.map((page) => (
-				<li class="stack tighter">
-					<h2 style="font-weight: normal; font-size: 20px; letter-spacing: -0.03em; line-height: 100%">
+				<Stack as="li" space="1">
+					<h2 class="entry-title">
 						<a href={`/knowledge/${page.id}`}>{page.data.title}</a>
 					</h2>
 					<p>{page.data.description}</p>
-				</li>
+				</Stack>
 			))}
-		</ul>
-	</div>
+		</Stack>
+	</Stack>
 </LayoutA>
+
+<style>
+	.entry-title {
+		font-weight: normal;
+		font-size: 20px;
+		letter-spacing: var(--tracking-tight);
+		line-height: 100%;
+	}
+</style>

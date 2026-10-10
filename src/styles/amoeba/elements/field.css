@@ -1,0 +1,67 @@
+@layer amoeba.elements {
+  :where(
+    input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="hidden"], [type="button"], [type="submit"], [type="reset"], [type="image"]),
+    textarea,
+    select
+  ) {
+    padding: calc(var(--spacing) * 2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-size: var(--font-size-1);
+    transition: border-color var(--duration-fast) var(--ease-out);
+
+    &:hover {
+      border-color: var(--color-border-strong);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      border-color: var(--color-border);
+    }
+  }
+
+  /* select always matches :read-only, so scope it to text-like controls. */
+  :where(input, textarea):read-only:not(:disabled) {
+    background-color: var(--color-surface);
+    color: var(--color-fg-muted);
+    border-color: var(--color-border);
+  }
+
+  :where(textarea) {
+    min-block-size: 6lh;
+    resize: vertical;
+  }
+
+  :where(input[type="checkbox"], input[type="radio"]) {
+    inline-size: 1rem;
+    block-size: 1rem;
+    margin: 0;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 1);
+  }
+
+  .field-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 2);
+  }
+
+  .field-label {
+    font-size: var(--font-size-1);
+    font-weight: 500;
+  }
+}

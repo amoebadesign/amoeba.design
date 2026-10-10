@@ -1,0 +1,11 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"input"> & { label: string };
+
+const { label, class: className, ...rest } = Astro.props;
+---
+<label class:list={["field", className]}>
+	<span class="field-label">{label}</span>
+	<input type="text" {...rest} />
+</label>
