@@ -20,7 +20,7 @@ const { page } = Astro.props;
 const { Content } = await render(page);
 ---
 
-<LayoutA title={`${page.data.title} | Amoeba Design`}>
+<LayoutA title={`${page.data.title} | Amoeba Design`} noindex={page.data.noindex}>
 	<Stack as="article" space="4" class="article">
 		<h1 class="type-title-alt">{page.data.title}</h1>
 		<Content />

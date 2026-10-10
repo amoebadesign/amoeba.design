@@ -8,7 +8,7 @@ Do not invent Search Console, DataForSEO, or rank-tracking numbers. Competitors 
 
 | File | Role |
 |---|---|
-| `config.json` | Hosts, canonical status, brand, audience, content paths, empty competitor list, data sources |
+| `config.json` | Pre-launch host, launch domain https://amoeba.design, brand, audience, content paths, empty competitor list, legacy Search Console export |
 | `truth.md` | Published claims with source files, and explicit UNKNOWN gaps |
 | `content-ledger.md` | Every indexable URL |
 | `baseline.md` | Technical baseline and the ranked backlog |
