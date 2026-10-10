@@ -1,0 +1,51 @@
+---
+/**
+ * Sitewide schema.org graph. Page-level nodes can reference:
+ * https://amoeba.design/#organization
+ * https://amoeba.design/#website
+ * https://amoeba.design/#bryan-king
+ * Facts are from .seo/truth.md and the copy those lines cite. No prices.
+ */
+const origin = "https://amoeba.design";
+const organizationId = `${origin}/#organization`;
+const websiteId = `${origin}/#website`;
+const personId = `${origin}/#bryan-king`;
+
+const graph = {
+	"@context": "https://schema.org",
+	"@graph": [
+		{
+			"@type": "Organization",
+			"@id": organizationId,
+			name: "Amoeba",
+			url: origin,
+			description: "Amoeba is a design engineering studio for ambitious B2B software companies.",
+			founder: { "@id": personId },
+			sameAs: ["https://twitter.com/amoeba_design", "https://github.com/amoebadesign"],
+		},
+		{
+			"@type": "WebSite",
+			"@id": websiteId,
+			name: "Amoeba",
+			url: origin,
+			publisher: { "@id": organizationId },
+			inLanguage: "en",
+		},
+		{
+			"@type": "Person",
+			"@id": personId,
+			name: "Bryan King",
+			url: `${origin}/info`,
+			homeLocation: {
+				"@type": "Place",
+				name: "Newport, Kentucky",
+			},
+			sameAs: ["https://x.com/bryan_king"],
+		},
+	],
+};
+
+const json = JSON.stringify(graph).replace(/</g, "\\u003c");
+---
+
+<script is:inline type="application/ld+json" set:html={json} />
