@@ -4,6 +4,7 @@ import Base from "./Base.astro";
 import Masthead from "../components/Masthead.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import CollapseBar from "../components/CollapseBar.astro";
 
 interface Props {
 	title?: string;
@@ -33,6 +34,7 @@ const { title } = Astro.props;
 			</div>
 		</div>
 	</div>
+	<CollapseBar />
 </Base>
 
 <style>
