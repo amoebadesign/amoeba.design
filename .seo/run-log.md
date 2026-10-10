@@ -2,12 +2,14 @@
 
 Append-only. Newest entry at the top.
 
-## 2026-10-10 — Open Graph share images (three options)
+## 2026-10-10 — Open Graph share image (dark, Bryan’s pick)
 
-- Scope: programmatic 1200×630 PNGs only. `scripts/generate-og-images.mjs` (satori + `@resvg/resvg-js`). Assets at `public/og-options/option-a.png`, `option-b.png`, `option-c.png`. Default share tags in `src/layouts/Base.astro` point at `https://amoeba.design/og-options/option-a.png` with `og:image:width` / `height` / `alt`, `twitter:card` = `summary_large_image`, and optional per-page `ogImage` prop. Did not change sitemap, JSON-LD, `robots.txt`, or page copy.
-- Fonts in the generator: **Libre Franklin 800** for the logotype and **Source Sans 3** for the masthead line. HEX Franklin VF in `public/fonts/` uses CFF2 outlines that satori cannot embed; Acumin remains Adobe-licensed and is not embedded. Regenerate with `npm run generate:og`.
-- Option A: light theme, masthead layout (logotype + lede, top-left). Option B: dark `neutral-950` with inset frame and rule. Option C: `green` theme with pink accent bar, yellow logotype, `amoeba.design` caption.
-- Build: `npm run build` exited 0. Built HTML includes one `og:image` and `twitter:image` per page on the default URL unless a page passes `ogImage`.
+- Scope: single 1200×630 `public/og.png` (dark framed layout). Removed `public/og-options/`. `scripts/generate-og-images.mjs` renders with Playwright + Chromium so type matches the masthead: **HEX Franklin v0.3 Variable** from `public/fonts/hex-franklin-variable.woff2` (logotype at 120px with wdth 70 / wght 800) and **acumin-variable** at 26px for the masthead line and offer (same ratio as `type-logotype` + `.masthead-lede` in `LayoutA.astro`). Acumin bytes are pulled at generate time from the kit URL in `public/fonts/acumin-variable.css` only; not committed. Copy includes the masthead sentence and `Rent a design engineer • $500/wk`. Default `og:image` / `twitter:image` → `https://amoeba.design/og.png`. Regenerate: `bun run generate:og`.
+- Build: `bun run build` exited 0.
+
+## 2026-10-10 — Open Graph share images (three options, superseded)
+
+- Superseded by the dark single `public/og.png` entry above. The three-option branch used satori with substitute fonts; Bryan chose the dark layout with real masthead type.
 
 ## 2026-10-10 — Merge main into llms.txt branch (PR #15)
 
