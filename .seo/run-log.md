@@ -2,6 +2,12 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Pricing in titles, meta, and Service Offer JSON-LD
+
+- Scope: Bryan approved showing `$500/wk` everywhere with no hedging (no test pricing, not formalized, starting at). Updated `.seo/truth.md` and `.seo/config.json` to record the offer as Rent a design engineer, $500/wk. Homepage and `/rent-a-design-engineer` titles use `Rent a design engineer, $500/wk • Amoeba` (40 characters). Meta descriptions include `$500/wk` on both pages (home 155, offer 160). `Base.astro` fallback matches the homepage. Service JSON-LD on the offer page adds an `Offer` with price 500 USD and `UnitPriceSpecification` unitText week. Visible copy still uses `$500 / week`. No `og:image` changes.
+- `node --test src/llms/generate.test.mjs`: 4 passed. `npm run build` exited 0. llms.txt and indexable `.md` alternates pick up meta descriptions and visible price from built HTML.
+- JSON-LD: all 16 `index.html` files parse. Offer page Service node includes `offers` as above; FAQPage still has `$500 / week` in the cost answer.
+
 ## 2026-10-10 — llms.txt public copy (no internal SEO notes)
 
 - Scope: follow-up after PR #15. `llms.txt` and `llms-full.txt` must not leak internal program notes from `.seo/truth.md` or noindex implementation detail.
