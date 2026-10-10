@@ -136,7 +136,7 @@ Facts Bryan must supply before more questions go on the page:
 Cleanup on the live placeholder:
 
 - "What do you hand over?" describes the Figma/Cursor loop. That comes from an X post, not from `truth.md`. Keep it only if you want it as an offer term.
-- The FAQ answers and body copy say "I wrote up…" and link to the comparison pages and knowledge articles. Those are "Coming soon" stubs now. Reword or drop those claims until the pieces are published.
+- Done: the "I wrote up…" paragraph and the FAQ links to the comparison pages and knowledge articles were removed while those pages are stubs. Add links back as each one publishes.
 
 ## Internal links
 

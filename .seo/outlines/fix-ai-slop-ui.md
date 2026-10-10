@@ -128,7 +128,7 @@ Mode: knowledge article with a how-to spine. The voice guide says lists are rare
 - Nice to have: `/work`, `/knowledge`, `/`.
 - Later, once published: `/knowledge/shadcn-lint`, `/knowledge/storybook-for-agents`, `/knowledge/clean-up-messy-tailwind`, `/knowledge/shake-what-the-browser-gives-ya`.
 - External: https://bryanking.net/posts/vibe-code-is-legacy-code, and the official shadcn/lint docs [VERIFY URL].
-- Already linking here: the checklist page ("I wrote the longer version…"), the offer page, `/knowledge`, the definition stub.
+- Already linking here: `/knowledge` and the definition stub. The checklist and offer page links were removed while this is a stub.
 
 ## AEO
 
@@ -156,5 +156,5 @@ Mode: knowledge article with a how-to spine. The voice guide says lists are rare
 2. Frontmatter: `noindex: false`, `published: "YYYY-MM-DD"` (quoted).
 3. Re-check the description (150–160 chars). It prints on `/knowledge` too.
 4. `bun run build`. Check the sitemap and Article JSON-LD.
-5. The checklist page already says "I wrote the longer version…" and links here. That becomes true once this ships.
+5. Add links back from `/tools/ui-polish-checklist` and `/rent-a-design-engineer`. Both were removed while this was a stub.
 6. Update `content-ledger.md` and `run-log.md`.

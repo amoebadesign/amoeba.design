@@ -2,6 +2,15 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Remove claims that point to unpublished pages
+
+- Scope: deletions only on the two live pages. No replacement prose.
+- `/rent-a-design-engineer`: removed the paragraph pointing to both comparisons, both stub articles, and "More writing lives on Knowledge". Kept its checklist sentence, trimmed to the checklist link. Two FAQ answers lost their trailing sentence ("I wrote up when I would hire each one…", "The tradeoffs are on…"). They are now plain `faqs` entries, so the visible answers and the FAQPage JSON-LD text are the same strings.
+- `/tools/ui-polish-checklist`: removed "I wrote the longer version of the slop problem in fix the AI slop in your UI" from the intro, and the closing sentence linking `/knowledge/more-than-microinteractions` and "the rest of the writing" on Knowledge. Links to the offer page and the homepage stay.
+- Neither page links a stub now. The `/knowledge` link left on both is the site nav. `/knowledge`'s own "Also" list still links the comparison stubs, which is allowed.
+- Outlines updated where they described those sentences (`rent-a-design-engineer.md`, `fix-ai-slop-ui.md`): add the links back as each piece publishes.
+- Build: `bun run build` exited 0. 16 pages. Sitemap unchanged at 6 URLs. Internal link check: 0 broken. Word counts in `<main>`: offer 556, checklist 400.
+
 ## 2026-10-10 — Outlines only; four pages back to stubs
 
 - Scope: Bryan does not want AI-written prose and will write these pieces by hand. Same branch and PR as the entry below. No new copy.
