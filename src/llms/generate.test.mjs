@@ -80,7 +80,11 @@ test('indexable pages become llms.txt entries and coming-soon articles do not', 
 	assert.match(llms, /^# Amoeba\n\n> Amoeba is a design engineering studio for ambitious B2B software companies, run by Bryan King from Newport, Kentucky\.\n/);
 	assert.match(llms, /The published offer is Rent a design engineer: Is your app rough around the edges\?/);
 	assert.match(llms, /\$500 \/ week/);
-	assert.match(llms, /test pricing/);
+	assert.doesNotMatch(llms, /test pricing/i);
+	assert.doesNotMatch(llms, /not yet formalized/i);
+	assert.doesNotMatch(llms, /noindex-routes/i);
+	assert.doesNotMatch(llms, /X-Robots-Tag/i);
+	assert.match(llms, /cite each page’s canonical HTML URL/i);
 	assert.match(llms, /Expertise named on the homepage: Product Design and Design Systems\./);
 	assert.match(llms, /\[GitHub\]\(https:\/\/github\.com\/amoebadesign\)/);
 	assert.match(llms, /\[Home\]\(https:\/\/amoeba\.design\/index\.md\)/);
@@ -110,7 +114,8 @@ test('indexable pages become llms.txt entries and coming-soon articles do not', 
 
 	const home = files.get('/index.md');
 	assert.match(home, /\$500 \/ week/);
-	assert.match(home, /That figure is test pricing, and the offer is not yet formalized\./);
+	assert.doesNotMatch(home, /test pricing/i);
+	assert.doesNotMatch(home, /formalized/i);
 	assert.match(home, /- Product Design\n- Design Systems\n/);
 	assert.doesNotMatch(home, /5,000/);
 

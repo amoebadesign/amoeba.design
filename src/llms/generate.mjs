@@ -394,14 +394,8 @@ function plainText(value) {
 		.trim();
 }
 
-const UNPUBLISHED_KNOWLEDGE =
-	'No knowledge articles are published yet. An article is added to this file when its frontmatter `noindex` flag is not true. Comparison pages listed in `src/noindex-routes.mjs` are omitted the same way.';
-
-/**
- * Copy from `.seo/truth.md`: the homepage price is test pricing and the offer is not formalized.
- * Kept off titles and meta descriptions. Removed from these files once that note in truth.md changes.
- */
-const TEST_PRICE_NOTE = 'That figure is test pricing, and the offer is not yet formalized.';
+const CITE_CANONICAL =
+	'When you quote Amoeba, cite each page’s canonical HTML URL (at the top of its Markdown file).';
 
 /**
  * @param {string} html
@@ -419,13 +413,6 @@ export function pageFromHtml(html, pathname, options) {
 	})();
 	const heading = split.heading || outsideH1;
 	let body = split.body;
-	if (path === '/knowledge' && !/\/knowledge\/[^)\s]+/.test(body)) {
-		body = body ? `${body}\n\n${UNPUBLISHED_KNOWLEDGE}` : UNPUBLISHED_KNOWLEDGE;
-	}
-	const price = path === '/' || path === '/rent-a-design-engineer' ? priceText(mainHtml) : '';
-	if (price && (path === '/' || path === '/rent-a-design-engineer')) {
-		body = body ? `${body}\n\n${TEST_PRICE_NOTE}` : TEST_PRICE_NOTE;
-	}
 
 	const description = metaContent(html, 'description');
 	const canonical = canonicalUrl(path, options.site);
@@ -444,7 +431,7 @@ export function pageFromHtml(html, pathname, options) {
 		markdown,
 		offerHeading: path === '/' ? firstHeading(mainHtml, 2) : '',
 		offerBody: path === '/' ? firstBodyParagraph(mainHtml) : '',
-		price,
+		price: path === '/' || path === '/rent-a-design-engineer' ? priceText(mainHtml) : '',
 		expertise: path === '/' ? expertiseItems(mainHtml) : [],
 		footerLinks: footerLinks(html),
 	};
@@ -516,14 +503,12 @@ export function renderLlmsTxt(pages, site) {
 	const details = [];
 	if (offer) {
 		let offerDetail = `The published offer is [Rent a design engineer](${absoluteUrl(markdownPathname('/rent-a-design-engineer'), site)}): ${offer.description}`;
-		if (offer.price || home?.price) {
-			const shown = offer.price || home?.price;
-			offerDetail += ` The site shows ${shown}. ${TEST_PRICE_NOTE}`;
-		}
+		const shown = offer.price || home?.price;
+		if (shown) offerDetail += ` ${shown}.`;
 		details.push(offerDetail);
 	} else if (home?.offerHeading && home.offerBody) {
 		let offerFallback = `The published offer is ${home.offerHeading}: ${home.offerBody}`;
-		if (home.price) offerFallback += ` The homepage shows this at ${home.price}. ${TEST_PRICE_NOTE}`;
+		if (home.price) offerFallback += ` ${home.price}.`;
 		details.push(offerFallback);
 	}
 	if (home && home.expertise.length > 0) {
@@ -534,9 +519,7 @@ export function renderLlmsTxt(pages, site) {
 		const linked = profiles.map((link) => `[${link.text}](${link.href})`);
 		details.push(`Profiles linked from the site: ${joinList(linked)}.`);
 	}
-	details.push(
-		'The list below is every indexable page, as Markdown. Pages with `noindex` in frontmatter, routes in `src/noindex-routes.mjs`, and the branded 404 are left out. Those Markdown URLs are not in the sitemap. Responses for them send `X-Robots-Tag: noindex`, and robots.txt still allows the crawl. Cite the canonical HTML URL.',
-	);
+	details.push(CITE_CANONICAL);
 
 	const sections = [`# Amoeba`, '', `> ${summary}`, '', details.join('\n\n'), '', '## Pages', '', staticPages.map((page) => listItem(page, site)).join('\n')];
 	if (articles.length > 0) {

@@ -2,6 +2,12 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — llms.txt public copy (no internal SEO notes)
+
+- Scope: follow-up after PR #15. `llms.txt` and `llms-full.txt` must not leak internal program notes from `.seo/truth.md` or noindex implementation detail.
+- `src/llms/generate.mjs`: removed the appended “test pricing / not yet formalized” sentence from Markdown pages and from the offer paragraph in `llms.txt`. Price text now comes only from rendered page HTML (the same `$500 / week` string on `/` and `/rent-a-design-engineer`). Replaced the long noindex / `X-Robots-Tag` paragraph with one line asking readers to cite each page’s canonical HTML URL. Dropped the synthetic knowledge-index note that mentioned `noindex` frontmatter and `src/noindex-routes.mjs`.
+- `node --test src/llms/generate.test.mjs`: 4 passed. `bun run build` exited 0.
+
 ## 2026-10-10 — Merge main into llms.txt branch (PR #15)
 
 - Scope: resolve conflicts with `main` after #13 (offer, checklist, compare and knowledge stubs, `noindex-routes`), #14 (sitewide JSON-LD and 404), and #16 (Typekit performance in `Base.astro`). Keep llms generation, Markdown alternates, and the AI crawler policy from this branch.
