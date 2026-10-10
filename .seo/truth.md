@@ -13,18 +13,18 @@ Fetched 2026-10-10: production HTML at https://amoeba-design.vercel.app matches 
 - The logotype text is "Amoeba". Source: `src/components/Masthead.astro`.
 - "Amoeba Design" is the name used in document titles. Source: `src/layouts/Base.astro`, `src/pages/work/index.astro`, `src/pages/knowledge/index.astro`, `src/pages/knowledge/[id].astro`.
 
-The masthead says "ambitious". The default title says "growth-stage". Both are published. They are not the same phrase.
+The masthead says "ambitious". The default title says "growth-stage". Both are published. They are not the same phrase. Bryan said on 2026-10-10 to keep "ambitious B2B software companies" (the masthead wording) for positioning. Do not write new content with the growth-stage or early-stage lines.
 
 ## Who runs it
 
 - Amoeba is run by Bryan King from Newport, Kentucky. Source: `src/pages/info/index.astro`.
 - Bryan King's X profile is linked as https://x.com/bryan_king. Source: `src/pages/info/index.astro`.
 
-## Offer
+## Offer and pricing
 
-- The homepage offer is titled "Rent a design engineer". Source: `src/pages/index.astro`.
-- Published description: "Is your app rough around the edges? Are you looking to buff out the AI slop from your interface? Populate a backlog of issues and I’ll ship polished UI as PRs for your engineering team to review." Source: `src/pages/index.astro`.
-- Published price next to that offer: $500 / week. Source: `src/pages/index.astro`.
+- Accurate current claim, confirmed by Bryan on 2026-10-10: $500/week, Rent a design engineer (test pricing, offer not yet formalized). The homepage shows the heading "Rent a design engineer" and the price "$500 / week". Source: `src/pages/index.astro`. He is testing that price. It may stay on the page. Do not repeat the price in titles, meta descriptions, schema, or new content.
+- Published description next to that heading: "Is your app rough around the edges? Are you looking to buff out the AI slop from your interface? Populate a backlog of issues and I’ll ship polished UI as PRs for your engineering team to review." Source: `src/pages/index.astro`.
+- Other offers and prices are not formalized and must not be used. That includes the HTML comment in `src/pages/index.astro` with "(Re)build your design system", "Starting at $5,000", "Prototyping", "Starting at $x,000", and lorem ipsum. The comment is not rendered and is not a claim.
 
 ## Expertise named on the homepage
 
@@ -72,10 +72,9 @@ Seven entries exist. Each has a title and a description in frontmatter. The rend
 ## Not published (UNKNOWN — ask Bryan)
 
 - Process: how an engagement starts, how long it runs, what Bryan will not do. UNKNOWN.
-- Any price other than $500 / week. UNKNOWN.
-- Whether the homepage's commented-out blocks are real offers. `src/pages/index.astro` contains an HTML comment with "(Re)build your design system", "Starting at $5,000", "Prototyping", "Starting at $x,000", and lorem ipsum. That block is not rendered. It is not a published claim. Ask Bryan before anyone treats it as an offer.
 - Named clients, case-study results, or permission to name the companies in the work screenshots. UNKNOWN.
 - A public email, calendar link, or contact form. UNKNOWN. The published contact paths are the X profile on `/info` and the footer Twitter/GitHub links.
-- Launch domain, answered by Bryan on 2026-10-10: this Astro build will replace the current site at https://amoeba.design. That origin is the canonical to implement. It is not set in this repo yet (`astro.config.mjs` has no `site`; `src/layouts/Base.astro` has no canonical). The current pre-launch deploy is https://amoeba-design.vercel.app. Legacy copy on the Next.js site is still not recorded here. The list of legacy amoeba.design URLs beyond the homepage is UNKNOWN.
-- Competitors. UNKNOWN. Left empty in `.seo/config.json`.
+- Launch domain, answered by Bryan on 2026-10-10: this Astro build will replace the current site at https://amoeba.design. That origin is the canonical to implement. It is not set in this repo yet (`astro.config.mjs` has no `site`; `src/layouts/Base.astro` has no canonical). The current pre-launch deploy is https://amoeba-design.vercel.app. Legacy copy on the Next.js site is still not recorded here.
+- Legacy URLs, answered by Bryan on 2026-10-10: amoeba.design has only the homepage. No other legacy URLs need 301s.
+- Competitors. UNKNOWN. Bryan named a peer set (people doing similar things, not strict competitors) in `.seo/config.json` under `peers`. Do not treat those sites as competitors.
 - Audience segments. The owner stated them for the program (see config). The site itself does not list an audience.

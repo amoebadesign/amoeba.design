@@ -17,7 +17,11 @@
       "decision": "This Astro build will replace the site currently live at https://amoeba.design. Launch and canonical origin is https://amoeba.design. https://amoeba-design.vercel.app remains the current pre-launch deploy URL.",
       "implementedInCode": false,
       "code": "astro.config.mjs does not set site. src/layouts/Base.astro does not emit a canonical link. There is no vercel.json. The package.json name amoeba.design is the npm package name, not a canonical URL. On 2026-10-10, https://amoeba-design.vercel.app/ returned HTTP 200 with no Location redirect to https://amoeba.design.",
-      "legacySite": "https://amoeba.design currently serves a different Next.js app. That app emits its own canonical to https://amoeba.design. It is the site this build will replace, not this repo's output."
+      "legacySite": "https://amoeba.design currently serves a different Next.js app. That app emits its own canonical to https://amoeba.design. It is the site this build will replace, not this repo's output.",
+      "legacyPaths": {
+        "status": "closed",
+        "answer": "Bryan, 2026-10-10: the legacy amoeba.design site has only the homepage. No other legacy URLs need 301s. The homepage path stays /."
+      }
     }
   },
   "brand": {
@@ -32,9 +36,18 @@
       "Other pages: {Page title} | Amoeba Design"
     ]
   },
+  "positioning": {
+    "source": "ownerSupplied",
+    "line": "ambitious B2B software companies",
+    "note": "Bryan, 2026-10-10: keep the current masthead wording for now. Do not replace it with growth-stage or early-stage in new content."
+  },
   "offering": {
     "source": "ownerSupplied",
-    "summary": "Product design and design engineering services for growth-stage B2B software companies"
+    "summary": "Product design and design engineering services for ambitious B2B software companies",
+    "pricing": {
+      "currentClaim": "$500/week, Rent a design engineer (test pricing, offer not yet formalized)",
+      "rule": "That homepage price is an accurate current claim and stays on the page while Bryan tests it. Do not put prices in titles, meta descriptions, schema, or new content. Every other offer and price, including the commented $5,000 design-system block in src/pages/index.astro, is not formalized and must not be used."
+    }
   },
   "audience": {
     "source": "ownerSupplied",
@@ -103,7 +116,7 @@
         "status": "proposed, not created",
         "path": "src/pages/compare/{slug}.astro",
         "url": "/compare/{slug}",
-        "note": "No comparison or alternatives routes exist. Create them here when a competitor list exists. A content collection is optional later; do not add one until a page is actually being written."
+        "note": "No comparison or alternatives routes exist. peers is not a competitor list. Do not add one until a page is actually being written."
       },
       "freeTools": {
         "status": "proposed, not created",
@@ -114,7 +127,23 @@
     }
   },
   "competitors": [],
-  "competitorsTodo": "TODO: ask Bryan for the competitors, alternatives, and substitute workflows he wants named. Do not guess.",
+  "competitorsTodo": "Bryan supplied peers, not strict competitors. Do not treat peers as competitors and do not guess a competitor list.",
+  "peers": {
+    "framing": "People doing similar things. Not strict competitors.",
+    "urls": [
+      "https://halaska.com/",
+      "https://www.baselinedesign.com/",
+      "https://permanent.is/",
+      "https://southleft.com/",
+      "https://www.thomasmeijer.design/",
+      "https://directed.design/",
+      "https://turbodesign.co/",
+      "https://littleplains.com/",
+      "https://www.outpacestudios.com/",
+      "https://www.melior.design/",
+      "https://baked.design/"
+    ]
+  },
   "dataSources": {
     "googleSearchConsole": {
       "available": true,

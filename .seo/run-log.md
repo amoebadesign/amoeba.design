@@ -2,6 +2,14 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Bryan's answers on legacy URLs, peers, pricing, positioning
+
+- Scope: `.seo/` notes only. No page or config code edits.
+- Legacy amoeba.design has only the homepage. No other URLs need 301s. The open question is closed.
+- Peers (people doing similar things, not strict competitors) recorded in `config.json`. `competitors` stays empty.
+- Pricing: accurate current claim is $500/week, Rent a design engineer (test pricing, offer not yet formalized). Other offers and prices, including the commented $5,000 design-system block, are not formalized and must not be used. Prices stay out of titles and meta descriptions. The homepage price stays on the page.
+- Positioning to use: ambitious B2B software companies (current masthead).
+
 ## 2026-10-10 — Launch domain and legacy Search Console
 
 - Scope: `.seo/` notes only. No page, layout, or Astro config edits.
