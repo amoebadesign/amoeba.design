@@ -1,0 +1,141 @@
+---
+import { navItems, isActive } from "../nav-items";
+---
+<dialog id="chrome-overlay" class="overlay" aria-label="Menu">
+	<div class="overlay-inner">
+		<div class="overlay-top">
+			<button type="button" class="overlay-close" data-dialog-close>Close</button>
+		</div>
+		<nav aria-label="Primary">
+			<ul class="overlay-list">
+				{navItems.map((item, index) => {
+					const active = isActive(Astro.url.pathname, item.href);
+					return (
+						<li style={`--i: ${index}`}>
+							<a href={item.href} class:list={{ active }} aria-current={active ? "page" : undefined}>{item.label}</a>
+						</li>
+					);
+				})}
+			</ul>
+		</nav>
+		<div class="overlay-footer cluster tighter">
+			<a href="http://amoebaunlimited.com" target="blank">Blog</a>
+			<a href="https://twitter.com/amoeba_design" target="blank">Twitter</a>
+			<a href="https://github.com/amoebadesign" target="blank">GitHub</a>
+		</div>
+	</div>
+</dialog>
+
+<script>
+	document.addEventListener("click", (event) => {
+		const target = event.target as Element | null;
+		const opener = target?.closest<HTMLElement>("[data-dialog-open]");
+		if (opener) {
+			document.querySelector<HTMLDialogElement>(`#${opener.dataset.dialogOpen}`)?.showModal();
+			return;
+		}
+		const overlay = target?.closest<HTMLDialogElement>("dialog.overlay");
+		if (overlay && target?.closest("[data-dialog-close], a")) overlay.close();
+	});
+</script>
+
+<style>
+	.overlay {
+		width: 100%;
+		max-width: none;
+		height: 100dvh;
+		max-height: none;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background: #fff;
+		color: #000;
+	}
+
+	.overlay::backdrop {
+		background: transparent;
+	}
+
+	.overlay[open] {
+		animation: overlay-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.overlay-inner {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: calc(var(--chrome-inset) + env(safe-area-inset-top, 0px)) var(--chrome-inset) calc(var(--chrome-inset) + env(safe-area-inset-bottom, 0px));
+	}
+
+	.overlay-top {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.overlay-close {
+		min-height: 44px;
+		padding: 0;
+		border: 0;
+		background: none;
+		font: inherit;
+		color: inherit;
+		cursor: pointer;
+	}
+
+	.overlay-inner > nav {
+		margin-block: auto;
+	}
+
+	.overlay-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.overlay-list a {
+		display: block;
+		font-family: "HEX Franklin v0.3 Variable";
+		font-variation-settings: "wdth" 70, "wght" 800;
+		font-size: clamp(56px, 22vw, 112px);
+		line-height: 0.92;
+		letter-spacing: -0.04em;
+		text-transform: uppercase;
+		text-decoration: none;
+		color: #000;
+	}
+
+	.overlay-list a:not(.active) {
+		color: rgb(0 0 0 / 0.28);
+	}
+
+	.overlay-list a:hover {
+		color: #000;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.overlay[open] .overlay-list li {
+			animation: overlay-item-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+			animation-delay: calc(60ms + var(--i) * 45ms);
+		}
+	}
+
+	:global(html:has(dialog[open])) {
+		overflow: hidden;
+	}
+
+	@keyframes overlay-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes overlay-item-in {
+		from {
+			opacity: 0;
+			translate: 0 24px;
+		}
+	}
+</style>

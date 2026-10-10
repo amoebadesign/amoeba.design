@@ -1,0 +1,71 @@
+---
+import { navItems, isActive } from "../nav-items";
+---
+<nav class="pill" aria-label="Primary">
+	{navItems.map((item) => {
+		const active = isActive(Astro.url.pathname, item.href);
+		return (
+			<a href={item.href} class:list={{ active }} aria-current={active ? "page" : undefined}>
+				{active && <span class="pill-indicator" transition:name="pill-indicator" />}
+				{item.label}
+			</a>
+		);
+	})}
+</nav>
+
+<style>
+	.pill {
+		display: none;
+	}
+
+	@media (max-width: 44.25rem) {
+		:global(html[data-chrome="pill"] body) {
+			padding-bottom: calc(var(--chrome-inset) + 76px + env(safe-area-inset-bottom, 0px));
+		}
+
+		:global(html[data-chrome="pill"]) .pill {
+			position: fixed;
+			left: 50%;
+			bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+			z-index: 10;
+			display: flex;
+			gap: 2px;
+			padding: 4px;
+			translate: -50% 0;
+			border-radius: 999px;
+			background: rgb(255 255 255 / 0.72);
+			-webkit-backdrop-filter: blur(20px) saturate(1.8);
+			backdrop-filter: blur(20px) saturate(1.8);
+			box-shadow:
+				0 0 0 0.5px rgb(0 0 0 / 0.14),
+				0 10px 30px rgb(0 0 0 / 0.14);
+		}
+
+		.pill a {
+			position: relative;
+			isolation: isolate;
+			display: inline-flex;
+			align-items: center;
+			min-height: 40px;
+			padding: 0 14px;
+			border-radius: 999px;
+			font-size: 15px;
+			line-height: 1;
+			color: #000;
+			text-decoration: none;
+			transition: color 200ms ease-out;
+		}
+
+		.pill a.active {
+			color: #fff;
+		}
+
+		.pill-indicator {
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+			border-radius: inherit;
+			background: #000;
+		}
+	}
+</style>

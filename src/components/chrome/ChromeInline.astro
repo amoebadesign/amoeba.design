@@ -1,0 +1,94 @@
+---
+import { shipsChrome } from "./chromes";
+---
+{shipsChrome("overlay") && (
+	<button class="chrome-menu-trigger" type="button" aria-haspopup="dialog" data-dialog-open="chrome-overlay">Menu</button>
+)}
+
+{shipsChrome("hidey") && (
+	<script>
+		let lastY = window.scrollY;
+		let ticking = false;
+		let threshold = 0;
+
+		const measure = () => {
+			const brand = document.querySelector(".split-brand");
+			threshold = brand ? brand.getBoundingClientRect().bottom + window.scrollY : 0;
+			lastY = window.scrollY;
+		};
+
+		const update = () => {
+			const root = document.documentElement;
+			const y = window.scrollY;
+			if (Math.abs(y - lastY) > 6) {
+				root.dataset.scroll = y > lastY && y > threshold ? "down" : "up";
+				lastY = y;
+			}
+			root.toggleAttribute("data-scrolled", y > threshold);
+			ticking = false;
+		};
+
+		window.addEventListener("scroll", () => {
+			if (ticking) return;
+			ticking = true;
+			requestAnimationFrame(update);
+		}, { passive: true });
+		window.addEventListener("resize", measure);
+		document.addEventListener("astro:page-load", measure);
+	</script>
+)}
+
+<style>
+	.chrome-menu-trigger {
+		display: none;
+		padding: 0;
+		border: 0;
+		background: none;
+		font: inherit;
+		color: inherit;
+		cursor: pointer;
+		min-height: 44px;
+	}
+
+	/* Matches LayoutA's single-column breakpoint: the container query width plus both body insets. */
+	@media (max-width: 44.25rem) {
+		:global(html[data-chrome="overlay"]) .chrome-menu-trigger {
+			display: inline-flex;
+			align-items: center;
+		}
+
+		:global(html:is([data-chrome="overlay"], [data-chrome="pill"], [data-chrome="sheet"]) .split-nav > nav) {
+			display: none;
+		}
+
+		:global(html[data-chrome="pill"] .split-nav),
+		:global(html[data-chrome="sheet"] .split-nav) {
+			display: none;
+		}
+
+		:global(html[data-chrome="hidey"] .split-nav) {
+			position: sticky;
+			top: 0;
+			z-index: 2;
+			margin-inline: calc(-1 * var(--chrome-inset));
+			padding: 0.625rem var(--chrome-inset);
+			background: rgb(255 255 255 / 0.86);
+			-webkit-backdrop-filter: blur(12px);
+			backdrop-filter: blur(12px);
+			transition: translate 220ms ease-out, box-shadow 220ms ease-out;
+		}
+
+		:global(html[data-chrome="hidey"][data-scrolled] .split-nav) {
+			box-shadow: 0 1px 0 rgb(0 0 0 / 0.08);
+		}
+
+		:global(html[data-chrome="hidey"][data-scrolled][data-scroll="down"] .split-nav) {
+			translate: 0 -100%;
+		}
+
+		:global(html[data-chrome="hidey"] .split-nav a) {
+			min-height: 28px;
+			justify-content: center;
+		}
+	}
+</style>

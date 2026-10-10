@@ -1,0 +1,50 @@
+---
+import { chromes, productionChrome } from "./chromes";
+
+const slugs = chromes.map((chrome) => chrome.slug);
+const fallback = productionChrome;
+---
+<script is:inline define:vars={{ slugs, fallback }}>
+	(() => {
+		if (window.__amoebaChrome) return;
+		const KEY = "amoeba:chrome";
+		const valid = (slug) => slugs.includes(slug);
+		const store = (slug) => {
+			try { localStorage.setItem(KEY, slug); } catch {}
+		};
+		const read = () => {
+			const params = new URLSearchParams(location.search);
+			const fromQuery = params.get("chrome") ?? params.get("nav");
+			if (valid(fromQuery)) {
+				store(fromQuery);
+				return fromQuery;
+			}
+			let stored = null;
+			try { stored = localStorage.getItem(KEY); } catch {}
+			return valid(stored) ? stored : fallback;
+		};
+		const apply = (slug) => {
+			document.documentElement.dataset.chrome = slug;
+		};
+		const writeQuery = (slug) => {
+			const url = new URL(location.href);
+			url.searchParams.delete("nav");
+			url.searchParams.set("chrome", slug);
+			history.replaceState(history.state, "", url);
+		};
+		window.__amoebaChrome = {
+			slugs,
+			get: () => document.documentElement.dataset.chrome,
+			set(slug) {
+				if (!valid(slug)) return;
+				store(slug);
+				apply(slug);
+				writeQuery(slug);
+				document.dispatchEvent(new CustomEvent("chrome:change", { detail: slug }));
+			},
+		};
+		apply(read());
+		// ClientRouter copies <html> attributes from the incoming page, so reapply before it paints.
+		document.addEventListener("astro:after-swap", () => apply(read()));
+	})();
+</script>

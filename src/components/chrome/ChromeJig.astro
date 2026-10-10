@@ -1,0 +1,74 @@
+---
+import { chromes } from "./chromes";
+---
+<div class="chrome-jig">
+	<label>
+		<span class="chrome-jig-label">Nav</span>
+		<select data-chrome-jig aria-label="Mobile nav option">
+			{chromes.map((chrome) => (
+				<option value={chrome.slug}>{chrome.label}</option>
+			))}
+		</select>
+	</label>
+</div>
+
+<script>
+	type ChromeApi = { get: () => string | undefined; set: (slug: string) => void };
+
+	const api = () => (window as unknown as { __amoebaChrome?: ChromeApi }).__amoebaChrome;
+
+	const sync = () => {
+		const select = document.querySelector<HTMLSelectElement>("[data-chrome-jig]");
+		const current = api()?.get();
+		if (select && current) select.value = current;
+	};
+
+	document.addEventListener("astro:page-load", () => {
+		sync();
+		document.querySelector<HTMLSelectElement>("[data-chrome-jig]")?.addEventListener("change", (event) => {
+			api()?.set((event.target as HTMLSelectElement).value);
+		});
+	});
+	document.addEventListener("chrome:change", sync);
+</script>
+
+<style>
+	.chrome-jig {
+		position: fixed;
+		left: calc(10px + env(safe-area-inset-left, 0px));
+		bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+		z-index: 20;
+	}
+
+	.chrome-jig label {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 10px;
+		border-radius: 999px;
+		background: rgb(20 20 20 / 0.86);
+		color: #fff;
+		font-size: 12px;
+		line-height: 1;
+		box-shadow: 0 6px 20px rgb(0 0 0 / 0.2);
+	}
+
+	.chrome-jig-label {
+		font-weight: 600;
+		opacity: 0.6;
+	}
+
+	.chrome-jig select {
+		max-width: 9.5rem;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: inherit;
+		font: inherit;
+		font-size: 16px;
+	}
+
+	.chrome-jig select option {
+		color: #000;
+	}
+</style>

@@ -1,0 +1,313 @@
+---
+import { getCollection } from "astro:content";
+import { navItems, isActive } from "../nav-items";
+
+const articles = (await getCollection("knowledge")).sort((a, b) =>
+	a.data.title.localeCompare(b.data.title),
+);
+const current = navItems.find((item) => isActive(Astro.url.pathname, item.href));
+---
+<button class="sheet-trigger" type="button" aria-haspopup="dialog" data-sheet-open>
+	<span class="sheet-trigger-grabber" aria-hidden="true"></span>
+	<span>{current?.label ?? "Menu"}</span>
+</button>
+
+<dialog class="sheet" aria-label="Menu">
+	<div class="sheet-inner">
+		<div class="sheet-handle" data-sheet-handle>
+			<span class="sheet-grabber" aria-hidden="true"></span>
+		</div>
+		<div class="sheet-body">
+			<nav aria-label="Primary">
+				<ul class="sheet-list">
+					{navItems.map((item) => {
+						const active = isActive(Astro.url.pathname, item.href);
+						return (
+							<li>
+								<a href={item.href} class:list={{ active }} aria-current={active ? "page" : undefined}>{item.label}</a>
+							</li>
+						);
+					})}
+				</ul>
+			</nav>
+			<section class="sheet-section">
+				<h2 class="sheet-heading">Knowledge</h2>
+				<ul class="sheet-sublist">
+					{articles.map((article) => (
+						<li><a href={`/knowledge/${article.id}`}>{article.data.title}</a></li>
+					))}
+				</ul>
+			</section>
+			<div class="sheet-footer cluster tighter">
+				<a href="http://amoebaunlimited.com" target="blank">Blog</a>
+				<a href="https://twitter.com/amoeba_design" target="blank">Twitter</a>
+				<a href="https://github.com/amoebadesign" target="blank">GitHub</a>
+			</div>
+		</div>
+	</div>
+</dialog>
+
+<script>
+	const MEDIUM = 0.46;
+	const LARGE = 0.9;
+
+	const heightFor = (detent: string) =>
+		Math.round(window.innerHeight * (detent === "large" ? LARGE : MEDIUM));
+
+	const setDetent = (sheet: HTMLDialogElement, detent: "medium" | "large") => {
+		sheet.dataset.detent = detent;
+		sheet.style.setProperty("--sheet-height", `${heightFor(detent)}px`);
+		sheet.style.setProperty("--sheet-drag", "0px");
+	};
+
+	const close = (sheet: HTMLDialogElement) => {
+		if (!sheet.open || sheet.dataset.closing) return;
+		sheet.dataset.closing = "";
+		sheet.style.setProperty("--sheet-drag", `${sheet.offsetHeight}px`);
+		window.setTimeout(() => {
+			sheet.close();
+			delete sheet.dataset.closing;
+		}, 260);
+	};
+
+	const open = (sheet: HTMLDialogElement) => {
+		setDetent(sheet, "medium");
+		sheet.style.setProperty("--sheet-drag", `${heightFor("medium")}px`);
+		sheet.showModal();
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => sheet.style.setProperty("--sheet-drag", "0px"));
+		});
+	};
+
+	const bind = () => {
+		const sheet = document.querySelector<HTMLDialogElement>("dialog.sheet");
+		const trigger = document.querySelector<HTMLButtonElement>("[data-sheet-open]");
+		const handle = sheet?.querySelector<HTMLElement>("[data-sheet-handle]");
+		if (!sheet || !trigger || !handle) return;
+
+		trigger.addEventListener("click", () => open(sheet));
+
+		let dragging = false;
+		let suppressClick = false;
+
+		sheet.addEventListener("click", (event) => {
+			if (suppressClick) {
+				suppressClick = false;
+				return;
+			}
+			const target = event.target as Element;
+			if (target === sheet || target.closest("a")) close(sheet);
+		});
+
+		sheet.addEventListener("cancel", (event) => {
+			event.preventDefault();
+			close(sheet);
+		});
+
+		let startY = 0;
+		let startHeight = 0;
+		let dy = 0;
+		let moved = false;
+
+		let drag: AbortController | undefined;
+
+		handle.addEventListener("pointerdown", (event) => {
+			event.preventDefault();
+			startY = event.clientY;
+			startHeight = sheet.offsetHeight;
+			dy = 0;
+			moved = false;
+			suppressClick = false;
+			dragging = true;
+			sheet.dataset.dragging = "";
+			drag?.abort();
+			drag = new AbortController();
+			window.addEventListener("pointermove", move, { signal: drag.signal });
+			window.addEventListener("pointerup", release, { signal: drag.signal });
+			window.addEventListener("pointercancel", release, { signal: drag.signal });
+		});
+
+		const move = (event: PointerEvent) => {
+			if (!dragging) return;
+			dy = event.clientY - startY;
+			if (Math.abs(dy) > 4) moved = true;
+			if (dy < 0) {
+				const grown = Math.min(startHeight - dy, heightFor("large") + 24);
+				sheet.style.setProperty("--sheet-height", `${grown}px`);
+				sheet.style.setProperty("--sheet-drag", "0px");
+			} else {
+				sheet.style.setProperty("--sheet-height", `${startHeight}px`);
+				sheet.style.setProperty("--sheet-drag", `${dy}px`);
+			}
+		};
+
+		const release = () => {
+			if (!dragging) return;
+			dragging = false;
+			drag?.abort();
+			suppressClick = moved;
+			delete sheet.dataset.dragging;
+			const detent = sheet.dataset.detent === "large" ? "large" : "medium";
+			if (!moved) {
+				setDetent(sheet, detent === "large" ? "medium" : "large");
+			} else if (dy < -48) {
+				setDetent(sheet, "large");
+			} else if (dy > 72) {
+				if (detent === "large" && dy < startHeight - heightFor("medium") + 72) setDetent(sheet, "medium");
+				else close(sheet);
+			} else {
+				setDetent(sheet, detent);
+			}
+		};
+
+	};
+
+	document.addEventListener("astro:page-load", bind);
+</script>
+
+<style>
+	.sheet-trigger {
+		display: none;
+	}
+
+	.sheet {
+		--sheet-height: 46dvh;
+		--sheet-drag: 0px;
+		width: 100%;
+		max-width: none;
+		height: var(--sheet-height);
+		max-height: none;
+		margin: auto 0 0;
+		padding: 0;
+		border: 0;
+		border-radius: 18px 18px 0 0;
+		background: #fff;
+		color: #000;
+		box-shadow: 0 -8px 40px rgb(0 0 0 / 0.16);
+		translate: 0 var(--sheet-drag);
+		overflow: hidden;
+	}
+
+	.sheet:not([data-dragging]) {
+		transition:
+			translate 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+			height 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.sheet::backdrop {
+		background: rgb(0 0 0 / 0.24);
+	}
+
+	.sheet-inner {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.sheet-handle {
+		display: flex;
+		justify-content: center;
+		padding: 10px 0 14px;
+		touch-action: none;
+		cursor: grab;
+	}
+
+	.sheet-grabber,
+	.sheet-trigger-grabber {
+		width: 36px;
+		height: 5px;
+		border-radius: 999px;
+		background: rgb(0 0 0 / 0.2);
+	}
+
+	.sheet-body {
+		flex: 1;
+		min-height: 0;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		padding: 0 var(--chrome-inset) calc(var(--chrome-inset) + env(safe-area-inset-bottom, 0px));
+	}
+
+	.sheet[data-detent="medium"] .sheet-body {
+		overflow-y: hidden;
+	}
+
+	.sheet-list,
+	.sheet-sublist {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.sheet-list a {
+		display: flex;
+		align-items: center;
+		min-height: 52px;
+		font-size: 22px;
+		letter-spacing: -0.02em;
+		text-decoration: none;
+		color: #000;
+		border-bottom: 1px solid rgb(0 0 0 / 0.08);
+	}
+
+	.sheet-list a.active {
+		font-weight: 600;
+	}
+
+	.sheet-section {
+		margin-top: 1.75rem;
+	}
+
+	.sheet-heading {
+		margin: 0 0 0.5rem;
+		font-size: 13px;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		text-transform: uppercase;
+		color: rgb(0 0 0 / 0.5);
+	}
+
+	.sheet-sublist a {
+		display: block;
+		padding: 0.5rem 0;
+		text-decoration: none;
+		color: #000;
+	}
+
+	.sheet-footer {
+		margin-top: 1.75rem;
+	}
+
+	@media (max-width: 44.25rem) {
+		:global(html[data-chrome="sheet"] body) {
+			padding-bottom: calc(var(--chrome-inset) + 72px + env(safe-area-inset-bottom, 0px));
+		}
+
+		:global(html[data-chrome="sheet"]) .sheet-trigger {
+			position: fixed;
+			left: 50%;
+			bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+			z-index: 10;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 6px;
+			min-width: 132px;
+			padding: 7px 22px 11px;
+			translate: -50% 0;
+			border: 0;
+			border-radius: 18px;
+			background: rgb(255 255 255 / 0.8);
+			-webkit-backdrop-filter: blur(20px) saturate(1.8);
+			backdrop-filter: blur(20px) saturate(1.8);
+			box-shadow:
+				0 0 0 0.5px rgb(0 0 0 / 0.14),
+				0 10px 30px rgb(0 0 0 / 0.14);
+			font: inherit;
+			font-size: 15px;
+			font-weight: 600;
+			color: #000;
+			cursor: pointer;
+		}
+	}
+</style>
