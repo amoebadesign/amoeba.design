@@ -31,3 +31,5 @@ New blog posts belong in `src/content/knowledge/` until Bryan says the off-site 
 Comparison pages live in `src/pages/compare/{slug}.astro`. The free tool lives in `src/pages/tools/{slug}.astro`. Offer page: `src/pages/rent-a-design-engineer.astro`. Voice and peer research for this program are `voice-guide.md` and `peer-research.md` in this directory.
 
 Bryan writes article and comparison prose himself. Agents write outlines in `outlines/`, not copy. Unpublished pages stay "Coming soon" and out of the index: knowledge entries with `noindex: true` in frontmatter, page routes by listing the path in `src/noindex-routes.mjs`. Both drive the `noindex, follow` tag and the sitemap filter in `astro.config.mjs`.
+
+`/llms.txt`, `/llms-full.txt`, and `/{route}.md` (homepage: `/index.md`) are generated at the end of `astro build` from the built HTML. `noindexPathnames()` in `src/noindex-routes.mjs` is the shared list for knowledge `noindex: true` and stub routes. The sitemap filter and the llms generator both use it. Those text files are not committed under `public/`.

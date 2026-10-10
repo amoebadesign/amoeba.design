@@ -1,3 +1,38 @@
+# AI crawlers are allowed to fetch this site. Search, user-fetch, and training
+# tokens are named so the policy is visible. Every group below is Allow: /.
+# None of these agents are disallowed.
+#
+# What differs is the token, not the directive:
+# - OAI-SearchBot, Claude-SearchBot, and PerplexityBot are the search indexes
+#   behind ChatGPT, Claude, and Perplexity.
+# - ChatGPT-User, Claude-User, and Perplexity-User fetch a page when a person
+#   asks a question. Their vendors say those user agents may not honor
+#   robots.txt. They are still allowed here.
+# - GPTBot, ClaudeBot, and CCBot collect pages that may be used for training.
+# - Google-Extended and Applebot-Extended are training opt-out tokens. They do
+#   not fetch pages. Allowing them lets Gemini and Apple Intelligence use the
+#   content for training. Google Search and AI Overviews use Googlebot.
+#   Apple search uses Applebot. Both stay allowed under User-agent: *.
+#   Disallowing Google-Extended would not remove AI Overviews.
+# - Any agent not named here, including other training crawlers, is allowed
+#   by User-agent: *. Markdown alternates (/*.md) are allowed too. They are
+#   kept out of the index with X-Robots-Tag: noindex, not with Disallow.
+
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+Allow: /
+
 User-agent: *
 Allow: /
 

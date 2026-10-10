@@ -2,6 +2,21 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Merge main into llms.txt branch (PR #15)
+
+- Scope: resolve conflicts with `main` after #13 (offer, checklist, compare and knowledge stubs, `noindex-routes`), #14 (sitewide JSON-LD and 404), and #16 (Typekit performance in `Base.astro`). Keep llms generation, Markdown alternates, and the AI crawler policy from this branch.
+- `src/noindex-routes.mjs` now exports `noindexRoutes` for stub compare pages and `noindexPathnames()` for those paths plus every knowledge file with `noindex: true`. `astro.config.mjs` and the llms build both use `noindexKnowledgeUrls()`.
+- `src/layouts/Base.astro` keeps `SiteGraph`, page `jsonLd`, non-blocking Acumin loading, and the `rel="alternate"` / `rel="describedby"` links for indexable pages.
+- `node --test src/llms/generate.test.mjs`: 4 passed. `bun run build` exited 0. 17 pages. Log: "Wrote llms.txt, llms-full.txt, and 6 markdown page(s). Skipped 11 noindex page(s)."
+- `dist/sitemap-0.xml` lists `/`, `/info`, `/knowledge`, `/rent-a-design-engineer`, `/tools/ui-polish-checklist`, `/work`. No `.md`, no `llms.txt`, no 404, no compare stubs, no knowledge stubs. `knowledge.md` links the offer and checklist only, not the compare stubs.
+
+## 2026-10-10 — llms.txt, Markdown alternates, and AI crawler policy
+
+- Scope: make the indexable site easy for ChatGPT, Perplexity, Claude, and Google AI Overviews to fetch and describe. No schema, no 404 page, no `og:image`, no speed changes in the first commit on this branch. The homepage price was not added to any title or meta description.
+- Build hook `src/integrations/llms-txt.mjs` (`astro:build:done`) reads the HTML just written to `dist/` and writes `/llms.txt`, `/llms-full.txt`, and a `/{route}.md` alternate for every indexable page. Nothing is committed under `public/`.
+- `llms.txt` follows llmstxt.org. The offer paragraph points at the Rent a design engineer page when that route is indexable. Stub knowledge articles, compare routes in `noindexRoutes`, and `/404` are omitted. Markdown alternates get `X-Robots-Tag: noindex` via `vercel.json` and are excluded from the sitemap.
+- `public/robots.txt` names major AI user agents, all `Allow: /`, and keeps the sitemap line.
+
 ## 2026-10-10 — Merge main into the performance branch
 
 - Scope: bring PR #14 (sitewide JSON-LD and the 404) and PR #13 (offer page, checklist, stubs, `noindex-routes`) onto the performance branch before merging PR #16. No new copy.
