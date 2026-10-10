@@ -20,7 +20,7 @@ Do not invent Search Console, DataForSEO, or rank-tracking numbers. Competitors 
 
 Astro project root is the repo root (`package.json`, `astro.config.mjs`). Astro 7.3.5, static output, `@astrojs/sitemap`, no MDX. Deployed as static files on Vercel.
 
-- Head: `src/layouts/Base.astro`. There is no SEO component. The head sets charset, viewport, title, description, canonical, Open Graph, and Twitter card tags. No `og:image` yet (`TODO(og-image)` in `Base.astro`).
+- Head: `src/layouts/Base.astro`. There is no SEO component. The head sets charset, viewport, title, description, canonical, Open Graph, and Twitter card tags. Per-page `og:image` / `twitter:image` URLs are derived from the route (`src/og/image-path.mjs`), with `public/og.png` as the fallback (e.g. `/404`). **After adding a page or knowledge post**, run `bun run generate:og` locally (Playwright + Chromium; not on Vercel), commit the new PNGs under `public/og/`, and update `src/og/pages.mjs` if the route is not a knowledge markdown file. `bun run build` runs `scripts/check-og-images.mjs` and fails if an indexable page is missing its image.
 - Chrome: `src/layouts/LayoutA.astro` (masthead, nav, main, footer).
 - Pages: `src/pages/index.astro` (`/`), `src/pages/work/index.astro` (`/work`), `src/pages/info/index.astro` (`/info`).
 - Collection: `knowledge` in `src/content.config.ts`, files in `src/content/knowledge/*.md`, listed at `/knowledge`, rendered at `/knowledge/{id}`.

@@ -3,6 +3,7 @@ import { ClientRouter } from "astro:transitions";
 import JsonLd from "../components/JsonLd.astro";
 import SiteGraph from "../components/SiteGraph.astro";
 import { absoluteUrl, markdownPathname } from "../llms/urls.mjs";
+import { ogPublicPath } from "../og/image-path.mjs";
 import "../styles/amoeba/index.css";
 
 interface Props {
@@ -15,15 +16,14 @@ interface Props {
 	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const DEFAULT_OG_IMAGE = "https://amoeba.design/og.png";
 const OG_IMAGE_ALT =
 	"Amoeba — design engineering studio for ambitious B2B software companies. Rent a design engineer • $500/wk.";
 
 // Fallback only. Every page should pass its own title and description.
-// Pattern is `{Page title} • Amoeba`, roughly 60 characters or less. No prices.
+// Pattern is `{Page title} • Amoeba`, roughly 60 characters or less.
 const {
-	title = "Design engineering for ambitious B2B software • Amoeba",
-	description = "Amoeba is a design engineering studio for ambitious B2B software companies. Rent a design engineer to ship polished UI as pull requests for your team to review.",
+	title = "Rent a design engineer, $500/wk • Amoeba",
+	description = "Amoeba is a design engineering studio for ambitious B2B software. Rent a design engineer at $500/wk to ship polished UI as pull requests your team reviews.",
 	noindex = false,
 	ogType = "website",
 	ogImage: ogImageProp,
@@ -31,9 +31,10 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
-const ogImage = ogImageProp
-	? new URL(ogImageProp, Astro.site ?? "https://amoeba.design").href
-	: DEFAULT_OG_IMAGE;
+const ogImage = absoluteUrl(
+	ogImageProp ? ogImageProp : ogPublicPath(canonical.pathname),
+	canonical,
+);
 // Markdown alternates are generated for indexable pages only. vercel.json
 // sends X-Robots-Tag: noindex for `*.md`, and those URLs are not in the sitemap.
 const markdownHref = noindex ? undefined : absoluteUrl(markdownPathname(canonical.pathname), canonical);

@@ -2,14 +2,27 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Per-page Open Graph images (PR #18)
+
+- Scope: dark template share PNG for every built page except `/404` (uses `public/og.png`). Files under `public/og/<route>.png` (e.g. `public/og/index.png`, `public/og/knowledge/fix-ai-slop-ui.png`). `src/og/pages.mjs` lists titles/descriptions; `src/og/image-path.mjs` maps pathname → URL; `Base.astro` sets `og:image` / `twitter:image` automatically. Larger body type (44px title, 34px subtitle/offer) for feed thumbnails. Footer line `Rent a design engineer • $500/wk` on every image. Generator: `bun run generate:og` (Playwright; not run on Vercel). Build runs `node scripts/check-og-images.mjs` first and fails if any indexable page lacks its PNG. Documented in `.seo/README.md`.
+- Fonts: HEX Franklin from `public/fonts/`; Acumin from Adobe kit URL at generate time only.
+- Merged latest `main` (pricing in titles/meta, llms.txt copy cleanup).
+
 ## 2026-10-10 — Open Graph share image (dark, Bryan’s pick)
 
-- Scope: single 1200×630 `public/og.png` (dark framed layout). Removed `public/og-options/`. `scripts/generate-og-images.mjs` renders with Playwright + Chromium so type matches the masthead: **HEX Franklin v0.3 Variable** from `public/fonts/hex-franklin-variable.woff2` (logotype at 120px with wdth 70 / wght 800) and **acumin-variable** at 26px for the masthead line and offer (same ratio as `type-logotype` + `.masthead-lede` in `LayoutA.astro`). Acumin bytes are pulled at generate time from the kit URL in `public/fonts/acumin-variable.css` only; not committed. Copy includes the masthead sentence and `Rent a design engineer • $500/wk`. Default `og:image` / `twitter:image` → `https://amoeba.design/og.png`. Regenerate: `bun run generate:og`.
-- Build: `bun run build` exited 0.
+- Superseded by per-page images above; `public/og.png` remains the homepage/default fallback.
 
-## 2026-10-10 — Open Graph share images (three options, superseded)
+## 2026-10-10 — Pricing in titles, meta, and Service Offer JSON-LD
 
-- Superseded by the dark single `public/og.png` entry above. The three-option branch used satori with substitute fonts; Bryan chose the dark layout with real masthead type.
+- Scope: Bryan approved showing `$500/wk` everywhere with no hedging (no test pricing, not formalized, starting at). Updated `.seo/truth.md` and `.seo/config.json` to record the offer as Rent a design engineer, $500/wk. Homepage and `/rent-a-design-engineer` titles use `Rent a design engineer, $500/wk • Amoeba` (40 characters). Meta descriptions include `$500/wk` on both pages (home 155, offer 160). `Base.astro` fallback matches the homepage. Service JSON-LD on the offer page adds an `Offer` with price 500 USD and `UnitPriceSpecification` unitText week. Visible copy still uses `$500 / week`. No `og:image` changes.
+- `node --test src/llms/generate.test.mjs`: 4 passed. `npm run build` exited 0. llms.txt and indexable `.md` alternates pick up meta descriptions and visible price from built HTML.
+- JSON-LD: all 16 `index.html` files parse. Offer page Service node includes `offers` as above; FAQPage still has `$500 / week` in the cost answer.
+
+## 2026-10-10 — llms.txt public copy (no internal SEO notes)
+
+- Scope: follow-up after PR #15. `llms.txt` and `llms-full.txt` must not leak internal program notes from `.seo/truth.md` or noindex implementation detail.
+- `src/llms/generate.mjs`: removed the appended “test pricing / not yet formalized” sentence from Markdown pages and from the offer paragraph in `llms.txt`. Price text now comes only from rendered page HTML (the same `$500 / week` string on `/` and `/rent-a-design-engineer`). Replaced the long noindex / `X-Robots-Tag` paragraph with one line asking readers to cite each page’s canonical HTML URL. Dropped the synthetic knowledge-index note that mentioned `noindex` frontmatter and `src/noindex-routes.mjs`.
+- `node --test src/llms/generate.test.mjs`: 4 passed. `bun run build` exited 0.
 
 ## 2026-10-10 — Merge main into llms.txt branch (PR #15)
 

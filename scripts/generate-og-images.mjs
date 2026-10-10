@@ -1,32 +1,37 @@
 /**
- * Renders public/og.png (1200×630) with Chromium so share art uses the same
- * typefaces as the live masthead (HEX Franklin + Acumin VF).
- *
- * - HEX Franklin: self-hosted woff2 from public/fonts/ (same as fonts.css).
- * - Acumin VF: fetched at generate time from the Adobe Fonts kit URL in
- *   public/fonts/acumin-variable.css (web license; bytes are not committed).
+ * Renders share PNGs with Chromium (local dev / CI with Playwright only).
+ * Committed files under public/og/ and public/og.png — Vercel build does not run this.
  */
 import { createServer } from "node:http";
+import { mkdirSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
+import { ogPublicFile } from "../src/og/image-path.mjs";
+import { getAllOgPages, stripBrandSuffix } from "../src/og/pages.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
 
 const WIDTH = 1200;
 const HEIGHT = 630;
-
-const LEDE =
-	"Amoeba is a design engineering studio for ambitious B2B software companies.";
 const OFFER = "Rent a design engineer • $500/wk";
 
-/** From public/fonts/acumin-variable.css — not committed, only requested when generating. */
+/** From public/fonts/acumin-variable.css — fetched at generate time only. */
 const ACUMIN_WOFF2 =
 	"https://use.typekit.net/af/cd27bb/0000000000000000774be2a6/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3";
 
-const html = `<!DOCTYPE html>
+function escapeHtml(value) {
+	return value
+		.replaceAll("&", "&amp;")
+		.replaceAll("<", "&lt;")
+		.replaceAll(">", "&gt;")
+		.replaceAll('"', "&quot;");
+}
+
+function buildHtml({ headline, subtitle }) {
+	return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -58,14 +63,14 @@ const html = `<!DOCTYPE html>
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 72px 80px;
+    padding: 64px 72px;
     border: 3px solid oklch(37.1% 0 0);
   }
   .type-logotype {
     display: inline-flex;
     align-items: center;
     font-family: "HEX Franklin v0.3 Variable", "acumin-variable", sans-serif;
-    font-size: 120px;
+    font-size: 100px;
     font-weight: 800;
     font-stretch: 70%;
     font-variation-settings: "wdth" 70, "wght" 800;
@@ -77,28 +82,36 @@ const html = `<!DOCTYPE html>
   .bottom {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    max-width: 580px;
+    gap: 20px;
+    max-width: 840px;
   }
   .rule {
     width: 80px;
     height: 3px;
     background: oklch(55.6% 0 0);
   }
-  .masthead-lede {
-    font-weight: 400;
-    font-size: 26px;
+  .page-title {
+    font-weight: 700;
+    font-size: 44px;
     letter-spacing: -0.03em;
-    line-height: 100%;
-    max-width: 451px;
-    text-wrap: wrap;
+    line-height: 1.05;
+    text-wrap: balance;
+    color: oklch(98.5% 0 0);
+  }
+  .subtitle {
+    font-weight: 400;
+    font-size: 34px;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
+    max-width: 780px;
+    text-wrap: pretty;
     color: oklch(98.5% 0 0);
   }
   .offer {
     font-weight: 400;
-    font-size: 26px;
+    font-size: 34px;
     letter-spacing: -0.03em;
-    line-height: 100%;
+    line-height: 1.05;
     color: oklch(98.5% 0 0);
   }
 </style>
@@ -108,14 +121,16 @@ const html = `<!DOCTYPE html>
     <span class="type-logotype">Amoeba</span>
     <div class="bottom">
       <div class="rule" aria-hidden="true"></div>
-      <p class="masthead-lede">${LEDE}</p>
+      <p class="page-title">${escapeHtml(headline)}</p>
+      <p class="subtitle">${escapeHtml(subtitle)}</p>
       <p class="offer">${OFFER}</p>
     </div>
   </div>
 </body>
 </html>`;
+}
 
-async function startServer() {
+async function startServer(getHtml) {
 	const hexPath = join(root, "public/fonts/hex-franklin-variable.woff2");
 	const hexBytes = await readFile(hexPath);
 
@@ -131,7 +146,7 @@ async function startServer() {
 			}
 			if (req.url === "/" || req.url === "/index.html") {
 				res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-				res.end(html);
+				res.end(getHtml());
 				return;
 			}
 			res.writeHead(404);
@@ -141,7 +156,11 @@ async function startServer() {
 	});
 }
 
-const server = await startServer();
+const pages = getAllOgPages(root);
+/** @type {string | null} */
+let currentHtml = null;
+
+const server = await startServer(() => currentHtml ?? "");
 const { port } = server.address();
 
 const browser = await chromium.launch();
@@ -150,17 +169,42 @@ const page = await browser.newPage({
 	deviceScaleFactor: 1,
 });
 
-await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: "networkidle" });
-await page.evaluate(async () => {
-	await document.fonts.load('800 120px "HEX Franklin v0.3 Variable"');
-	await document.fonts.load('400 26px "acumin-variable"');
-	await document.fonts.ready;
-});
+/** @type {Buffer | null} */
+let homePng = null;
 
-const png = await page.screenshot({ type: "png", clip: { x: 0, y: 0, width: WIDTH, height: HEIGHT } });
+for (const entry of pages) {
+	const headline = stripBrandSuffix(entry.title);
+	const subtitle = entry.description;
+	currentHtml = buildHtml({ headline, subtitle });
+
+	await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: "networkidle" });
+	await page.evaluate(async () => {
+		await document.fonts.load('800 100px "HEX Franklin v0.3 Variable"');
+		await document.fonts.load('700 44px "acumin-variable"');
+		await document.fonts.load('400 34px "acumin-variable"');
+		await document.fonts.ready;
+	});
+
+	const png = await page.screenshot({
+		type: "png",
+		clip: { x: 0, y: 0, width: WIDTH, height: HEIGHT },
+	});
+
+	const rel = ogPublicFile(entry.pathname);
+	const outPath = join(root, "public", rel);
+	mkdirSync(dirname(outPath), { recursive: true });
+	await writeFile(outPath, png);
+	console.log(`Wrote public/${rel} (${png.length} bytes)`);
+
+	if (entry.pathname === "/") homePng = png;
+}
+
 await browser.close();
 server.close();
 
-const outPath = join(root, "public/og.png");
-await writeFile(outPath, png);
-console.log(`Wrote public/og.png (${png.length} bytes)`);
+if (homePng) {
+	await writeFile(join(root, "public/og.png"), homePng);
+	console.log(`Wrote public/og.png (${homePng.length} bytes)`);
+}
+
+console.log(`Generated ${pages.length} page image(s) + default og.png.`);

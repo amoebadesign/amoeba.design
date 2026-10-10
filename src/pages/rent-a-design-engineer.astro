@@ -2,9 +2,9 @@
 import LayoutA from "../layouts/LayoutA.astro";
 import { Button, Cluster, Stack } from "../components/ui";
 
-const title = "Rent a design engineer for SaaS • Amoeba";
+const title = "Rent a design engineer, $500/wk • Amoeba";
 const description =
-	"Rent a design engineer for ambitious B2B software companies. Send a UI backlog and I will ship polished SaaS UI as pull requests your engineering team reviews.";
+	"Rent a design engineer at $500/wk for ambitious B2B software. Send a UI backlog and I will ship polished SaaS UI as pull requests your engineering team reviews.";
 
 const faqs = [
 	{
@@ -65,6 +65,17 @@ const jsonLd = [
 			"Populate a backlog of issues and get polished UI shipped as pull requests for your engineering team to review.",
 		url: pageUrl,
 		provider: { "@id": "https://amoeba.design/#organization" },
+		offers: {
+			"@type": "Offer",
+			price: "500",
+			priceCurrency: "USD",
+			priceSpecification: {
+				"@type": "UnitPriceSpecification",
+				price: "500",
+				priceCurrency: "USD",
+				unitText: "week",
+			},
+		},
 	},
 	{
 		"@context": "https://schema.org",

@@ -13,7 +13,7 @@ Fetched 2026-10-10: production HTML at https://amoeba-design.vercel.app matches 
 - The logotype text is "Amoeba". Source: `src/components/Masthead.astro`.
 - Document titles end in "Amoeba", not "Amoeba Design".
 
-Bryan said on 2026-10-10 to keep "ambitious B2B software companies" (the masthead wording) for positioning. Do not write new content with the growth-stage or early-stage lines. Titles and meta descriptions do not include prices.
+Bryan said on 2026-10-10 to keep "ambitious B2B software companies" (the masthead wording) for positioning. Do not write new content with the growth-stage or early-stage lines.
 
 ## Who runs it
 
@@ -22,8 +22,8 @@ Bryan said on 2026-10-10 to keep "ambitious B2B software companies" (the masthea
 
 ## Offer and pricing
 
-- Accurate current claim, confirmed by Bryan on 2026-10-10: $500/week, Rent a design engineer (test pricing, offer not yet formalized). The homepage shows the heading "Rent a design engineer" and the price "$500 / week". Source: `src/pages/index.astro`. He is testing that price.
-- The same figure is repeated as `$500 / week` on `/rent-a-design-engineer` (the price line and the "What does it cost?" answer). The hiring comparison is a "Coming soon" stub and does not state it. Bryan's 2026-10-10 content run asked for the homepage price on the offer page, and nothing beyond that figure. Titles and meta descriptions still omit the price. Service JSON-LD has no Offer. The cost answer is inside FAQPage JSON-LD because that answer is the FAQ. No other price is allowed.
+- Published offer, confirmed by Bryan on 2026-10-10: Rent a design engineer, $500/wk. The homepage shows the heading "Rent a design engineer" and the price "$500 / week". Source: `src/pages/index.astro`. Titles and meta descriptions use `$500/wk` on `/` and `/rent-a-design-engineer`.
+- The same figure is repeated as `$500 / week` on `/rent-a-design-engineer` (the price line and the "What does it cost?" answer). The hiring comparison is a "Coming soon" stub and does not state it. Service JSON-LD on the offer page includes an Offer with price 500 USD per week. The cost answer is also inside FAQPage JSON-LD because that answer is the FAQ. No other price is allowed.
 - Published description next to that heading: "Is your app rough around the edges? Are you looking to buff out the AI slop from your interface? Populate a backlog of issues and I’ll ship polished UI as PRs for your engineering team to review." Source: `src/pages/index.astro`.
 - Other offers and prices are not formalized and must not be used. That includes the HTML comment in `src/pages/index.astro` with "(Re)build your design system", "Starting at $5,000", "Prototyping", "Starting at $x,000", and lorem ipsum. The comment is not rendered and is not a claim.
 

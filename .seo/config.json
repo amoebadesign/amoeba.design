@@ -46,8 +46,8 @@
     "source": "ownerSupplied",
     "summary": "Product design and design engineering services for ambitious B2B software companies",
     "pricing": {
-      "currentClaim": "$500/week, Rent a design engineer (test pricing, offer not yet formalized)",
-      "rule": "The homepage price is an accurate current claim and stays while Bryan tests it. It is also stated as \"$500 / week\" on /rent-a-design-engineer (the price line and the cost FAQ). The hiring comparison is a stub and does not state it. Titles and meta descriptions stay free of prices. Service JSON-LD has no Offer price. The cost FAQ text includes the figure, so FAQPage JSON-LD does too. No other offer or price, including the commented $5,000 design-system block in src/pages/index.astro, is formalized or allowed."
+      "currentClaim": "Rent a design engineer, $500/wk",
+      "rule": "The offer is Rent a design engineer at $500/wk. Visible copy on / and /rent-a-design-engineer uses \"$500 / week\". Titles and meta descriptions on those pages use \"$500/wk\". Service JSON-LD on /rent-a-design-engineer includes an Offer (500 USD per week). FAQPage JSON-LD repeats the cost answer. No other offer or price, including the commented $5,000 design-system block in src/pages/index.astro, is published or allowed."
     }
   },
   "audience": {
