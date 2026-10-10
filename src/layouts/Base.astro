@@ -38,6 +38,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 			})();
 		</script>
 		<ClientRouter />
+		<!-- Fathom - beautiful, simple website analytics -->
+		<!-- data-spa="auto" tracks ClientRouter navigations via history.pushState. -->
+		<script is:inline src="https://cdn.usefathom.com/script.js" data-site="DJDIBJEG" data-spa="auto" defer></script>
+		<!-- / Fathom -->
 		<link rel="preload" href="/fonts/hex-franklin-variable.woff2" as="font" type="font/woff2" crossorigin>
 		<link rel="preload" href="https://use.typekit.net/dit6fmi.css" as="style">
 		<link rel="preconnect" href="https://use.typekit.net">
