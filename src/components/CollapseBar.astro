@@ -1,0 +1,137 @@
+---
+import { navItems, isActive } from "./nav-items";
+import { Cluster } from "./ui";
+---
+<Cluster as="header" space="2" justify="between" class="collapse-bar" aria-hidden="true" inert>
+	<span class="collapse-bg" aria-hidden="true"></span>
+	<a class="collapse-logotype type-logotype" href="/">Amoeba</a>
+	<Cluster as="nav" class="collapse-nav type-body">
+		{navItems.map((item) => (
+			<a href={item.href} class:list={{ active: isActive(Astro.url.pathname, item.href) }}>{item.label}</a>
+		))}
+	</Cluster>
+</Cluster>
+
+<script>
+	const root = document.documentElement;
+	const range = { start: 0, end: 100 };
+	let ticking = false;
+
+	const docTop = (element: HTMLElement) => {
+		let top = 0;
+		let node: HTMLElement | null = element;
+		while (node) {
+			top += node.offsetTop;
+			node = node.offsetParent as HTMLElement | null;
+		}
+		return top;
+	};
+
+	const update = () => {
+		ticking = false;
+		const bar = document.querySelector<HTMLElement>(".collapse-bar");
+		if (!bar) return;
+		const y = Math.max(0, window.scrollY);
+		const value = Math.min(1, Math.max(0, (y - range.start) / Math.max(1, range.end - range.start)));
+		root.style.setProperty("--collapse", value.toFixed(3));
+		const collapsed = value > 0.5;
+		if (collapsed !== root.hasAttribute("data-collapsed")) root.toggleAttribute("data-collapsed", collapsed);
+		bar.inert = !collapsed;
+		if (collapsed) bar.removeAttribute("aria-hidden");
+		else bar.setAttribute("aria-hidden", "true");
+	};
+
+	// One range, measured from the wordmark passing under the bar, drives every part at once.
+	// Scroll events rather than CSS scroll timelines: iOS Safari reports animation-timeline
+	// support but does not run the animations.
+	const measure = () => {
+		const wordmark = document.querySelector<HTMLElement>(".split-brand .type-logotype");
+		const bar = document.querySelector<HTMLElement>(".collapse-bar");
+		if (!wordmark || !bar) return;
+		const barHeight = bar.offsetHeight || 48;
+		const top = docTop(wordmark);
+		range.start = Math.max(0, top - barHeight / 2);
+		range.end = Math.max(range.start + 1, top + wordmark.offsetHeight - barHeight / 2);
+		update();
+	};
+
+	window.addEventListener("scroll", () => {
+		if (ticking) return;
+		ticking = true;
+		requestAnimationFrame(update);
+	}, { passive: true });
+	window.addEventListener("resize", measure);
+	document.addEventListener("astro:page-load", measure);
+	document.fonts?.ready.then(measure);
+</script>
+
+<style>
+	/* LayoutA's single-column breakpoint: its container query width plus both body insets.
+	   --collapse defaults to 0, so without the script the page shows its expanded state. */
+	@media not (max-width: 44.25rem) {
+		.collapse-bar {
+			display: none;
+		}
+	}
+
+	.collapse-bar {
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 10;
+		height: calc(var(--spacing) * 12);
+		padding-inline: var(--chrome-inset);
+		pointer-events: none;
+	}
+
+	:global(html[data-collapsed]) .collapse-logotype,
+	:global(html[data-collapsed]) .collapse-nav {
+		pointer-events: auto;
+	}
+
+	.collapse-bg {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background: color-mix(in oklch, var(--color-bg) 86%, transparent);
+		-webkit-backdrop-filter: blur(16px) saturate(1.6);
+		backdrop-filter: blur(16px) saturate(1.6);
+		box-shadow: 0 1px 0 var(--color-border);
+		opacity: var(--collapse, 0);
+	}
+
+	.collapse-logotype,
+	.collapse-nav {
+		opacity: var(--collapse, 0);
+		translate: 0 calc((1 - var(--collapse, 0)) * 40%);
+	}
+
+	.collapse-logotype {
+		--logotype-fit: 0.24;
+		color: var(--color-fg);
+	}
+
+	/* Set here, not as a space prop, so the narrow breakpoint below can step it down. */
+	.collapse-nav {
+		--space: calc(var(--spacing) * 3.5);
+	}
+
+	.collapse-bar a {
+		text-decoration: none;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.collapse-nav a.active {
+		font-weight: 600;
+	}
+
+	/* The bar is a fixed height, so it must stay one line at 320px wide. */
+	@media (max-width: 22.5rem) {
+		.collapse-logotype {
+			--logotype-fit: 0.2;
+		}
+
+		.collapse-nav {
+			--space: calc(var(--spacing) * 2);
+		}
+	}
+</style>

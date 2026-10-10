@@ -1,4 +1,6 @@
 ---
+import { isActive } from "./nav-items";
+
 interface Props {
 	href: string;
 	label: string;
@@ -6,9 +8,7 @@ interface Props {
 
 const { href, label } = Astro.props;
 
-const path = Astro.url.pathname.replace(/\/$/, "") || "/";
-const active =
-	href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`);
+const active = isActive(Astro.url.pathname, href);
 ---
 
 <a href={href} data-text={label} class:list={{ active }}>{label}</a>
