@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import LayoutA from "../../layouts/LayoutA.astro";
+import Lightbox from "../../components/Lightbox.astro";
 import { Stack } from "../../components/ui";
 import work1 from "../../assets/work/work-1.png";
 import work2 from "../../assets/work/work-2.png";
@@ -36,7 +37,13 @@ const works = [
 <LayoutA title="Work | Amoeba Design">
   <Stack space="4">
     {works.map((work, index) => (
-      <div class="work-frame">
+      <button
+        type="button"
+        class="work-frame"
+        aria-haspopup="dialog"
+        aria-label={`View larger: ${work.alt}`}
+        data-lightbox-open={index}
+      >
         <Image
           src={work.src}
           alt={work.alt}
@@ -45,15 +52,21 @@ const works = [
           loading={index === 0 ? "eager" : "lazy"}
           decoding="async"
         />
-      </div>
+      </button>
     ))}
   </Stack>
+  <Lightbox items={works} label="Work screenshots" />
 </LayoutA>
 
 <style>
   .work-frame {
+    display: block;
+    inline-size: 100%;
+    border: 0;
     background-color: var(--color-surface);
+    color: inherit;
     padding: calc(var(--spacing) * 8);
+    cursor: zoom-in;
   }
 
   .work-frame :global(img) {
