@@ -22,7 +22,8 @@ Bryan said on 2026-10-10 to keep "ambitious B2B software companies" (the masthea
 
 ## Offer and pricing
 
-- Accurate current claim, confirmed by Bryan on 2026-10-10: $500/week, Rent a design engineer (test pricing, offer not yet formalized). The homepage shows the heading "Rent a design engineer" and the price "$500 / week". Source: `src/pages/index.astro`. He is testing that price. It may stay on the page. Do not repeat the price in titles, meta descriptions, schema, or new content.
+- Accurate current claim, confirmed by Bryan on 2026-10-10: $500/week, Rent a design engineer (test pricing, offer not yet formalized). The homepage shows the heading "Rent a design engineer" and the price "$500 / week". Source: `src/pages/index.astro`. He is testing that price.
+- The same figure is repeated as `$500 / week` on `/rent-a-design-engineer` (the price line and the "What does it cost?" answer) and once on `/compare/rent-a-design-engineer-vs-hiring`. Bryan's 2026-10-10 content run asked for the homepage price on the offer page, and nothing beyond that figure. Titles and meta descriptions still omit the price. Service JSON-LD has no Offer. The cost answer is inside FAQPage JSON-LD because that answer is the FAQ. No other price is allowed.
 - Published description next to that heading: "Is your app rough around the edges? Are you looking to buff out the AI slop from your interface? Populate a backlog of issues and I’ll ship polished UI as PRs for your engineering team to review." Source: `src/pages/index.astro`.
 - Other offers and prices are not formalized and must not be used. That includes the HTML comment in `src/pages/index.astro` with "(Re)build your design system", "Starting at $5,000", "Prototyping", "Starting at $x,000", and lorem ipsum. The comment is not rendered and is not a claim.
 
@@ -46,7 +47,7 @@ Listed without further description. Source: `src/pages/index.astro`.
 
 ## Knowledge
 
-Seven entries exist. Each has a title and a description in frontmatter. The rendered article body of every entry is "Coming soon". Sources: `src/content/knowledge/*.md`, rendered by `src/pages/knowledge/[id].astro`. Descriptions are shown on `/knowledge` (`src/pages/knowledge/index.astro`). Article pages also use that frontmatter string as `<meta name="description">` (`src/pages/knowledge/[id].astro`). Two document titles are shortened so `{Title} • Amoeba` stays at or under 60 characters: shadcn/lint, and the microinteractions article. Their visible H1s stay the full frontmatter titles.
+Eight entries exist. Each has a title and a description in frontmatter. Sources: `src/content/knowledge/*.md`, rendered by `src/pages/knowledge/[id].astro`. Descriptions are shown on `/knowledge` (`src/pages/knowledge/index.astro`). Article pages also use that frontmatter string as `<meta name="description">`. Two document titles are shortened so `{Title} • Amoeba` stays at or under 60 characters: shadcn/lint, and the microinteractions article. Their visible H1s stay the full frontmatter titles. Five bodies are still "Coming soon" and `noindex: true`. Two bodies are real articles and indexable.
 
 | Title | Description on the index | Body |
 |---|---|---|
@@ -54,7 +55,8 @@ Seven entries exist. Each has a title and a description in frontmatter. The rend
 | Storybook documentation for your agents | Show your agents how to use your design system with Storybook | Coming soon |
 | Cleaning up the Tailwind mess | How to abstract long Tailwind strings into reusable patterns | Coming soon |
 | How to use shadcn/lint to enforce your design system | Keep your agents on track with deterministic checks on your UI code | Coming soon |
-| There's more to design engineering than microinteractions | How to think about working with a design engineer | Coming soon |
+| There's more to design engineering than microinteractions | A design engineer ships the interface, not a picture of it. What the role owns in B2B software, how it differs from design and front-end, and when to hire one. | Full article. `noindex: false`. URL unchanged. |
+| Fix the AI slop in your UI | AI-generated UI drifts off the design system one override at a time. How I read the code, remove the slop, and put checks in CI so the next screen stays clean. | Full article. `noindex: false`. |
 | Don't be afraid of CSS | A pragmatic guide to CSS in the age of AI | Coming soon |
 | One-shotting Figma designs in code | Creating context for your agents to convert a Figma frame to code. | Coming soon |
 
@@ -73,7 +75,7 @@ Seven entries exist. Each has a title and a description in frontmatter. The rend
 
 - Process: how an engagement starts, how long it runs, what Bryan will not do. UNKNOWN.
 - Named clients, case-study results, or permission to name the companies in the work screenshots. UNKNOWN.
-- A public email, calendar link, or contact form. UNKNOWN. The published contact paths are the X profile on `/info` and the footer Twitter/GitHub links.
+- A public email, calendar link, or contact form. UNKNOWN. The published contact paths are the X profile on `/info` (https://x.com/bryan_king) and the footer Twitter/GitHub links. `/rent-a-design-engineer` uses that X profile as the CTA. `TODO(contact)` is in `src/pages/rent-a-design-engineer.astro` until Bryan names an email or calendar.
 - Launch domain, answered by Bryan on 2026-10-10: this Astro build will replace the current site at https://amoeba.design. `astro.config.mjs` now sets `site` to that origin and `src/layouts/Base.astro` emits canonicals there. The pre-launch deploy remains https://amoeba-design.vercel.app until Bryan attaches the domain. Legacy copy on the Next.js site is still not recorded here.
 - Legacy URLs, answered by Bryan on 2026-10-10: amoeba.design has only the homepage. No other legacy URLs need 301s.
 - Competitors. UNKNOWN. Bryan named a peer set (people doing similar things, not strict competitors) in `.seo/config.json` under `peers`. Do not treat those sites as competitors.

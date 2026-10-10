@@ -26,4 +26,4 @@ Astro project root is the repo root (`package.json`, `astro.config.mjs`). Astro 
 
 New blog posts belong in `src/content/knowledge/` until Bryan says the off-site blog at amoebaunlimited.com is the blog of record.
 
-Comparison pages and free tools do not exist. When a later run adds one, use `src/pages/compare/{slug}.astro` and `src/pages/tools/{slug}.astro`. Those directories are a convention recorded in `config.json`. They were not created in the setup run.
+Comparison pages live in `src/pages/compare/{slug}.astro`. The free tool lives in `src/pages/tools/{slug}.astro`. Offer page: `src/pages/rent-a-design-engineer.astro`. Voice and peer research for this program are `voice-guide.md` and `peer-research.md` in this directory.

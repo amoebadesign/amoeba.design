@@ -2,6 +2,20 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Offer page, comparisons, two articles, polish checklist
+
+- Scope: the six pages Bryan approved. Branched from `main`. Voice from `.seo/voice-guide.md`. Queries from `.seo/peer-research.md`. Both files are copies of the briefs for this run. No new prices, clients, results, or hours. `$500 / week` is stated the way the homepage states it.
+- `/rent-a-design-engineer`: offer page. H1 "Rent a design engineer for your SaaS UI". Body repeats the homepage promise and the price. FAQPage JSON-LD for questions answerable from published facts and his public practice (Figma in the loop, Newport, review stays with the client's engineers). Service JSON-LD has no Offer price. The cost FAQ text is `$500 / week`, so that figure is inside FAQPage JSON-LD and nowhere else in schema. Titles and meta descriptions have no price.
+- `/compare/design-engineer-vs-product-designer-vs-frontend-engineer` and `/compare/rent-a-design-engineer-vs-hiring`: Article and BreadcrumbList JSON-LD. The hiring page states the homepage price once and does not quote a salary. No peer is named as a competitor.
+- `/knowledge/more-than-microinteractions`: body replaced, URL kept, `noindex` set to false. The first paragraph answers what a design engineer is. Document title stays shortened so it fits 60 characters.
+- `/knowledge/fix-ai-slop-ui`: new indexable article.
+- `/tools/ui-polish-checklist`: 23 native checkboxes, progress text, `localStorage` key `amoeba-ui-polish-checklist`, reset. No account and no external script.
+- Links: the homepage offer heading links to the offer page. `/knowledge` lists the offer, both comparisons, and the checklist under "Also". The new pages link to each other, the homepage, and `/knowledge`. Nav was not redesigned.
+- `TODO(contact)` in `src/pages/rent-a-design-engineer.astro`. There is still no email, calendar, or form. The CTA is the X profile already linked from `/info` (https://x.com/bryan_king).
+- Head: `Base.astro` accepts `jsonLd`. Indexable articles emit Article and BreadcrumbList. Stubs stay `noindex: true` and out of the sitemap.
+- Build: `bun run build` exited 0. 16 pages. `dist/sitemap-0.xml` lists `/`, `/info`, `/knowledge`, `/work`, the offer, both comparisons, both indexable articles, and the checklist. The five stubs are absent. Checked in the browser: offer page, homepage link into the offer, checklist check/reload/reset/keyboard/client-side return, mobile width on the checklist and the roles table. Favicon 404 and the font preload warning are the existing head, not these pages.
+- Word counts, titles, and descriptions are in `content-ledger.md`. Articles are 1,793 and 1,794 words in `<main>`.
+
 ## 2026-10-10 — On-page titles, descriptions, H1s, and share tags
 
 - Scope: backlog items for unique titles, meta descriptions, and one H1 per URL, plus Open Graph and Twitter card tags. No prices. No new claims, clients, or numbers. Knowledge stubs stay `noindex: true`.
