@@ -1,0 +1,118 @@
+{
+  "program": "seo-aeo",
+  "setupDate": "2026-10-10",
+  "owner": "Bryan King",
+  "notes": "Owner-supplied facts are labeled ownerSupplied. Observed facts come from this repo or from HTTP responses fetched on 2026-10-10. Competitors were not guessed. No Search Console, DataForSEO, or rank-tracking numbers exist in this file.",
+  "sites": {
+    "productionUrl": "https://amoeba-design.vercel.app",
+    "productionUrlSource": "owner brief, confirmed live 2026-10-10 (Vercel, Astro HTML matching this repo)",
+    "brandDomain": "https://amoeba.design",
+    "www": "https://www.amoeba.design does not resolve (DNS name not found on 2026-10-10)",
+    "canonical": {
+      "domain": null,
+      "status": "unset",
+      "reason": "This repo does not set Astro `site` and does not emit <link rel=\"canonical\">. https://amoeba-design.vercel.app is the host serving this codebase. https://amoeba.design is a different Next.js application that emits its own canonical to https://amoeba.design. Bryan has not confirmed which origin should be canonical for this Astro site."
+    }
+  },
+  "brand": {
+    "name": "Amoeba",
+    "nameSource": "owner brief; matches the masthead logotype in src/components/Masthead.astro",
+    "nameAlsoUsedOnSite": "Amoeba Design",
+    "preferredTitleSuffix": "• Amoeba",
+    "preferredTitlePattern": "{Page Title} • Amoeba",
+    "preferredTitleSource": "owner brief, 2026-10-10. Not implemented in code.",
+    "implementedTitlePatterns": [
+      "Default, used by / and /info: Amoeba Design | Design engineering studio for growth-stage B2B software companies",
+      "Other pages: {Page title} | Amoeba Design"
+    ]
+  },
+  "offering": {
+    "source": "ownerSupplied",
+    "summary": "Product design and design engineering services for growth-stage B2B software companies"
+  },
+  "audience": {
+    "source": "ownerSupplied",
+    "segments": [
+      "SaaS founders",
+      "Engineering leaders",
+      "Product leaders",
+      "Design leaders",
+      "VCs and investors",
+      "Design and development agency leaders",
+      "Individual contributors in engineering, product, and design roles"
+    ]
+  },
+  "project": {
+    "root": ".",
+    "packageJson": "package.json",
+    "configFile": "astro.config.mjs",
+    "packageManager": "bun",
+    "lockfile": "bun.lock",
+    "readmeDevCommand": "bun dev",
+    "node": ">=22.12.0",
+    "astroVersionRange": "^7.3.5",
+    "astroVersionInstalled": "7.3.5",
+    "integrations": [],
+    "mdx": false,
+    "sitemapIntegration": false,
+    "output": "static",
+    "adapter": null,
+    "deployTarget": "Vercel static hosting. No @astrojs/vercel adapter and no vercel.json. The info page says the site is powered by Vercel, and production responses send server: Vercel."
+  },
+  "content": {
+    "collections": [
+      {
+        "name": "knowledge",
+        "config": "src/content.config.ts",
+        "directory": "src/content/knowledge",
+        "pattern": "**/*.md",
+        "schema": ["title", "description"],
+        "routes": [
+          "src/pages/knowledge/index.astro → /knowledge",
+          "src/pages/knowledge/[id].astro → /knowledge/{id}"
+        ]
+      }
+    ],
+    "pages": [
+      "src/pages/index.astro → /",
+      "src/pages/work/index.astro → /work",
+      "src/pages/info/index.astro → /info",
+      "src/pages/knowledge/index.astro → /knowledge",
+      "src/pages/knowledge/[id].astro → /knowledge/{id}"
+    ],
+    "layouts": [
+      "src/layouts/Base.astro — document shell and <head> (title only)",
+      "src/layouts/LayoutA.astro — masthead, nav, main, footer"
+    ],
+    "seoHead": "There is no SEO component. The document head lives inline in src/layouts/Base.astro.",
+    "navigation": "src/components/nav-items.ts",
+    "whereNewContentShouldLive": {
+      "blogPosts": {
+        "status": "existing convention",
+        "path": "src/content/knowledge/*.md",
+        "url": "/knowledge/{id}",
+        "note": "This is the only article collection. The footer link labeled Blog points off-site to http://amoebaunlimited.com (redirects to https://www.amoebaunlimited.com/). Confirm with Bryan before adding a second blog."
+      },
+      "comparisonPages": {
+        "status": "proposed, not created",
+        "path": "src/pages/compare/{slug}.astro",
+        "url": "/compare/{slug}",
+        "note": "No comparison or alternatives routes exist. Create them here when a competitor list exists. A content collection is optional later; do not add one until a page is actually being written."
+      },
+      "freeTools": {
+        "status": "proposed, not created",
+        "path": "src/pages/tools/{slug}.astro",
+        "url": "/tools/{slug}",
+        "note": "No tools routes exist. Do not invent a tool."
+      }
+    }
+  },
+  "competitors": [],
+  "competitorsTodo": "TODO: ask Bryan for the competitors, alternatives, and substitute workflows he wants named. Do not guess.",
+  "dataSources": {
+    "googleSearchConsole": null,
+    "dataForSeo": null,
+    "rankTracking": null,
+    "note": "None of these are available yet. Do not invent impressions, clicks, positions, or search volume."
+  }
+}
