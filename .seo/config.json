@@ -108,7 +108,7 @@
       "src/layouts/Base.astro — document shell and <head> (title only)",
       "src/layouts/LayoutA.astro — masthead, nav, main, footer"
     ],
-    "seoHead": "There is no SEO component. The document head lives inline in src/layouts/Base.astro: title, description, canonical, Open Graph, and Twitter card tags. Pages pass jsonLd into Base, which renders script type application/ld+json via src/components/JsonLd.astro. og:image is TODO(og-image) in Base.astro until a share image exists at public/og.png.",
+    "seoHead": "There is no SEO component. The document head lives inline in src/layouts/Base.astro: title, description, canonical, Open Graph, and Twitter card tags. Base always renders the sitewide @graph from src/components/SiteGraph.astro (Organization https://amoeba.design/#organization, WebSite #website, Person #bryan-king). Pages can also pass jsonLd into Base, which renders a second script type application/ld+json via src/components/JsonLd.astro. Page-level nodes reference the graph by @id (Service provider, Article author and publisher) instead of repeating Organization or Person. og:image is TODO(og-image) in Base.astro until a share image exists at public/og.png.",
     "navigation": "src/components/nav-items.ts",
     "whereNewContentShouldLive": {
       "blogPosts": {

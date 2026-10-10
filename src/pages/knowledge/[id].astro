@@ -41,16 +41,8 @@ const articleLd: Record<string, unknown> = {
 	headline: page.data.title,
 	description: page.data.description,
 	inLanguage: "en",
-	author: {
-		"@type": "Person",
-		name: "Bryan King",
-		url: "https://x.com/bryan_king",
-	},
-	publisher: {
-		"@type": "Organization",
-		name: "Amoeba",
-		url: "https://amoeba.design",
-	},
+	author: { "@id": "https://amoeba.design/#bryan-king" },
+	publisher: { "@id": "https://amoeba.design/#organization" },
 	mainEntityOfPage: canonical.href,
 };
 if (page.data.published) {

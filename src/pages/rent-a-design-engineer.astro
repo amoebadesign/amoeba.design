@@ -64,20 +64,7 @@ const jsonLd = [
 		description:
 			"Populate a backlog of issues and get polished UI shipped as pull requests for your engineering team to review.",
 		url: pageUrl,
-		provider: {
-			"@type": "Organization",
-			name: "Amoeba",
-			url: "https://amoeba.design",
-			founder: {
-				"@type": "Person",
-				name: "Bryan King",
-				url: "https://x.com/bryan_king",
-				homeLocation: {
-					"@type": "Place",
-					name: "Newport, Kentucky",
-				},
-			},
-		},
+		provider: { "@id": "https://amoeba.design/#organization" },
 	},
 	{
 		"@context": "https://schema.org",
