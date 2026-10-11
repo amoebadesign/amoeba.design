@@ -2,6 +2,13 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-11 — Speed up Vercel builds
+
+- Scope: profile `npm run build` and Vercel install; trim serverless NFT copy for the lone `POST /api/contact` function; keep committed OG PNGs (no `generate:og` on Vercel); preserve static site output and the rolldown entry fix.
+- Profiling (this VM, Node 22, no Vercel cache): `npm install` ~18.6s (Playwright browser download in devDependencies); `npm install --omit=dev` ~3.6s. Build steps before changes: `check-og-images` ~0.05s; `astro build` ~9.3s cold (~4.6s of that was first-time Sharp image optimization for `/work`); Vercel adapter NFT + copy ~2s copying a ~24–42 MB `_render.func` (Sharp + `@img` + Rolldown); `strip-rolldown` ~0.04s; llms.txt integration under 0.1s inside `astro:build:done`. `generate:og`, Satori, and Resvg are not in `package.json` or the build script (OG is Playwright-only via `bun run generate:og`).
+- Changes: `vercel.json` `installCommand` `bun install --production --frozen-lockfile` (repo lockfile is `bun.lock`; skips Playwright devDependency on Vercel). `@astrojs/vercel` `imageService: false` and `excludeFiles` from `scripts/vercel-function-excludes.mjs` (Sharp, `@img`, Rolldown packages). `scripts/vercel-postbuild.mjs` replaces `strip-rolldown-from-vercel-function.mjs` (rolldown import strip + prune copied native deps). After (Bun 1.4, Node 22, clean `node_modules`): install ~0.5s; first `bun run build` ~9s cold (Sharp image work); warm `bun run build` ~4s; `_render.func` ~5 MB; `diff -rq` clean vs pre-change `dist/` and `.vercel/output/static/`. Local handler import smoke test: `POST /api/contact` returns JSON (`{"error":"..."}` or `{"ok":true}`).
+- Bryan (Vercel project): confirm **Install Command** is `bun install --production --frozen-lockfile` (now in `vercel.json`; do not override with `npm install`). Keep **Build Command** `npm run build` or `bun run build`; **Node.js 22.x** to match `package.json` `engines`; enable **build cache** (default) so `.astro` and Sharp image work persist between deploys.
+
 ## 2026-10-11 — Simplify contact copy, drop footer contact link
 
 - Removed `/contact` from `Footer.astro`. Contact page intro and offer page `#contact` form intro use one line: "Have a project or a question? Send a note and I'll get back to you." Meta description and OG subtitle for `/contact` generic (product design and design engineering). Regenerated `public/og/contact.png` via `bun run generate:og`. `npm test` and `npm run build` exited 0.

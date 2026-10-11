@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
+import { vercelFunctionExcludeFiles } from './scripts/vercel-function-excludes.mjs';
 import { llmsTxt } from './src/integrations/llms-txt.mjs';
 import { noindexKnowledgeUrls } from './src/noindex-routes.mjs';
 
@@ -17,7 +18,10 @@ const noindexUrls = noindexKnowledgeUrls(SITE);
 export default defineConfig({
 	site: SITE,
 	output: 'static',
-	adapter: vercel(),
+	adapter: vercel({
+		imageService: false,
+		excludeFiles: vercelFunctionExcludeFiles,
+	}),
 	// Canonicals omit a trailing slash. The homepage stays `https://amoeba.design/`.
 	// vercel.json `trailingSlash: false` 308s slash URLs onto this form.
 	trailingSlash: 'never',
