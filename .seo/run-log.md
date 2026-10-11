@@ -2,6 +2,16 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-10 — Per-page Open Graph images (PR #18)
+
+- Scope: dark template share PNG for every built page except `/404` (uses `public/og.png`). Files under `public/og/<route>.png` (e.g. `public/og/index.png`, `public/og/knowledge/fix-ai-slop-ui.png`). `src/og/pages.mjs` lists titles/descriptions; `src/og/image-path.mjs` maps pathname → URL; `Base.astro` sets `og:image` / `twitter:image` automatically. Larger body type (44px title, 34px subtitle/offer) for feed thumbnails. Footer line `Rent a design engineer • $500/wk` on every image. Generator: `bun run generate:og` (Playwright; not run on Vercel). Build runs `node scripts/check-og-images.mjs` first and fails if any indexable page lacks its PNG. Documented in `.seo/README.md`.
+- Fonts: HEX Franklin from `public/fonts/`; Acumin from Adobe kit URL at generate time only.
+- Merged latest `main` (pricing in titles/meta, llms.txt copy cleanup).
+
+## 2026-10-10 — Open Graph share image (dark, Bryan’s pick)
+
+- Superseded by per-page images above; `public/og.png` remains the homepage/default fallback.
+
 ## 2026-10-10 — Pricing in titles, meta, and Service Offer JSON-LD
 
 - Scope: Bryan approved showing `$500/wk` everywhere with no hedging (no test pricing, not formalized, starting at). Updated `.seo/truth.md` and `.seo/config.json` to record the offer as Rent a design engineer, $500/wk. Homepage and `/rent-a-design-engineer` titles use `Rent a design engineer, $500/wk • Amoeba` (40 characters). Meta descriptions include `$500/wk` on both pages (home 155, offer 160). `Base.astro` fallback matches the homepage. Service JSON-LD on the offer page adds an `Offer` with price 500 USD and `UnitPriceSpecification` unitText week. Visible copy still uses `$500 / week`. No `og:image` changes.

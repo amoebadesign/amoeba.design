@@ -3,6 +3,7 @@ import LayoutA from '../../layouts/LayoutA.astro';
 import { Stack } from '../../components/ui';
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import { knowledgeDocumentTitle } from "../../og/document-titles.mjs";
 
 export async function getStaticPaths() {
 	const pages = await getCollection('knowledge');
@@ -20,11 +21,7 @@ const { page } = Astro.props;
 const { Content } = await render(page);
 
 // `{Title} • Amoeba` stays at or under 60 characters. The visible H1 keeps the full frontmatter title.
-const documentTitles: Record<string, string> = {
-	"How to use shadcn/lint to enforce your design system": "Use shadcn/lint to enforce your design system",
-	"There's more to design engineering than microinteractions": "Design engineering beyond microinteractions",
-};
-const documentTitle = documentTitles[page.data.title] ?? page.data.title;
+const documentTitle = knowledgeDocumentTitle(page.data.title);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const publishedLabel = page.data.published
 	? new Date(`${page.data.published}T00:00:00Z`).toLocaleDateString("en-US", {
