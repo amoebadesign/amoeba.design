@@ -210,7 +210,7 @@ Still to do, in program order:
 1. **Add high-intent comparison, alternatives, or use-case pages.** Impact 4, effort 4. None exist. The legacy property has zero non-branded service queries. `config.json` has a peer set, not a competitor list. Do not publish those URLs as competitors. When a page is written, put it in `src/pages/compare/{slug}.astro`. Blocked until Bryan names competitors. Peers are not that list.
 2. **Replace the knowledge stubs with in-depth buyer-question articles.** Impact 4, effort 5. The seven titles already name the topics. Bodies are "Coming soon". They are `noindex` until `noindex` is set to `false`. This is the next unblocked content action. Start with "There's more to design engineering than microinteractions".
 3. **Ship one free tool.** Impact 3, effort 4. No tool exists. Blocked on Bryan choosing the tool. Convention, not yet a directory: `src/pages/tools/{slug}.astro`.
-4. **Add JSON-LD and a real HTML 404.** Impact 2, effort 2. No Organization, WebSite, Person, Service, Article, or BreadcrumbList. No `src/pages/404.astro`. Do not put the test price in schema. Use the claims in `truth.md`.
+4. **Add JSON-LD and a real HTML 404.** Impact 2, effort 2. No Organization, WebSite, Person, Service, Article, or BreadcrumbList. No `src/pages/404.astro`. Service `Offer` JSON-LD uses the published $500/wk price per `truth.md`.
 5. **Add `public/og.png` and emit `og:image` / `twitter:image`.** Impact 2, effort 1. Blocked on artwork from Bryan. The hook is `TODO(og-image)` in `src/layouts/Base.astro`.
 
 Also later, not a separate ranked item: more specific work-image alts once clients can be named (`src/pages/work/index.astro`), and `target="_blank"` on the external anchors. No lab speed data was collected. The build does emit responsive WebP for the work images. Typekit is a render-blocking stylesheet in `src/layouts/Base.astro`. No Core Web Vitals number is claimed here.
@@ -226,7 +226,7 @@ Answered:
 Answered on 2026-10-10, continued:
 
 2. Legacy amoeba.design has only the homepage. No other legacy URLs need 301s. This question is closed.
-3. Pricing: $500/week, Rent a design engineer (test pricing, offer not yet formalized) is an accurate current claim and stays on the homepage. Other offers and prices, including the commented $5,000 design-system block, are not formalized and must not be used. Keep prices out of titles and meta descriptions.
+3. Pricing: Rent a design engineer, $500/wk. State it plainly on the homepage and `/rent-a-design-engineer`, including titles and meta descriptions on those two pages. Other offers and prices, including the commented $5,000 design-system block, are not formalized and must not be used.
 4. Positioning: keep "ambitious B2B software companies" (the current masthead). Peers, not strict competitors, are listed in `config.json`.
 
 Still ask Bryan:

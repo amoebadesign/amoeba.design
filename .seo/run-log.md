@@ -2,6 +2,13 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-11 — Refresh stale `.seo` docs
+
+- Scope: `.seo/` only. No site code changes.
+- `content-ledger.md`: synced every row to the current build (`npm run build`, 2026-10-11). Updated `/` and `/rent-a-design-engineer` titles, metas, and word counts; noted `#contact` on the offer page and `$500 / week` on-page. Added `/contact` (indexable, sitemap, `llms.txt`, `public/og/contact.png`; footer contact link removed). Minor `/work` in-main word count drift (6).
+- `baseline.md` and `peer-research.md`: replaced "test pricing" / hedged offer wording with the current rule to show `$500/wk` plainly.
+- `voice-guide.md`: moved Steve Krouse's vibe-code / legacy-code line out of Bryan verbatim excerpts into "Referenced quotes (not Bryan voice samples)"; long-form excerpt #12 is now Bryan's framing on bryanking.net. Dropped the short-form "breathe" pull-quote that was not a reliable Bryan voice sample.
+
 ## 2026-10-11 — Speed up Vercel builds
 
 - Scope: profile `npm run build` and Vercel install; trim serverless NFT copy for the lone `POST /api/contact` function; keep committed OG PNGs (no `generate:og` on Vercel); preserve static site output and the rolldown entry fix.
