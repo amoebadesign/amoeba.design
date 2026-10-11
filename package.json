@@ -10,11 +10,14 @@
     "build": "node scripts/check-og-images.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "generate:og": "node scripts/generate-og-images.mjs"
+    "generate:og": "node scripts/generate-og-images.mjs",
+    "test": "node --test src/lib/contact/*.test.mjs src/llms/generate.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.3.5"
+    "@astrojs/vercel": "^11.0.13",
+    "astro": "^7.3.5",
+    "resend": "^6.32.1"
   },
   "allowScripts": {
     "esbuild": true

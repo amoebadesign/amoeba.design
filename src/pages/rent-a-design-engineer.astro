@@ -1,6 +1,9 @@
 ---
 import LayoutA from "../layouts/LayoutA.astro";
+import ContactForm from "../components/ContactForm.astro";
 import { Button, Cluster, Stack } from "../components/ui";
+
+const sent = Astro.url.searchParams.has("sent");
 
 const title = "Rent a design engineer, $500/wk • Amoeba";
 const description =
@@ -49,7 +52,7 @@ const faqs = [
 	},
 	{
 		q: "How do I start?",
-		a: "Message me on X. That is the contact path this site publishes. Send the backlog, or a link to the repo. There is a short intro on the info page.",
+		a: "Use the contact form on this page or on /contact. Send the backlog, or a link to the repo. There is a short intro on the info page.",
 	},
 ];
 
@@ -162,9 +165,8 @@ const jsonLd = [
 								</p>
 							) : faq.q === "How do I start?" ? (
 								<p>
-									<a href="https://x.com/bryan_king">Message me on X</a>. That is the contact path this site
-									publishes. Send the backlog, or a link to the repo. There is a short intro on the{" "}
-									<a href="/info">info page</a>.
+									Use the <a href="#contact">contact form</a> below, or the <a href="/contact">contact page</a>.
+									Send the backlog, or a link to the repo. There is a short intro on the <a href="/info">info page</a>.
 								</p>
 							) : (
 								<p>{faq.a}</p>
@@ -175,15 +177,12 @@ const jsonLd = [
 			}
 		</Stack>
 
-		<Stack space="3">
+		<Stack space="3" id="contact">
 			<h2>Start</h2>
-			<!-- TODO(contact): no public email, calendar, or form. CTA uses the X profile already linked from /info (https://x.com/bryan_king). Replace when Bryan names a contact path. -->
-			<p>
-				The way to reach me today is on X, the same profile linked from the info page. Send the backlog, or a
-				link to the repo.
-			</p>
+			<p>Send the backlog, a repo link, or the question you are stuck on.</p>
+			<ContactForm returnTo="/rent-a-design-engineer" sent={sent} />
 			<Cluster space="2">
-				<Button href="https://x.com/bryan_king" target="_blank" rel="noopener noreferrer">Message me on X</Button>
+				<Button href="/contact" variant="secondary">Contact page</Button>
 				<Button href="/info" variant="secondary">Info</Button>
 			</Cluster>
 		</Stack>

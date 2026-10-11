@@ -27,6 +27,12 @@ const STATIC_PAGES = [
 			"Product UI screenshots from Amoeba, a design engineering studio for ambitious B2B software companies. Dashboards, campaigns, invites, and contact import.",
 	},
 	{
+		pathname: "/contact",
+		title: "Contact • Amoeba",
+		description:
+			"Contact Bryan King at Amoeba about the design engineer rental or your SaaS UI backlog.",
+	},
+	{
 		pathname: "/info",
 		title: "Bryan King, Newport, Kentucky • Amoeba",
 		description:
