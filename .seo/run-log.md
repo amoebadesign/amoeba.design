@@ -9,6 +9,10 @@ Append-only. Newest entry at the top.
 - Changes: `vercel.json` `installCommand` `bun install --production --frozen-lockfile` (repo lockfile is `bun.lock`; skips Playwright devDependency on Vercel). `@astrojs/vercel` `imageService: false` and `excludeFiles` from `scripts/vercel-function-excludes.mjs` (Sharp, `@img`, Rolldown packages). `scripts/vercel-postbuild.mjs` replaces `strip-rolldown-from-vercel-function.mjs` (rolldown import strip + prune copied native deps). After (Bun 1.4, Node 22, clean `node_modules`): install ~0.5s; first `bun run build` ~9s cold (Sharp image work); warm `bun run build` ~4s; `_render.func` ~5 MB; `diff -rq` clean vs pre-change `dist/` and `.vercel/output/static/`. Local handler import smoke test: `POST /api/contact` returns JSON (`{"error":"..."}` or `{"ok":true}`).
 - Bryan (Vercel project): confirm **Install Command** is `bun install --production --frozen-lockfile` (now in `vercel.json`; do not override with `npm install`). Keep **Build Command** `npm run build` or `bun run build`; **Node.js 22.x** to match `package.json` `engines`; enable **build cache** (default) so `.astro` and Sharp image work persist between deploys.
 
+## 2026-10-11 — Simplify contact copy, drop footer contact link
+
+- Removed `/contact` from `Footer.astro`. Contact page intro and offer page `#contact` form intro use one line: "Have a project or a question? Send a note and I'll get back to you." Meta description and OG subtitle for `/contact` generic (product design and design engineering). Regenerated `public/og/contact.png` via `bun run generate:og`. `npm test` and `npm run build` exited 0.
+
 ## 2026-10-11 — Contact form and Resend API
 
 - Scope: port Resend contact patterns from `boldlybryan/amoeba.design` (honeypot `_gotcha`, per-IP in-memory rate limit, validation, notification + confirmation emails). No Cal.com, Attio, Stripe, or questionnaire UI.
