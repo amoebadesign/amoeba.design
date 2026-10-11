@@ -16,13 +16,6 @@ const root = join(__dirname, "..");
 
 const WIDTH = 1200;
 const HEIGHT = 630;
-const OFFER = "Rent a design engineer • $500/wk";
-const PRICE_SNIPPET = "$500/wk";
-
-function shouldShowOfferFooter(headline, subtitle) {
-	return !headline.includes(PRICE_SNIPPET) && !subtitle.includes(PRICE_SNIPPET);
-}
-
 /** From public/fonts/acumin-variable.css — fetched at generate time only. */
 const ACUMIN_WOFF2 =
 	"https://use.typekit.net/af/cd27bb/0000000000000000774be2a6/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3";
@@ -35,10 +28,7 @@ function escapeHtml(value) {
 		.replaceAll('"', "&quot;");
 }
 
-function buildHtml({ headline, subtitle, showOfferFooter }) {
-	const offerMarkup = showOfferFooter
-		? `<p class="offer">${OFFER}</p>`
-		: "";
+function buildHtml({ headline, subtitle }) {
 	return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,7 +61,7 @@ function buildHtml({ headline, subtitle, showOfferFooter }) {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 64px 72px;
+    padding: 72px 80px;
     border: 3px solid oklch(37.1% 0 0);
   }
   .type-logotype {
@@ -90,13 +80,8 @@ function buildHtml({ headline, subtitle, showOfferFooter }) {
   .bottom {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
     max-width: 840px;
-  }
-  .rule {
-    width: 80px;
-    height: 3px;
-    background: oklch(55.6% 0 0);
   }
   .page-title {
     font-weight: 700;
@@ -115,23 +100,14 @@ function buildHtml({ headline, subtitle, showOfferFooter }) {
     text-wrap: pretty;
     color: oklch(98.5% 0 0);
   }
-  .offer {
-    font-weight: 400;
-    font-size: 34px;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
-    color: oklch(98.5% 0 0);
-  }
 </style>
 </head>
 <body>
   <div class="frame">
     <span class="type-logotype">Amoeba</span>
     <div class="bottom">
-      <div class="rule" aria-hidden="true"></div>
       <p class="page-title">${escapeHtml(headline)}</p>
       <p class="subtitle">${escapeHtml(subtitle)}</p>
-      ${offerMarkup}
     </div>
   </div>
 </body>
@@ -183,8 +159,7 @@ let homePng = null;
 for (const entry of pages) {
 	const headline = stripBrandSuffix(entry.title);
 	const subtitle = entry.description;
-	const showOfferFooter = shouldShowOfferFooter(headline, subtitle);
-	currentHtml = buildHtml({ headline, subtitle, showOfferFooter });
+	currentHtml = buildHtml({ headline, subtitle });
 
 	await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: "networkidle" });
 	await page.evaluate(async () => {
