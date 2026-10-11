@@ -1,0 +1,144 @@
+---
+import { Button, Input, Stack, Textarea } from './ui';
+
+interface Props {
+	returnTo: '/contact' | '/rent-a-design-engineer';
+	sent?: boolean;
+}
+
+const { returnTo, sent = false } = Astro.props;
+const formId = 'contact-form';
+---
+
+{
+	sent ? (
+		<Stack space="3" class="form-status" role="status">
+			<p class="type-subheading">Sent</p>
+			<p>I got it. Check your inbox for a short confirmation.</p>
+		</Stack>
+	) : (
+		<form
+			id={formId}
+			class="contact-form"
+			method="post"
+			action="/api/contact"
+			data-contact-form
+		>
+			<Stack space="4">
+				<Input name="name" label="Name" autocomplete="name" required maxlength={200} />
+				<Input
+					name="email"
+					type="email"
+					label="Email"
+					autocomplete="email"
+					required
+					inputmode="email"
+				/>
+				<Input name="company" label="Company" autocomplete="organization" maxlength={200} />
+				<Textarea name="message" label="Message" required minlength={10} maxlength={10000} />
+				<input type="hidden" name="returnTo" value={returnTo} />
+				<div class="honeypot" aria-hidden="true">
+					<label class="field">
+						<span class="field-label">Leave blank</span>
+						<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+					</label>
+				</div>
+				<p class="form-error" data-form-error hidden role="alert" />
+				<Button type="submit">Send</Button>
+			</Stack>
+		</form>
+	)
+}
+
+<script>
+	const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+	if (!form) {
+		// Thank-you state without the form in the DOM.
+	} else {
+		const errorEl = form.querySelector<HTMLParagraphElement>('[data-form-error]');
+
+		form.addEventListener('submit', async (event) => {
+			if (!window.fetch) return;
+
+			event.preventDefault();
+			errorEl?.setAttribute('hidden', '');
+			errorEl?.replaceChildren();
+
+			const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+			if (submit) submit.disabled = true;
+
+			const data = new FormData(form);
+			const body = {
+				name: String(data.get('name') ?? ''),
+				email: String(data.get('email') ?? ''),
+				company: String(data.get('company') ?? ''),
+				message: String(data.get('message') ?? ''),
+				_gotcha: String(data.get('_gotcha') ?? ''),
+				returnTo: String(data.get('returnTo') ?? '/contact'),
+			};
+
+			try {
+				const response = await fetch('/api/contact', {
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(body),
+				});
+
+				const payload = (await response.json().catch(() => ({}))) as { error?: string; ok?: boolean };
+
+				if (!response.ok) {
+					const message = payload.error || 'Something went wrong. Try again.';
+					if (errorEl) {
+						errorEl.textContent = message;
+						errorEl.removeAttribute('hidden');
+					}
+					if (submit) submit.disabled = false;
+					return;
+				}
+
+				const shell = form.closest('.contact-form-shell');
+				const status = document.createElement('div');
+				status.className = 'form-status';
+				status.setAttribute('role', 'status');
+				status.innerHTML =
+					'<p class="type-subheading">Sent</p><p>I got it. Check your inbox for a short confirmation.</p>';
+				form.replaceWith(status);
+				shell?.querySelector('[data-form-error]')?.remove();
+			} catch {
+				if (errorEl) {
+					errorEl.textContent = 'Network error. Try again, or send without JavaScript.';
+					errorEl.removeAttribute('hidden');
+				}
+				if (submit) submit.disabled = false;
+			}
+		});
+	}
+</script>
+
+<style>
+	.honeypot {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	.form-error {
+		color: var(--color-fg);
+		margin: 0;
+	}
+
+	.form-error:not([hidden]) {
+		padding: calc(var(--spacing) * 2);
+		border: 1px solid var(--color-border-strong);
+		border-radius: var(--radius-sm);
+	}
+</style>

@@ -1,0 +1,51 @@
+---
+import LayoutA from '../layouts/LayoutA.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { Stack } from '../components/ui';
+
+const title = 'Contact • Amoeba';
+const description =
+	'Contact Bryan King at Amoeba about renting a design engineer for your SaaS UI backlog, or ask a question before you send issues.';
+const pageUrl = 'https://amoeba.design/contact';
+const sent = Astro.url.searchParams.has('sent');
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://amoeba.design/' },
+		{ '@type': 'ListItem', position: 2, name: 'Contact', item: pageUrl },
+	],
+};
+---
+
+<LayoutA title={title} description={description} jsonLd={jsonLd}>
+	<Stack space="8" class="copy">
+		<Stack space="3">
+			<h1 class="type-title-alt">Contact</h1>
+			<p>
+				Renting the design engineer week, or deciding if it fits: send a note. Include your backlog, a repo link,
+				or the question you are stuck on.
+			</p>
+			<p>
+				The offer is <a href="/rent-a-design-engineer">Rent a design engineer</a> at $500 / week. Pull requests,
+				not slide decks.
+			</p>
+		</Stack>
+
+		<Stack space="3" class="contact-form-shell">
+			<h2>Message</h2>
+			<ContactForm returnTo="/contact" sent={sent} />
+		</Stack>
+	</Stack>
+</LayoutA>
+
+<style>
+	.copy {
+		max-inline-size: var(--measure);
+	}
+
+	h1 {
+		letter-spacing: var(--tracking-tight);
+	}
+</style>

@@ -2,6 +2,16 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-11 — Contact form and Resend API
+
+- Scope: port Resend contact patterns from `boldlybryan/amoeba.design` (honeypot `_gotcha`, per-IP in-memory rate limit, validation, notification + confirmation emails). No Cal.com, Attio, Stripe, or questionnaire UI.
+- `@astrojs/vercel` + `output: 'static'`. All pages prerender; only `POST /api/contact` is serverless (`export const prerender = false`). `vercel.json` headers/redirects unchanged.
+- UI: `ContactForm.astro` on `/contact` (title `Contact • Amoeba`, indexable) and `#contact` on `/rent-a-design-engineer`. Progressive enhancement: `fetch` + JSON when JS runs; `application/x-www-form-urlencoded` POST redirects to `?sent=1` (offer page adds `#contact`). Footer and homepage offer link to `/contact`.
+- Env: `.env.example` documents `RESEND_API_KEY`. Missing key returns 500 `Server misconfigured`.
+- OG: `src/og/pages.mjs` lists `/contact`; committed `public/og/contact.png` via `npm run generate:og`.
+- Tests: `src/lib/contact/*.test.mjs` plus existing `src/llms/generate.test.mjs` (`npm test`). `npm run build` exited 0. Sitemap lists `/contact`. llms generator wrote 7 markdown pages (was 6).
+- Bryan at deploy: set `RESEND_API_KEY` in Vercel; confirm `amoeba.design` is a verified sending domain in Resend.
+
 ## 2026-10-10 — Per-page Open Graph images (PR #18)
 
 - Scope: dark template share PNG for every built page except `/404` (uses `public/og.png`). Files under `public/og/<route>.png` (e.g. `public/og/index.png`, `public/og/knowledge/fix-ai-slop-ui.png`). `src/og/pages.mjs` lists titles/descriptions; `src/og/image-path.mjs` maps pathname → URL; `Base.astro` sets `og:image` / `twitter:image` automatically. Larger body type (44px title, 34px subtitle/offer) for feed thumbnails. Footer line `Rent a design engineer • $500/wk` on every image. Generator: `bun run generate:og` (Playwright; not run on Vercel). Build runs `node scripts/check-og-images.mjs` first and fails if any indexable page lacks its PNG. Documented in `.seo/README.md`.

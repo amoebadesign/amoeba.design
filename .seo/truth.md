@@ -70,12 +70,14 @@ Eight entries exist. Each has a title and a description in frontmatter. Sources:
 - Footer, label "Blog": http://amoebaunlimited.com. Source: `src/components/Footer.astro`. On 2026-10-10 that URL redirected to https://www.amoebaunlimited.com/ and returned 200. It is not a page in this repo.
 - Footer, label "Twitter": https://twitter.com/amoeba_design. Source: `src/components/Footer.astro`. Returned 200 on 2026-10-10.
 - Footer, label "GitHub": https://github.com/amoebadesign. Source: `src/components/Footer.astro`. Returned 200 on 2026-10-10.
+- Footer, label "Contact": `/contact`. Source: `src/components/Footer.astro`.
+- Contact form at `/contact` and `#contact` on `/rent-a-design-engineer`. POST `/api/contact` sends email through Resend to bryan@amoeba.design and a confirmation to the sender. Source: `src/pages/contact.astro`, `src/components/ContactForm.astro`, `src/pages/api/contact.ts`. Requires `RESEND_API_KEY` on the server.
+- X profile on `/info`: https://x.com/bryan_king. Still linked from the info page; not the primary CTA on the offer page.
 
 ## Not published (UNKNOWN — ask Bryan)
 
 - Process: how an engagement starts, how long it runs, what Bryan will not do. UNKNOWN.
 - Named clients, case-study results, or permission to name the companies in the work screenshots. UNKNOWN.
-- A public email, calendar link, or contact form. UNKNOWN. The published contact paths are the X profile on `/info` (https://x.com/bryan_king) and the footer Twitter/GitHub links. `/rent-a-design-engineer` uses that X profile as the CTA. `TODO(contact)` is in `src/pages/rent-a-design-engineer.astro` until Bryan names an email or calendar.
 - Launch domain, answered by Bryan on 2026-10-10: this Astro build will replace the current site at https://amoeba.design. `astro.config.mjs` now sets `site` to that origin and `src/layouts/Base.astro` emits canonicals there. The pre-launch deploy remains https://amoeba-design.vercel.app until Bryan attaches the domain. Legacy copy on the Next.js site is still not recorded here.
 - Legacy URLs, answered by Bryan on 2026-10-10: amoeba.design has only the homepage. No other legacy URLs need 301s.
 - Competitors. UNKNOWN. Bryan named a peer set (people doing similar things, not strict competitors) in `.seo/config.json` under `peers`. Do not treat those sites as competitors.
