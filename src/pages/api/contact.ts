@@ -7,6 +7,7 @@ import {
 	isRateLimited,
 	pruneRateLimitStore,
 } from '../../lib/contact/security.mjs';
+import { getResendApiKey } from '../../lib/contact/env.mjs';
 import { safeReturnTo, validateContactBody } from '../../lib/contact/validation.mjs';
 
 export const prerender = false;
@@ -49,7 +50,7 @@ function jsonResponse(body: Record<string, unknown>, status: number) {
 }
 
 export const POST: APIRoute = async ({ request, redirect }) => {
-	const resendApiKey = process.env.RESEND_API_KEY;
+	const resendApiKey = getResendApiKey();
 
 	if (!resendApiKey) {
 		if (wantsJson(request)) {
