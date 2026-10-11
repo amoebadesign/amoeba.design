@@ -1,4 +1,5 @@
 /**
+ * @deprecated Use `scripts/vercel-postbuild.mjs` (invoked from `npm run build`).
  * Astro's Vercel server entry includes `import "rolldown"`, which pulls in native
  * bindings that are not bundled into `_render.func` on deploy and crashes cold start.
  */
