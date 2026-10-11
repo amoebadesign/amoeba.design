@@ -30,7 +30,7 @@ const STATIC_PAGES = [
 		pathname: "/contact",
 		title: "Contact • Amoeba",
 		description:
-			"Contact Bryan King at Amoeba about the design engineer rental or your SaaS UI backlog.",
+			"Get in touch with Amoeba about product design and design engineering work.",
 	},
 	{
 		pathname: "/info",

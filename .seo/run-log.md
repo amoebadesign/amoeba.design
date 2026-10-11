@@ -2,6 +2,10 @@
 
 Append-only. Newest entry at the top.
 
+## 2026-10-11 — Simplify contact copy, drop footer contact link
+
+- Removed `/contact` from `Footer.astro`. Contact page intro and offer page `#contact` form intro use one line: "Have a project or a question? Send a note and I'll get back to you." Meta description and OG subtitle for `/contact` generic (product design and design engineering). Regenerated `public/og/contact.png` via `bun run generate:og`. `npm test` and `npm run build` exited 0.
+
 ## 2026-10-11 — Contact form and Resend API
 
 - Scope: port Resend contact patterns from `boldlybryan/amoeba.design` (honeypot `_gotcha`, per-IP in-memory rate limit, validation, notification + confirmation emails). No Cal.com, Attio, Stripe, or questionnaire UI.
