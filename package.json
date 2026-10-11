@@ -14,6 +14,7 @@
     "test": "node --test src/lib/contact/*.test.mjs src/llms/generate.test.mjs"
   },
   "dependencies": {
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "@astrojs/vercel": "^11.0.13",
     "astro": "^7.3.5",
