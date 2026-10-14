@@ -151,7 +151,7 @@ Bryan writes like a working practitioner arguing with the industry over a beer. 
 9. "Loaded calendars are a cancer lurking inside of software companies." (https://www.amoebaunlimited.com/2026/08/05/playing-tetris/)
 10. "I get paid to care, and I have my vocation in some part because I care." (https://www.amoebaunlimited.com/2026/08/14/against-lgtm/)
 11. "That's the beauty of home cooking your own software. My tools can be made to my taste. And nobody can do a damn thing about it." (https://www.amoebaunlimited.com/2026/09/21/crock-pot-software/)
-12. "When you vibe code, you are incurring tech debt as fast as the LLM can spit it out. Which is why vibe coding is perfect for prototypes and throwaway projects: It's only legacy code if you have to maintain it!" (https://bryanking.net/posts/vibe-code-is-legacy-code)
+12. "It's a shame that the web moves 100 miles a minute. Steve Krouse's _Vibe code is legacy code_ made quite the splash in the middle of the summer, but as it happens, I think it's one of those \"yeah duh\" posts that continues to look even more intelligent as time goes on." (https://bryanking.net/posts/vibe-code-is-legacy-code)
 13. "Yet most people aren't the exceptions, and around here, I'm not interested in running on faith." (https://bryanking.net/posts/no-more-hog-butchering)
 14. "Just enough back-end knowledge to architect the system, design sense to build something people actually want, front-end chops to ship a working interface, and product judgment to know what matters." (https://bryanking.net/posts/no-more-hog-butchering)
 15. "The man-month is dead. Long live the man-day." (https://bryanking.net/posts/no-more-hog-butchering)
@@ -165,9 +165,16 @@ Bryan writes like a working practitioner arguing with the industry over a beer. 
 21. "I don't want to use anyone's agent, I just want to use software that does what it says on the tin" (https://x.com/bryan_king/status/2091338403480555785)
 22. "Your customers will tell you what you want, you just have to listen!!" (https://x.com/bryan_king/status/2103666404251602968)
 23. "Friends don't let friends build roadmaps" (https://x.com/bryan_king/status/2105697165372977170)
-24. "The perceived bottleneck of writing code was actually a good thing because it allowed the work to "breathe"." (https://x.com/bryan_king/status/2092726646700642746)
-25. "Sadly, incumbents just bolt on chat UI and deliver features that they prototype with Claude or ChatGPT. They don't have much capacity for innovation." (https://x.com/bryan_king/status/2100238660041867519)
-26. "Also: edit. Learn to be an editor, which especially helpful when training agents to write more readable outputs." (https://x.com/bryan_king/status/2108519099072467339)
+24. "Sadly, incumbents just bolt on chat UI and deliver features that they prototype with Claude or ChatGPT. They don't have much capacity for innovation." (https://x.com/bryan_king/status/2100238660041867519)
+25. "Also: edit. Learn to be an editor, which especially helpful when training agents to write more readable outputs." (https://x.com/bryan_king/status/2108519099072467339)
+
+### Referenced quotes (not Bryan voice samples)
+
+Do not paste these as Bryan's own wording. Bryan may agree with them or cite them; use his posts for his voice.
+
+**Steve Krouse** on vibe coding and maintenance (Bryan discusses this post on bryanking.net; the formulation below is Krouse's):
+
+"When you vibe code, you are incurring tech debt as fast as the LLM can spit it out. Which is why vibe coding is perfect for prototypes and throwaway projects: It's only legacy code if you have to maintain it!" (Steve Krouse, https://www.linkedin.com/posts/stevekrouse_vibe-code-is-legacy-code-andrej-karpathy-activity-7356439829766643712-6sTD)
 
 ---
 
