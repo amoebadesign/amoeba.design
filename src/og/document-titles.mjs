@@ -4,6 +4,8 @@ export const knowledgeDocumentTitles = {
 		"Use shadcn/lint to enforce your design system",
 	"There's more to design engineering than microinteractions":
 		"Design engineering beyond microinteractions",
+	"Media queries, container queries, and instrinsic design patterns":
+		"Media queries, container queries, instrinsic design",
 };
 
 /**
