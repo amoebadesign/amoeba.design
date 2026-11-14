@@ -17,9 +17,10 @@ test('markdown paths follow the route, and the homepage is index.md', () => {
 
 test('noindex pathnames include knowledge stubs and compare routes', () => {
 	const paths = noindexPathnames();
-	assert.equal(paths.size, 10);
+	assert.equal(paths.size, 14);
 	assert.ok(paths.has('/knowledge/shadcn-lint'));
 	assert.ok(paths.has('/knowledge/fix-ai-slop-ui'));
+	assert.ok(paths.has('/knowledge/where-the-rubber-meets-the-road'));
 	assert.ok(paths.has('/compare/rent-a-design-engineer-vs-hiring'));
 	assert.equal(paths.has('/knowledge'), false);
 	assert.equal(paths.has('/rent-a-design-engineer'), false);
