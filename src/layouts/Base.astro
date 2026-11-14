@@ -39,6 +39,7 @@ const ogImage = absoluteUrl(
 // sends X-Robots-Tag: noindex for `*.md`, and those URLs are not in the sitemap.
 const markdownHref = noindex ? undefined : absoluteUrl(markdownPathname(canonical.pathname), canonical);
 const llmsHref = absoluteUrl("/llms.txt", canonical);
+const rssHref = absoluteUrl("/rss.xml", canonical);
 ---
 <!doctype html>
 <html lang="en" transition:animate="none">
@@ -49,6 +50,7 @@ const llmsHref = absoluteUrl("/llms.txt", canonical);
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical.href} />
 		{markdownHref && <link rel="alternate" type="text/markdown" href={markdownHref} />}
+		<link rel="alternate" type="application/rss+xml" title="Amoeba Knowledge" href={rssHref} />
 		<link rel="describedby" href={llmsHref} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
