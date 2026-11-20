@@ -39,6 +39,7 @@ const VOID = new Set([
 const PAGE_LABELS = {
 	'/': 'Home',
 	'/rent-a-design-engineer': 'Rent a design engineer',
+	'/audit': 'Onboarding audit',
 	'/work': 'Work',
 	'/info': 'Info',
 	'/knowledge': 'Knowledge',
@@ -451,14 +452,15 @@ function sortPages(pages) {
 	const rank = {
 		'/': 0,
 		'/rent-a-design-engineer': 1,
-		'/work': 2,
-		'/info': 3,
-		'/knowledge': 4,
-		'/tools/ui-polish-checklist': 5,
+		'/audit': 2,
+		'/work': 3,
+		'/info': 4,
+		'/knowledge': 5,
+		'/tools/ui-polish-checklist': 6,
 	};
 	return [...pages].sort((a, b) => {
-		const ra = rank[a.pathname] ?? (a.pathname.startsWith('/knowledge/') ? 6 : 7);
-		const rb = rank[b.pathname] ?? (b.pathname.startsWith('/knowledge/') ? 6 : 7);
+		const ra = rank[a.pathname] ?? (a.pathname.startsWith('/knowledge/') ? 7 : 8);
+		const rb = rank[b.pathname] ?? (b.pathname.startsWith('/knowledge/') ? 7 : 8);
 		if (ra !== rb) return ra - rb;
 		return a.plainHeading.localeCompare(b.plainHeading) || a.pathname.localeCompare(b.pathname);
 	});
