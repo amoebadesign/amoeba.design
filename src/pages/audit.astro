@@ -1,0 +1,266 @@
+---
+import LayoutA from "../layouts/LayoutA.astro";
+import { Button, Cluster, Stack } from "../components/ui";
+
+const title = "Onboarding audit, $999 • Amoeba";
+const description =
+	"I find where new users get stuck in your onboarding and show you how to fix it. A $999 narrated screen recording and prioritized fix list from Bryan King.";
+
+const deliverables = [
+	{
+		title: "A narrated screen recording",
+		body: "I go through your signup and first-time setup myself, starting cold from the front door of your product. You hear every hesitation, confusing label, dead end, and awkward screen as I run into it.",
+	},
+	{
+		title: "A written doc with prioritized fixes",
+		body: "Every friction point ordered from the biggest blocker to the smallest cleanup, paired with concrete recommendations for copy, flow, and interface changes. Written plainly so you can fix things yourself or hand items straight to an engineer.",
+	},
+];
+
+const steps = [
+	{
+		number: "01",
+		title: "Send your product",
+		body: "Reach out through the contact page with your URL, a short note on who typically signs up, and what you want a new user to accomplish in their first session. If signup needs an invite or test account, we sort that out before I start.",
+	},
+	{
+		number: "02",
+		title: "I sign up and record the walkthrough",
+		body: "I go through signup, account setup, and first use on a narrated screen recording. No skimming screenshots: I click through the real product and note every spot where a new user would pause, guess, or give up.",
+	},
+	{
+		number: "03",
+		title: "You get the video and fix list",
+		body: "I send over the recording and the written doc with prioritized fixes. You own both and can work through the list at your own pace, with no retainer or mandatory follow-on.",
+	},
+];
+
+const faqs = [
+	{
+		q: "What does it cost?",
+		a: "$999, flat. One-time fee, no retainer, and no surprise add-ons.",
+	},
+	{
+		q: "What kind of products is this for?",
+		a: "Web-based software products where a new user signs up and tries to get something done on their own: business software, developer tools, workflow apps, or self-serve web apps.",
+	},
+	{
+		q: "Do I need a designer or product manager to use the audit?",
+		a: "No. Everything is written in plain language with specific suggestions, so a founder, an engineer, or a small team can act on it directly without translating design jargon.",
+	},
+	{
+		q: "What do you need from me to start?",
+		a: "A link to your site or signup page, a quick sentence on who signs up, and what a good first session looks like. If your app needs a test account, sample data, or a coupon to get past a paywall, let me know when you write.",
+	},
+	{
+		q: "Is this an automated report or a generic checklist?",
+		a: "No. I go through your actual signup and onboarding myself, narrate the recording as I use it, and write up fixes specific to your screens and flow.",
+	},
+	{
+		q: "Can you help build the fixes afterward?",
+		a: "The $999 audit covers the narrated walkthrough and the written doc. If you want hands-on help implementing the changes once you have seen the findings, we can talk about renting a design engineer by the week or scoping follow-up work.",
+	},
+	{
+		q: "Can I see examples of your UI work?",
+		a: "The work page is screenshots of product UI. I do not publish client names or results there.",
+	},
+	{
+		q: "How do I book an audit?",
+		a: "Send a note through the contact page with a link to your product. I will reply directly to confirm the details and get started.",
+	},
+];
+
+const pageUrl = "https://amoeba.design/audit";
+
+const jsonLd = [
+	{
+		"@context": "https://schema.org",
+		"@type": "Service",
+		name: "Onboarding audit",
+		serviceType: "Software onboarding UX audit",
+		description:
+			"I find where new users get stuck in your onboarding and show you how to fix it. Delivered as a narrated screen recording and a written doc with prioritized fixes.",
+		url: pageUrl,
+		provider: { "@id": "https://amoeba.design/#organization" },
+		offers: {
+			"@type": "Offer",
+			price: "999",
+			priceCurrency: "USD",
+		},
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "FAQPage",
+		mainEntity: faqs.map((faq) => ({
+			"@type": "Question",
+			name: faq.q,
+			acceptedAnswer: { "@type": "Answer", text: faq.a },
+		})),
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		itemListElement: [
+			{ "@type": "ListItem", position: 1, name: "Home", item: "https://amoeba.design/" },
+			{ "@type": "ListItem", position: 2, name: "Onboarding audit", item: pageUrl },
+		],
+	},
+];
+---
+
+<LayoutA title={title} description={description} jsonLd={jsonLd}>
+	<Stack space="8" class="copy">
+		<Stack space="3">
+			<h1 class="type-title-alt">Onboarding audit</h1>
+			<p class="type-body-lg">
+				I find where new users get stuck in your onboarding and show you how to fix it.
+			</p>
+			<p>
+				You built the product, so every screen makes sense to you. A brand-new user does not have your context. I go
+				through your signup and first-time setup myself on a narrated screen recording, call out the specific places
+				where people stall or bail, and hand you a written doc with prioritized fixes.
+			</p>
+			<p class="type-display price">$999</p>
+			<Cluster space="2">
+				<Button href="/contact">Request an onboarding audit</Button>
+			</Cluster>
+		</Stack>
+
+		<Stack space="3">
+			<h2>Who it’s for</h2>
+			<p>
+				Founders running a software product with a signup flow, free trial, or self-serve setup. Maybe you are an
+				engineer who built the app yourself, a salesperson who knows the buyer inside and out, or a domain expert
+				who saw a gap in your industry and built the tool to fix it.
+			</p>
+			<p>
+				You may not have a product manager or a designer on staff. Or you do, and everyone on the team has stared at
+				the same screens for so long that the rough spots have gone invisible. Either way, people are creating
+				accounts, clicking around, and leaving before they ever get to the good part of the software.
+			</p>
+			<p>
+				If you want a fresh pair of experienced eyes on the first ten minutes of your app without hiring a consultant
+				for three months, this is built for you.
+			</p>
+		</Stack>
+
+		<Stack space="4">
+			<h2>What you get</h2>
+			<Stack as="ul" role="list" space="4" class="deliverables">
+				{
+					deliverables.map((item) => (
+						<Stack as="li" space="1" class="deliverable">
+							<h3>{item.title}</h3>
+							<p>{item.body}</p>
+						</Stack>
+					))
+				}
+			</Stack>
+		</Stack>
+
+		<Stack space="4">
+			<h2>How it works</h2>
+			<Stack as="ol" role="list" space="4" class="steps">
+				{
+					steps.map((step) => (
+						<Stack as="li" space="1" class="step">
+							<p class="type-caption step-number">Step {step.number}</p>
+							<h3>{step.title}</h3>
+							{
+								step.number === "01" ? (
+									<p>
+										Reach out through the <a href="/contact">contact page</a> with your URL, a short note on who
+										typically signs up, and what you want a new user to accomplish in their first session. If
+										signup needs an invite or test account, we sort that out before I start.
+									</p>
+								) : (
+									<p>{step.body}</p>
+								)
+							}
+						</Stack>
+					))
+				}
+			</Stack>
+		</Stack>
+
+		<Stack space="3">
+			<h2>Who runs it</h2>
+			<p>
+				I am Bryan King, a UX consultant with 12 years of design engineering experience. I run{" "}
+				<a href="/">Amoeba</a> from Newport, Kentucky.
+			</p>
+			<p>
+				I do every audit myself. Because I design interfaces and write front-end code, the fixes I recommend are
+				practical to build, not vague slides that sit in a folder. You can see examples of the kind of product UI I
+				work on over on the <a href="/work">work page</a>.
+			</p>
+		</Stack>
+
+		<!-- SOCIAL PROOF PLACEHOLDER: Add verified founder quotes, client examples, or a sample audit walkthrough clip here once available. Do not invent testimonials, client logos, or metrics. -->
+
+		<Stack space="4">
+			<h2>Questions</h2>
+			{
+				faqs.map((faq) => (
+					<Stack space="1">
+						<h3>{faq.q}</h3>
+						{
+							faq.q === "Can you help build the fixes afterward?" ? (
+								<p>
+									The $999 audit covers the narrated walkthrough and the written doc. If you want hands-on help
+									implementing the changes once you have seen the findings, we can talk about{" "}
+									<a href="/rent-a-design-engineer">renting a design engineer</a> by the week or scoping
+									follow-up work.
+								</p>
+							) : faq.q === "Can I see examples of your UI work?" ? (
+								<p>
+									The <a href="/work">work page</a> is screenshots of product UI. I do not publish client names
+									or results there.
+								</p>
+							) : faq.q === "How do I book an audit?" ? (
+								<p>
+									Send a note through the <a href="/contact">contact page</a> with a link to your product. I
+									will reply directly to confirm the details and get started.
+								</p>
+							) : (
+								<p>{faq.a}</p>
+							)
+						}
+					</Stack>
+				))
+			}
+		</Stack>
+
+		<Stack space="3">
+			<h2>Ready to see where new users get stuck?</h2>
+			<p>
+				Send a link to your product and a quick note on who signs up. I will follow up directly with next steps.
+			</p>
+			<Cluster space="2">
+				<Button href="/contact">Request an onboarding audit</Button>
+				<Button href="/info" variant="secondary">Info</Button>
+			</Cluster>
+		</Stack>
+	</Stack>
+</LayoutA>
+
+<style>
+	.copy {
+		max-inline-size: var(--measure);
+	}
+
+	h1,
+	.price {
+		letter-spacing: var(--tracking-tight);
+	}
+
+	.deliverable,
+	.step {
+		padding-block-start: calc(var(--spacing) * 3);
+		border-block-start: 1px solid var(--color-border);
+	}
+
+	.step-number {
+		color: var(--color-fg-muted);
+	}
+</style>

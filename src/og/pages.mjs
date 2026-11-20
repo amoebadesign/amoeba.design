@@ -21,6 +21,12 @@ const STATIC_PAGES = [
 			"Send a UI backlog. Get polished SaaS UI as pull requests your team reviews.",
 	},
 	{
+		pathname: "/audit",
+		title: "Onboarding audit, $999 • Amoeba",
+		description:
+			"I find where new users get stuck in your onboarding and show you how to fix it. Narrated screen recording and prioritized fix list.",
+	},
+	{
 		pathname: "/work",
 		title: "Product interface work • Amoeba",
 		description:
